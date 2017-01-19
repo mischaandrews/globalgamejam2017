@@ -99,8 +99,8 @@ function Character:updateNpc(dt)
     end
 end
 
-createAnimations = function(assetName, animationName, width, height, animationSpeed, numLayers, animationMode, spriteFrameNums)
-    
+function createAnimations(assetName, animationName, width, height, animationSpeed, numLayers, animationMode, spriteFrameNums)
+
     sprites = {}
     for i=1, numLayers do
         -- Resource path example: assets/pink/idle-0.png
@@ -115,7 +115,7 @@ createAnimations = function(assetName, animationName, width, height, animationSp
     for i=1, #(animations) do
         animations[i]:setMode(animationMode)
     end
-    
+
     return animations
 end
 
