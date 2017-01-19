@@ -1,6 +1,6 @@
 ----------------------------------------------------- LIBARIES
 require "AnAL"
-require "character"
+require "Character"
 require "Camera"
 
 
