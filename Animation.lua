@@ -43,7 +43,7 @@ function Animation:loadPinkSprite(animationName)
     self.height = 256
     self.animationSpeed = 0.2
     self.numLayers = 3
-    self.layers = {}
+    --self.layers = {}
 
     -- Idle
     if animationName == "idle" then
@@ -63,7 +63,7 @@ function Animation:loadBlueSprite(animationName)
     self.height = 256
     self.animationSpeed = 0.2
     self.numLayers = 3
-    self.animations = {}
+    --self.animations = {}
 
     -- Idle
     if animationName == "idle" then
@@ -83,7 +83,7 @@ function Animation:loadGreenSprite(animationName)
     self.height = 256
     self.animationSpeed = 0.1
     self.numLayers = 4
-    self.animations = {}
+    --self.animations = {}
 
     -- Idle
     if animationName == "idle" then
@@ -98,17 +98,17 @@ function Animation:loadGreenSprite(animationName)
 end
 
 function Animation:update(dt)
-    ---- Update animation
-    --for i=1, #(self.currentAnimation) do
-        --self.currentAnimation[i]:update(dt)
-    --end
-
+    for i=1,#self.layers do
+        self.layers[i]:update(dt)
+    end
 end
 
 function Animation:draw(x,y)
     love.graphics.setColor(255, 255, 255)
-    love.graphics.rectangle("fill", x, y, 100,100)
-    --self.currentAnim:draw(self.x, self.y, 0, 1, 1, self.width / 2, self.height / 2)
+
+    for i=1,#self.layers do
+        self.layers[i]:draw(x, y, 0, self.scale, self.sacle, self.width / 2, self.height / 2)
+    end
 
     --for i=1, #(self.currentAnimation) do
     --    self.currentAnimation[i]:draw(self.x, self.y, 0, self.scale, self.scale, self.width / 2, self.height / 2)
@@ -127,14 +127,14 @@ function createAnimationLayers(assetName, animationName, width, height, animatio
         sprites[i] = love.graphics.newImage("assets/sprites/" .. assetName .. "/" .. animationName .. "-" .. i .. ".png")    
     end
 
-    local animations = {}
+    local layers = {}
     for i=1, numLayers do
-        animations[i] = newAnimation(sprites[i], width, height, animationSpeed, spriteFrameNums[i]) 
+        layers[i] = newAnimation(sprites[i], width, height, animationSpeed, spriteFrameNums[i]) 
     end
 
-    for i=1, #(animations) do
-        animations[i]:setMode(animationMode)
+    for i=1, #(layers) do
+        layers[i]:setMode(animationMode)
     end
 
-    return animations
+    return layers
 end
