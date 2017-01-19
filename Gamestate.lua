@@ -1,5 +1,3 @@
--- Global Game Jam 2017 --
-
 ----------------------------------------------------- LIBARIES
 require "AnAL"
 require "character"
@@ -22,7 +20,7 @@ function Gamestate:load()
     
     self.camera = Camera:new()
 
-    ---- Load assets
+    ---- Initial state
     gameState = "playing"
     paused = false
     
@@ -81,10 +79,6 @@ function Gamestate:update(dt)
     ------------ Animations ------------
     
     if gameState == "playing" and paused == false then
-
-        love.graphics.setColor(255, 255, 255)
-    
-        love.graphics.print("test")
 
         world:update(dt) --this puts the world into motion
 
