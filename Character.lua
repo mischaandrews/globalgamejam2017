@@ -198,44 +198,40 @@ local self = {}
     
     ----------------------------------------------------- HELPERS
     
-    self.getPosition = function()
-        return self.x, self.y
-    end
-
-    self.getVelocity = function()
-        return self.physics.body:getLinearVelocity()
-    end
-
-    self.getTotalVelocity = function ()
-        local vx, vy = self.physics.body:getLinearVelocity()
-        return math.sqrt(vx*vx + vy*vy)
-    end
-
-    self.applyForce = function( fx, fy )
-        self.physics.body:applyForce(fx, fy)
-    end
-
-    self.setMass = function(mass)
-        self.physics.body:setMass(mass)
-    end
-
-    self.getPhysics = function ()
-        return self.physics
-    end
-
-    self.characterSprite = function ()
-        if self.characterSprite == nil then
-            return "unknown"
-        else
-            return self.characterSprite
-        end
-    end
-
-    
 -----------------------------------------------------
-    
+
     return self
-    
 end
 
+function Character:getPosition()
+    return self.x, self.y
+end
 
+function Character:getVelocity()
+    return self.physics.body:getLinearVelocity()
+end
+
+function Character:getTotalVelocity()
+    local vx, vy = self.physics.body:getLinearVelocity()
+    return math.sqrt(vx*vx + vy*vy)
+end
+
+function Character:applyForce(fx,fy)
+    self.physics.body:applyForce(fx, fy)
+end
+
+function Character:setMass(mass)
+    self.physics.body:setMass(mass)
+end
+
+function Character:getPhysics()
+    return self.physics
+end
+
+function Character:characterSprite()
+    if self.characterSprite == nil then
+        return "unknown"
+    else
+        return self.characterSprite
+    end
+end
