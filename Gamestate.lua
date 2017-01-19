@@ -42,11 +42,16 @@ function Gamestate:load()
     ---- Create characters
     player1_spawnX = 150
     player1_spawnY = 200
-    player1 = character.new(physics, player1_spawnX, player1_spawnY, "pink", "playable")
+    player1 = character.new(physics, player1_spawnX, player1_spawnY, "green", "playable")
     
     npc1_spawnX = 350
     npc1_spawnY = 250
     npc1 = character.new(physics, npc1_spawnX, npc1_spawnY, "blue", "npc")
+    
+    npc2_spawnX = 400
+    npc2_spawnY = 400
+    npc2 = character.new(physics, npc2_spawnX, npc2_spawnY, "pink", "npc")
+    
     
     ---- Initial graphics setup
 	--love.graphics.setMode(intWindowX, intWindowY)
@@ -93,6 +98,7 @@ function Gamestate:update(dt)
         -- Update characters
         player1.updatePlayer(dt)
         npc1.updateNPC(dt)
+        npc2.updateNPC(dt)
         
         velocities = {}
         
@@ -113,6 +119,7 @@ function Gamestate:draw()
     if gameState == "playing" then
         player1.draw()  
         npc1.draw()  
+        npc2.draw()
     end
     
     ---- Unset camera
