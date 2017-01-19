@@ -38,22 +38,25 @@ function Gamestate:load()
     local physics = love.physics.newWorld(0, 0, true)
     physics:setCallbacks(beginContact)
     self.physics = physics
-   
+
     ---- Create characters
     player_spawnX = 150
     player_spawnY = 200
     local player = character.new(physics, player_spawnX, player_spawnY, "pink", "playable")
     self.player = player
-    
+
     npc1_spawnX = 350
     npc1_spawnY = 250
     npc1 = character.new(physics, npc1_spawnX, npc1_spawnY, "blue", "npc")
     
+    npc2_spawnX = 400
+    npc2_spawnY = 400
+    npc2 = character.new(physics, npc2_spawnX, npc2_spawnY, "pink", "npc")
+
     ---- Initial graphics setup
-	--love.graphics.setMode(intWindowX, intWindowY)
+    --love.graphics.setMode(intWindowX, intWindowY)
     -- TODO: set window size
-    
-    
+
 ---------------
 end -- End load
 
@@ -95,6 +98,7 @@ function Gamestate:update(dt)
         -- Update characters
         self.player:update(dt)
         npc1.updateNPC(dt)
+        npc2.updateNPC(dt)
         
         velocities = {}
         
@@ -117,6 +121,7 @@ function Gamestate:draw()
     if gameState == "playing" then
         self.player:draw()  
         npc1.draw()  
+        npc2.draw()
     end
     
     ---- Unset camera
