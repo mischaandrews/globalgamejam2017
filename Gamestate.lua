@@ -36,10 +36,8 @@ function Gamestate:load()
     intWindowX = 1000
     intWindowY = 800
     
-    ---- Load level
-    local physics = love.physics.newWorld(0, 0, true)
-    physics:setCallbacks(beginContact)
-    self.physics = physics
+    ---- Load Physics
+    self.physics = love.physics.newWorld(0, 0, true)
 
     ---- Create characters
     player_spawnX = 150
