@@ -25,6 +25,9 @@ character.new = function(world, posX, posY, characterSprite)
 
 local self = {}
 
+    
+    ----------------------------------------------------- LOAD CHARACTER
+    
     self.characterSprite = characterSprite
 
     if characterSprite == "pink" then
@@ -92,7 +95,6 @@ local self = {}
                 
     end
   	
-    ----------------------------------------------------- LOAD CHARACTER
     self.x = posX
     self.y = posY
 
@@ -100,9 +102,9 @@ local self = {}
     self.physics.body = love.physics.newBody(world, self.x, self.y, "dynamic") --remember, the shape (the rectangle we create next) anchors to the body from its center
     
     ----------------------------------------------------- UPDATE CHARACTER
+    
     self.update = function(dt)
-
-        
+    
         
     end -- End update
 
