@@ -26,17 +26,12 @@ function Character:load(world, x, y, characterSprite)
     self.x = x
     self.y = y
 
-<<<<<<< HEAD
     local animations = {}
     animations["idle"] = Animation:new()
     animations["idle"].load(characterSprite, "idle")
     
     self.currentAnimation = animations["idle"]
-=======
-    local animation = Animation:new()
-    animation:load(characterSprite)
-    self.animation = animation
->>>>>>> 23ebdae8ce9c91d18c395744785b0bd1c8471561
+
 
     self.physics = {}
     --remember, the shape (the rectangle we create next) anchors to the body from its center
