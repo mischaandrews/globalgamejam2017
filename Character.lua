@@ -84,7 +84,7 @@ local self = {}
         self.animations["idle"] = createAnimations("green", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "bounce", idleFrameNums)
         
         -- Walk
-        walkFrameNums = {4, 1, 5, 5}
+        walkFrameNums = {9, 1, 5, 5} -- Legs, ears, body, face
         self.animations["walk"] = createAnimations("green", "walk", self.width, self.height, self.animationSpeed, self.numLayers, "loop", walkFrameNums)
         
         
