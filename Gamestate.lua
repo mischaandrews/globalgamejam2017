@@ -65,22 +65,15 @@ end -- End load
 ----------------------------------------------------- UPDATE
 function Gamestate:update(dt)
 
-    
     ---- Keyboard listeners for UI (not characters)
 
     function love.keypressed(key)
-
         ---- Check for pause
         if gameState == "playing" and key == "escape" then
-            if paused == true then
-                paused = false
-            else
-                paused = true
-            end
+            paused = not paused
         end
     end
-    
-    
+
     ------------ Animations ------------
     
     if gameState == "playing" and paused == false then
