@@ -4,6 +4,7 @@ require "Background"
 require "Character"
 require "Camera"
 require "Interface"
+require "Tile"
 
 
 testing = true
