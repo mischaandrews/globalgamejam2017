@@ -46,7 +46,7 @@ end -- End update
 
 function Interface:draw()
     
-    if testing == true 
+    if testing == true then
         love.graphics.print(gameState)
         love.graphics.setColor(255, 255, 255)
     end
