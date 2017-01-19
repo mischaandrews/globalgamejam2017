@@ -12,7 +12,9 @@ Gamestate = {
     camera,
     background,
     physics,
-    player
+    player,
+    npc1,
+    npc2
 }
 
 function Gamestate:new()
@@ -36,21 +38,27 @@ function Gamestate:load()
     intWindowY = 800
     
     ---- Load Physics
-    self.physics = love.physics.newWorld(0, 0, true)
+    local physics = love.physics.newWorld(0, 0, true)
+    self.physics = physics
 
     ---- Create characters
     player_spawnX = 150
     player_spawnY = 200
-    local player = character.new(physics, player_spawnX, player_spawnY, "pink", "playable")
+    local player = Character:new()
+    player:load(physics, player_spawnX, player_spawnY, "pink", "playable")
     self.player = player
 
     npc1_spawnX = 350
     npc1_spawnY = 250
-    npc1 = character.new(physics, npc1_spawnX, npc1_spawnY, "blue", "npc")
+    local npc1 = Character:new()
+    npc1:load(physics, npc1_spawnX, npc1_spawnY, "blue", "npc")
+    self.npc1 = npc1
     
     npc2_spawnX = 400
     npc2_spawnY = 400
-    npc2 = character.new(physics, npc2_spawnX, npc2_spawnY, "pink", "npc")
+    local npc2 = Character:new()
+    npc2:load(physics, npc2_spawnX, npc2_spawnY, "pink", "npc")
+    self.npc2 = npc2
 
     ---- Initial graphics setup
     --love.graphics.setMode(intWindowX, intWindowY)
@@ -89,8 +97,8 @@ function Gamestate:update(dt)
 
         -- Update characters
         self.player:update(dt)
-        npc1.updateNPC(dt)
-        npc2.updateNPC(dt)
+        self.npc1:updateNpc(dt)
+        self.npc2:updateNpc(dt)
         
         velocities = {}
         
@@ -111,8 +119,8 @@ function Gamestate:draw()
 
     ---- Draw characters
     self.player:draw()  
-    npc1.draw()  
-    npc2.draw()
+    self.npc1.draw()  
+    self.npc2.draw()
 
     ---- Unset camera
     self.camera:unset()
