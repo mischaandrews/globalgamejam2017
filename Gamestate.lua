@@ -42,20 +42,20 @@ function Gamestate:load()
     self.physics = physics
 
     ---- Create characters
-    player_spawnX = 150
-    player_spawnY = 200
+    local player_spawnX = 150
+    local player_spawnY = 200
     local player = Character:new()
     player:load(physics, player_spawnX, player_spawnY, "pink", "playable")
     self.player = player
 
-    npc1_spawnX = 350
-    npc1_spawnY = 250
+    local npc1_spawnX = 350
+    local npc1_spawnY = 250
     local npc1 = Character:new()
     npc1:load(physics, npc1_spawnX, npc1_spawnY, "blue", "npc")
     self.npc1 = npc1
     
-    npc2_spawnX = 400
-    npc2_spawnY = 400
+    local npc2_spawnX = 400
+    local npc2_spawnY = 400
     local npc2 = Character:new()
     npc2:load(physics, npc2_spawnX, npc2_spawnY, "pink", "npc")
     self.npc2 = npc2
@@ -90,7 +90,7 @@ function Gamestate:update(dt)
         self.background:update(dt)
 
         ---- Update camera
-        playerX, playerY = self.player.x, self.player.y
+        --playerX, playerY = self.player.x, self.player.y
         --camera.x = playerX - (intWindowX/2)
         --camera.y = playerY - (intWindowY/2)
         -- TODO: reintroduce camera
@@ -119,8 +119,8 @@ function Gamestate:draw()
 
     ---- Draw characters
     self.player:draw()  
-    self.npc1.draw()  
-    self.npc2.draw()
+    self.npc1:draw()  
+    self.npc2:draw()
 
     ---- Unset camera
     self.camera:unset()

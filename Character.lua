@@ -55,6 +55,9 @@ end
 
 function Character:draw()
     love.graphics.setColor(255, 255, 255)
+
+    love.graphics.rectangle("fill", self.x, self.y, 100,100)
+
     --self.currentAnim:draw(self.x, self.y, 0, 1, 1, self.width / 2, self.height / 2)
 
     --for i=1, #(self.currentAnimation) do
