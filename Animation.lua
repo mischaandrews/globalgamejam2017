@@ -18,67 +18,7 @@ end
 
 function Animation:load(characterSprite, animationName)
 
-<<<<<<< HEAD
-    if characterSprite == "pink" then
 
-        -- Sprite order:
-        -- legs (behind), body, face, legs (in front)
-
-        self.scale = 0.6
-        self.width = 256
-        self.height = 256
-        self.animationSpeed = 0.2
-        self.numLayers = 3
-        self.layers = {}
-
-        -- Idle
-        if animationName == "idle" then
-            self.layers = createAnimationLayers("pink", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", {1, 1, 3})
-        end
-        
-        -- Walk
-        if animationName == "walk" then
-            self.layers = createAnimationLayers("pink", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", {4, 1, 3})
-        end
-        
-    elseif characterSprite == "blue" then
-
-        self.scale = 0.6
-        self.width = 256
-        self.height = 256
-        self.animationSpeed = 0.2
-        self.numLayers = 3
-        self.layers = {}
-
-        -- Idle
-        if animationName == "idle" then
-            self.layers = createAnimationLayers("blue", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", {1, 1, 3})
-        end
-            
-        -- Walk
-        if animationName == "walk" then
-            self.layers = createAnimationLayers("blue", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", {4, 1, 3})
-        end
-            
-    elseif characterSprite == "green" then
-        
-        self.scale = 0.6
-        self.width = 256
-        self.height = 256
-        self.animationSpeed = 0.1
-        self.numLayers = 4
-        self.layers = {}
-
-        -- Idle
-        if animationName == "idle" then
-            self.layers = createAnimationLayers("green", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "bounce", {1, 1, 5, 5})
-        end
-            
-        -- Walk
-        if animationName == "walk" then
-            self.layers = createAnimationLayers("green", "walk", self.width, self.height, self.animationSpeed, self.numLayers, "loop", {9, 1, 5, 5})
-        end
-=======
     if characterSprite == nil then
        print ">>> Error! Animation:load(characterSprite) was null <<<"
        love.event.quit()
@@ -86,39 +26,38 @@ function Animation:load(characterSprite, animationName)
     end
 
     if characterSprite == "pink" then
-        self:loadPinkSprite()
+        self:loadPinkSprite(animationName)
     elseif characterSprite == "blue" then
-        self:loadBlueSprite()
+        self:loadBlueSprite(animationName)
     elseif characterSprite == "green" then
-        self:loadGreenSprite()
+        self:loadGreenSprite(animationName)
     else
-        print ("Couldn't load animation: "..characterSprite)
+        print ("Couldn't load animation: " .. characterSprite)
     end
 end
 
-function Animation:loadPinkSprite()
-    -- Sprite order:
-    -- legs (behind), body, face, legs (in front)
+function Animation:loadPinkSprite(animationName)
 
     self.scale = 0.6
     self.width = 256
     self.height = 256
     self.animationSpeed = 0.2
     self.numLayers = 3
-    self.animations = {}
+    self.layers = {}
 
     -- Idle
-    local idleFrameNums = {1, 1, 3} -- Legs, body, face
-    self.animations["idle"] = createAnimations("pink", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", idleFrameNums)
-
+    if animationName == "idle" then
+        self.layers = createAnimationLayers("pink", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", {1, 1, 3})
+    end
+        
     -- Walk
-    local walkFrameNums = {4, 1, 3}
-    self.animations["walk"] = createAnimations("pink", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", walkFrameNums)
+    if animationName == "walk" then
+        self.layers = createAnimationLayers("pink", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", {4, 1, 3})
+    end
     
-    self.currentAnimation = self.animations["idle"]
 end
 
-function Animation:loadBlueSprite()
+function Animation:loadBlueSprite(animationName)
     self.scale = 0.6
     self.width = 256
     self.height = 256
@@ -127,17 +66,18 @@ function Animation:loadBlueSprite()
     self.animations = {}
 
     -- Idle
-    local idleFrameNums = {1, 1, 3} -- Legs, body, face
-    self.animations["idle"] = createAnimations("blue", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", idleFrameNums)
+    if animationName == "idle" then
+        self.layers = createAnimationLayers("blue", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", {1, 1, 3})
+    end
 
     -- Walk
-    local walkFrameNums = {4, 1, 3}
-    self.animations["walk"] = createAnimations("blue", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", walkFrameNums)
+    if animationName == "walk" then
+        self.layers = createAnimationLayers("blue", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", {4, 1, 3})
+    end
 
-    self.currentAnimation = self.animations["idle"]
 end
 
-function Animation:loadGreenSprite()
+function Animation:loadGreenSprite(animationName)
     self.scale = 0.6
     self.width = 256
     self.height = 256
@@ -146,15 +86,15 @@ function Animation:loadGreenSprite()
     self.animations = {}
 
     -- Idle
-    local idleFrameNums = {1, 1, 5, 5} -- Legs, ears, body, face
-    self.animations["idle"] = createAnimations("green", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "bounce", idleFrameNums)
+    if animationName == "idle" then
+        self.layers = createAnimationLayers("green", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "bounce", {1, 1, 5, 5})
+    end
 
     -- Walk
-    local walkFrameNums = {9, 1, 5, 5} -- Legs, ears, body, face
-    self.animations["walk"] = createAnimations("green", "walk", self.width, self.height, self.animationSpeed, self.numLayers, "loop", walkFrameNums)
->>>>>>> 23ebdae8ce9c91d18c395744785b0bd1c8471561
+    if animationName == "walk" then
+        self.layers = createAnimationLayers("green", "walk", self.width, self.height, self.animationSpeed, self.numLayers, "loop", {9, 1, 5, 5})
+    end
 
-    self.currentAnimation = self.animations["idle"]
 end
 
 function Animation:update(dt)

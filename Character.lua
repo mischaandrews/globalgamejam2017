@@ -41,7 +41,7 @@ end
 
 
 function Character:update(dt)
-    self.animation:update(dt)
+    --self.animations:update(dt)
 end
 
 function Character:draw()
