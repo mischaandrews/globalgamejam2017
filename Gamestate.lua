@@ -3,12 +3,25 @@
 ----------------------------------------------------- LIBARIES
 require "AnAL"
 require "character"
-require "camera"
+require "Camera"
+
+
+Gamestate = {
+    camera
+}
+
+function Gamestate:new()
+    local o = {}
+    setmetatable(o, self)
+    self.__index = self
+    return o
+end
 
 ----------------------------------------------------- LOAD
-
 function Gamestate:load()
     
+    self.camera = Camera:new()
+
     ---- Load assets
     gameState = "playing"
     paused = false
@@ -98,7 +111,7 @@ end -- End update
 function Gamestate:draw()
     
     ---- Set camera
-    camera:set()
+    self.camera:set()
     
     ---- Draw characters
     if gameState == "playing" then
@@ -107,7 +120,7 @@ function Gamestate:draw()
     end
     
     ---- Unset camera
-    camera:unset()
+    self.camera:unset()
 
 ---------------
 end -- End draw
