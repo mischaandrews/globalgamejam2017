@@ -29,9 +29,11 @@ function Character:load(world, x, y, characterSprite)
     local animations = {}
     animations["idle"] = Animation:new()
     animations["idle"]:load(characterSprite, "idle")
-    
-    self.currentAnimation = animations["idle"]
 
+    animations["walk"] = Animation:new()
+    animations["walk"]:load(characterSprite, "walk")
+
+    self.currentAnimation = animations["walk"]
 
     self.physics = {}
     --remember, the shape (the rectangle we create next) anchors to the body from its center
@@ -41,16 +43,16 @@ end
 
 
 function Character:update(dt)
-    --self.animations:update(dt)
+    self.currentAnimation:update(dt)
 end
 
 function Character:draw()
 
     love.graphics.setColor(255, 255, 255)
 
-    love.graphics.rectangle("fill", self.x, self.y, 100,100)
+    love.graphics.rectangle("line", self.x-3, self.y-3, 106,106)
 
-    --self.currentAnimation:draw(self.x, self.y, 0, 1, 1, 256 / 2, 256 / 2)
+    self.currentAnimation:draw(self.x, self.y, 0, 1, 1, 256 / 2, 256 / 2)
     -- todo: load width and height properly
     
     --for i=1, #(self.animation) do

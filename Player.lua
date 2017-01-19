@@ -62,12 +62,10 @@ end
 
 function Player:draw()
 
-    love.graphics.setColor(255, 255, 255, 255)
+    --love.graphics.setColor(255, 255, 255, 255)
     --self.currentAnim:draw(self.x, self.y, 0, 1, 1, self.width / 2, self.height / 2)
 
-    for i=1, #(self.currentAnimation) do
-        self.currentAnimation[i]:draw(self.x, self.y, 0, self.scale, self.scale, self.width / 2, self.height / 2)
-    end
+    --self.currentAnimation[i]:draw(self.x, self.y, 0, self.scale, self.scale, self.width / 2, self.height / 2)
 
     -- Variable reference:
     -- position (x), position (y), ?, scale (x), scale (y), offset X, offsetY
