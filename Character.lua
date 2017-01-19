@@ -37,6 +37,9 @@ character.new = function()
 
 local self = {}
 
+    
+    ----------------------------------------------------- LOAD CHARACTER
+    
     self.characterSprite = characterSprite
 
     if characterSprite == "pink" then
@@ -96,7 +99,7 @@ local self = {}
         self.animations["idle"] = createAnimations("green", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "bounce", idleFrameNums)
         
         -- Walk
-        walkFrameNums = {4, 1, 5, 5}
+        walkFrameNums = {9, 1, 5, 5} -- Legs, ears, body, face
         self.animations["walk"] = createAnimations("green", "walk", self.width, self.height, self.animationSpeed, self.numLayers, "loop", walkFrameNums)
         
         
@@ -104,7 +107,6 @@ local self = {}
                 
     end
   	
-    ----------------------------------------------------- LOAD CHARACTER
     self.x = posX
     self.y = posY
 
@@ -112,9 +114,9 @@ local self = {}
     self.physics.body = love.physics.newBody(world, self.x, self.y, "dynamic") --remember, the shape (the rectangle we create next) anchors to the body from its center
     
     ----------------------------------------------------- UPDATE CHARACTER
+    
     self.update = function(dt)
-
-        
+    
         
     end -- End update
 

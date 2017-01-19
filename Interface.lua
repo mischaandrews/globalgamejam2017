@@ -38,10 +38,9 @@ end -- End update
 ----------------------------------------------------- DRAW
 
 function Interface:draw()
-
     
     love.graphics.setColor(255, 255, 255)
-    love.graphics.print("test")
+    love.graphics.print(gameState)
 
     
 ---------------
