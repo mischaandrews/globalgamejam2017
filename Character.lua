@@ -29,9 +29,11 @@ function Character:load(world, x, y, characterSprite)
     local animations = {}
     animations["idle"] = Animation:new()
     animations["idle"]:load(characterSprite, "idle")
-    
-    self.currentAnimation = animations["idle"]
 
+    animations["walk"] = Animation:new()
+    animations["walk"]:load(characterSprite, "walk")
+
+    self.currentAnimation = animations["walk"]
 
     self.physics = {}
     --remember, the shape (the rectangle we create next) anchors to the body from its center
@@ -41,7 +43,7 @@ end
 
 
 function Character:update(dt)
-    --self.animations:update(dt)
+    self.currentAnimation:update(dt)
 end
 
 function Character:draw()
