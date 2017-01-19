@@ -52,16 +52,16 @@ function Interface:draw()
     end
     
     
-    if gameState == "playing" 
+    if gameState == "playing" then
         
         
-    elseif gameState == "paused"
+    elseif gameState == "paused" then
         
         
-    elseif gameState == "title"
+    elseif gameState == "title" then
         
     
-    elseif gameState == "gameover"
+    elseif gameState == "gameover" then
         
     
     end
