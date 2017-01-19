@@ -1,7 +1,6 @@
 Animation = {
     characterSprite,
     animationName,
-    scale,
     width,
     height,
     animationSpeed,
@@ -38,7 +37,6 @@ end
 
 function Animation:loadPinkSprite(animationName)
 
-    self.scale = 0.6
     self.width = 256
     self.height = 256
     self.animationSpeed = 0.2
@@ -58,7 +56,6 @@ function Animation:loadPinkSprite(animationName)
 end
 
 function Animation:loadBlueSprite(animationName)
-    self.scale = 0.6
     self.width = 256
     self.height = 256
     self.animationSpeed = 0.2
@@ -78,7 +75,6 @@ function Animation:loadBlueSprite(animationName)
 end
 
 function Animation:loadGreenSprite(animationName)
-    self.scale = 0.6
     self.width = 256
     self.height = 256
     self.animationSpeed = 0.1
@@ -103,11 +99,11 @@ function Animation:update(dt)
     end
 end
 
-function Animation:draw(x,y)
+function Animation:draw(x,y,scale)
     love.graphics.setColor(255, 255, 255)
 
     for i=1,#self.layers do
-        self.layers[i]:draw(x, y, 0, self.scale, self.sacle, self.width / 2, self.height / 2)
+        self.layers[i]:draw(x, y, 0, scale, scale, self.width / 2, self.height / 2)
     end
 
     --for i=1, #(self.currentAnimation) do
