@@ -27,9 +27,6 @@ function Gamestate:load()
 
     self.camera = Camera:new()
 
-    ---- Initial state
-    gameState = "playing"
-        
     self.background = Background:new()
 
     ---- Variables
@@ -69,14 +66,14 @@ function Gamestate:update(dt)
 
     function love.keypressed(key)
         ---- Check for pause
-        if gameState == "playing" and key == "escape" then
+        if key == "escape" then
             self.paused = not self.paused
         end
     end
 
     ------------ Animations ------------
     
-    if gameState == "playing" and not self.paused then
+    if not self.paused then
 
         self.physics:update(dt) --this puts the world into motion
 
@@ -104,19 +101,17 @@ end -- End update
 ----------------------------------------------------- DRAW
 
 function Gamestate:draw()
-    
+
     ---- Set camera
     self.camera:set()
-    
+
     self.background:draw()
 
     ---- Draw characters
-    if gameState == "playing" then
-        self.player:draw()  
-        npc1.draw()  
-        npc2.draw()
-    end
-    
+    self.player:draw()  
+    npc1.draw()  
+    npc2.draw()
+
     ---- Unset camera
     self.camera:unset()
 
