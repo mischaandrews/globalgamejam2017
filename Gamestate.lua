@@ -6,6 +6,7 @@ require "Camera"
 
 
 Gamestate = {
+    paused,
     camera,
     background,
     physics,
@@ -21,13 +22,14 @@ end
 
 ----------------------------------------------------- LOAD
 function Gamestate:load()
-    
+
+    self.paused = false
+
     self.camera = Camera:new()
 
     ---- Initial state
     gameState = "playing"
-    paused = false
-    
+        
     self.background = Background:new()
 
     ---- Variables
@@ -70,13 +72,13 @@ function Gamestate:update(dt)
     function love.keypressed(key)
         ---- Check for pause
         if gameState == "playing" and key == "escape" then
-            paused = not paused
+            self.paused = not self.paused
         end
     end
 
     ------------ Animations ------------
     
-    if gameState == "playing" and paused == false then
+    if gameState == "playing" and not self.paused then
 
         self.physics:update(dt) --this puts the world into motion
 
