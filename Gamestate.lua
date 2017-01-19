@@ -5,6 +5,8 @@ require "Character"
 require "Camera"
 
 
+testing = true
+
 Gamestate = {
     paused,
     camera,
