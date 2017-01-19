@@ -121,13 +121,13 @@ end
 
 function createAnimationLayers(assetName, animationName, width, height, animationSpeed, numLayers, animationMode, spriteFrameNums)
 
-    sprites = {}
+    local sprites = {}
     for i=1, numLayers do
         -- Resource path example: assets/pink/idle-0.png
         sprites[i] = love.graphics.newImage("assets/sprites/" .. assetName .. "/" .. animationName .. "-" .. i .. ".png")    
     end
 
-    animations = {}
+    local animations = {}
     for i=1, numLayers do
         animations[i] = newAnimation(sprites[i], width, height, animationSpeed, spriteFrameNums[i]) 
     end
