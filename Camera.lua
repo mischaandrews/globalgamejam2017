@@ -6,6 +6,13 @@ Camera = {
     rotation = 0
 }
 
+function Camera:new()
+    local o = {}
+    setmetatable(o, self)
+    self.__index = self
+    return o
+end
+
 function Camera:set()
   love.graphics.push()
   love.graphics.rotate(-self.rotation)
