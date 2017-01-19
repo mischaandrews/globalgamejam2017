@@ -1,12 +1,15 @@
 ----------------------------------------------------- LIBARIES
 require "AnAL"
+require "Background"
 require "Character"
 require "Camera"
 
 
 Gamestate = {
     camera,
-    physics
+    background,
+    physics,
+    player
 }
 
 function Gamestate:new()
@@ -25,12 +28,9 @@ function Gamestate:load()
     gameState = "playing"
     paused = false
     
+    self.background = Background:new()
+
     ---- Variables
-    intPlayerSpeed = 5
-    bgColor_r = 45
-    bgColor_g = 47
-    bgColor_b = 56
-    bgColor_a = 1
     intWindowX = 1000
     intWindowY = 800
     
@@ -40,9 +40,10 @@ function Gamestate:load()
     self.physics = physics
    
     ---- Create characters
-    player1_spawnX = 150
-    player1_spawnY = 200
-    player1 = character.new(physics, player1_spawnX, player1_spawnY, "pink", "playable")
+    player_spawnX = 150
+    player_spawnY = 200
+    local player = character.new(physics, player_spawnX, player_spawnY, "pink", "playable")
+    self.player = player
     
     npc1_spawnX = 350
     npc1_spawnY = 250
@@ -51,7 +52,6 @@ function Gamestate:load()
     ---- Initial graphics setup
 	--love.graphics.setMode(intWindowX, intWindowY)
     -- TODO: set window size
-    love.graphics.setBackgroundColor(bgColor_r, bgColor_g, bgColor_b, bgColor_a)
     
     
 ---------------
@@ -84,14 +84,16 @@ function Gamestate:update(dt)
 
         self.physics:update(dt) --this puts the world into motion
 
+        self.background:update(dt)
+
         ---- Update camera
-        playerX, playerY = player1.getPosition()
+        playerX, playerY = self.player.x, self.player.y
         --camera.x = playerX - (intWindowX/2)
         --camera.y = playerY - (intWindowY/2)
         -- TODO: reintroduce camera
 
         -- Update characters
-        player1.updatePlayer(dt)
+        self.player:update(dt)
         npc1.updateNPC(dt)
         
         velocities = {}
@@ -109,9 +111,11 @@ function Gamestate:draw()
     ---- Set camera
     self.camera:set()
     
+    self.background:draw()
+
     ---- Draw characters
     if gameState == "playing" then
-        player1.draw()  
+        self.player:draw()  
         npc1.draw()  
     end
     
