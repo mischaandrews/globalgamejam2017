@@ -1,3 +1,10 @@
+-- TODO:
+-- in-game GUI
+-- title screen
+-- pause screen
+-- game over screen
+
+
 Interface = {
     
 }
@@ -39,9 +46,25 @@ end -- End update
 
 function Interface:draw()
     
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.print(gameState)
-
+    if testing == true 
+        love.graphics.print(gameState)
+        love.graphics.setColor(255, 255, 255)
+    end
+    
+    
+    if gameState == "playing" 
+        
+        
+    elseif gameState == "paused"
+        
+        
+    elseif gameState == "title"
+        
+    
+    elseif gameState == "gameover"
+        
+    
+    end
     
 ---------------
 end -- End draw
