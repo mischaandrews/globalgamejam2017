@@ -1,3 +1,18 @@
+Character = {
+
+}
+
+function Character:new()
+    local o = {}
+    setmetatable(o, self)
+    self.__index = self
+    return o
+end
+
+function Character:load(world, posX, posY, characterSprite)
+    --Loading logic to go here
+end
+
 createAnimations = function(assetName, animationName, width, height, animationSpeed, numLayers, animationMode, spriteFrameNums)
     
     sprites = {}
@@ -18,10 +33,7 @@ createAnimations = function(assetName, animationName, width, height, animationSp
     return animations
 end
 
-
-character = {}
-
-character.new = function(world, posX, posY, characterSprite)
+character.new = function()
 
 local self = {}
 
