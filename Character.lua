@@ -16,11 +16,17 @@ end
 
 function Character:load(world, x, y, characterSprite)
 
+    if characterSprite == nil then
+       print ">>> Error! Character:load(characterSprite) was null <<<"
+       love.event.quit()
+       os.exit()
+    end
+
     self.x = x
     self.y = y
 
     local animation = Animation:new()
-    animation.load(characterSprite)
+    animation:load(characterSprite)
     self.animation = animation
 
     self.physics = {}
@@ -50,7 +56,7 @@ function createAnimations(assetName, animationName, width, height, animationSpee
 end
 
 function Character:update(dt)
-
+    self.animation:update(dt)
 end
 
 function Character:draw()
