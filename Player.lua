@@ -1,3 +1,4 @@
+require "Animation"
 
 Player = {
     x,
@@ -9,7 +10,7 @@ function Player:new()
     setmetatable(o, self)
     self.__index = self
     return o
-end    
+end
 
 function Player:update(dt)
 

@@ -97,8 +97,8 @@ function Gamestate:update(dt)
 
         -- Update characters
         self.player:update(dt)
-        self.npc1:updateNpc(dt)
-        self.npc2:updateNpc(dt)
+        self.npc1:update(dt)
+        self.npc2:update(dt)
         
         velocities = {}
         
