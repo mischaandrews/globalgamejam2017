@@ -1,13 +1,13 @@
 -- Global Game Jam 2017 --
 
 ----------------------------------------------------- LIBARIES
-require("AnAL")
-require("character")
-require("camera")
+require "AnAL"
+require "character"
+require "camera"
 
 ----------------------------------------------------- LOAD
 
-function love.load()
+function Gamestate:load()
     
     ---- Load assets
     gameState = "playing"
@@ -47,7 +47,7 @@ end -- End load
 
 
 ----------------------------------------------------- UPDATE
-function love.update(dt)
+function Gamestate:update(dt)
 
     
     ---- Keyboard listeners for UI (not characters)
@@ -60,7 +60,7 @@ function love.update(dt)
                 paused = false
             else
                 paused = true
-            end		
+            end
         end
     end
     
@@ -95,7 +95,7 @@ end -- End update
 
 ----------------------------------------------------- DRAW
 
-function love.draw()
+function Gamestate:draw()
     
     ---- Set camera
     camera:set()
