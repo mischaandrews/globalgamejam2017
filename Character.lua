@@ -17,14 +17,26 @@ end
 
 function Character:load(world, x, y, characterSprite)
 
+    if characterSprite == nil then
+       print ">>> Error! Character:load(characterSprite) was null <<<"
+       love.event.quit()
+       os.exit()
+    end
+
     self.x = x
     self.y = y
 
+<<<<<<< HEAD
     local animations = {}
     animations["idle"] = Animation:new()
     animations["idle"].load(characterSprite, "idle")
     
     self.currentAnimation = animations["idle"]
+=======
+    local animation = Animation:new()
+    animation:load(characterSprite)
+    self.animation = animation
+>>>>>>> 23ebdae8ce9c91d18c395744785b0bd1c8471561
 
     self.physics = {}
     --remember, the shape (the rectangle we create next) anchors to the body from its center
@@ -34,10 +46,11 @@ end
 
 
 function Character:update(dt)
-
+    self.animation:update(dt)
 end
 
 function Character:draw()
+
     love.graphics.setColor(255, 255, 255)
 
     love.graphics.rectangle("fill", self.x, self.y, 100,100)
@@ -51,6 +64,7 @@ function Character:draw()
     -- todo: load width and height properly
 
 
+    --self.animation:draw(self.x,self.y)
 end
 
 function Character:getPosition()

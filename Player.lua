@@ -2,7 +2,8 @@ require "Animation"
 
 Player = {
     x,
-    y
+    y,
+    animation
 }
 
 function Player:new()
@@ -10,6 +11,12 @@ function Player:new()
     setmetatable(o, self)
     self.__index = self
     return o
+end
+
+function Player:load(characterSprite)
+    local animation = Animation:new()
+    animation:load(characterSprite)
+    self.animation = animation
 end
 
 function Player:update(dt)
