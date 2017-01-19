@@ -1,12 +1,12 @@
 Animation = {
     characterSprite,
-    currentAnimation,
+    animationName,
     scale,
     width,
     height,
     animationSpeed,
     numLayers,
-    animations
+    layers
 }
 
 function Animation:new()
@@ -16,7 +16,7 @@ function Animation:new()
     return o
 end
 
-function Animation:load(characterSprite)
+function Animation:load(characterSprite, animationName)
 
     if characterSprite == "pink" then
 
@@ -28,18 +28,18 @@ function Animation:load(characterSprite)
         self.height = 256
         self.animationSpeed = 0.2
         self.numLayers = 3
-        self.animations = {}
+        self.layers = {}
 
         -- Idle
-        local idleFrameNums = {1, 1, 3} -- Legs, body, face
-        self.animations["idle"] = createAnimations("pink", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", idleFrameNums)
-
-        -- Walk
-        local walkFrameNums = {4, 1, 3}
-        self.animations["walk"] = createAnimations("pink", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", walkFrameNums)
+        if animationName == "idle" then
+            self.layers = createAnimationLayers("pink", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", {1, 1, 3})
+        end
         
-        self.currentAnimation = self.animations["idle"]
-
+        -- Walk
+        if animationName == "walk" then
+            self.layers = createAnimationLayers("pink", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", {4, 1, 3})
+        end
+        
     elseif characterSprite == "blue" then
 
         self.scale = 0.6
@@ -47,18 +47,18 @@ function Animation:load(characterSprite)
         self.height = 256
         self.animationSpeed = 0.2
         self.numLayers = 3
-        self.animations = {}
+        self.layers = {}
 
         -- Idle
-        local idleFrameNums = {1, 1, 3} -- Legs, body, face
-        self.animations["idle"] = createAnimations("blue", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", idleFrameNums)
-
+        if animationName == "idle" then
+            self.layers = createAnimationLayers("blue", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", {1, 1, 3})
+        end
+            
         -- Walk
-        local walkFrameNums = {4, 1, 3}
-        self.animations["walk"] = createAnimations("blue", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", walkFrameNums)
-
-        self.currentAnimation = self.animations["idle"]
-
+        if animationName == "walk" then
+            self.layers = createAnimationLayers("blue", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "loop", {4, 1, 3})
+        end
+            
     elseif characterSprite == "green" then
         
         self.scale = 0.6
@@ -66,28 +66,25 @@ function Animation:load(characterSprite)
         self.height = 256
         self.animationSpeed = 0.1
         self.numLayers = 4
-        self.animations = {}
+        self.layers = {}
 
         -- Idle
-        local idleFrameNums = {1, 1, 5, 5} -- Legs, ears, body, face
-        self.animations["idle"] = createAnimations("green", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "bounce", idleFrameNums)
-
+        if animationName == "idle" then
+            self.layers = createAnimationLayers("green", "idle", self.width, self.height, self.animationSpeed, self.numLayers, "bounce", {1, 1, 5, 5})
+        end
+            
         -- Walk
-        local walkFrameNums = {9, 1, 5, 5} -- Legs, ears, body, face
-        self.animations["walk"] = createAnimations("green", "walk", self.width, self.height, self.animationSpeed, self.numLayers, "loop", walkFrameNums)
-
-        self.currentAnimation = self.animations["idle"]
+        if animationName == "walk" then
+            self.layers = createAnimationLayers("green", "walk", self.width, self.height, self.animationSpeed, self.numLayers, "loop", {9, 1, 5, 5})
+        end
 
     end
 end
 
 function Animation:update(dt)
     ---- Update animation
-    for i=1, #(self.currentAnimation) do
-        self.currentAnimation[i]:update(dt)
-    end
-
-    --else
-        self.currentAnimation = self.animations["idle"]
+    --for i=1, #(self.currentAnimation) do
+        --self.currentAnimation[i]:update(dt)
     --end
+
 end

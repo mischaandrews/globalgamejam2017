@@ -3,7 +3,8 @@ require "Animation"
 Character = {
     x,
     y,
-    animation,
+    animations,
+    currentAnimation,
     physics
 }
 
@@ -19,9 +20,11 @@ function Character:load(world, x, y, characterSprite)
     self.x = x
     self.y = y
 
-    local animation = Animation:new()
-    animation.load(characterSprite)
-    self.animation = animation
+    local animations = {}
+    animations["idle"] = Animation:new()
+    animations["idle"].load(characterSprite, "idle")
+    
+    self.currentAnimation = animations["idle"]
 
     self.physics = {}
     --remember, the shape (the rectangle we create next) anchors to the body from its center
@@ -29,25 +32,6 @@ function Character:load(world, x, y, characterSprite)
 
 end
 
-function createAnimations(assetName, animationName, width, height, animationSpeed, numLayers, animationMode, spriteFrameNums)
-
-    sprites = {}
-    for i=1, numLayers do
-        -- Resource path example: assets/pink/idle-0.png
-        sprites[i] = love.graphics.newImage("assets/" .. assetName .. "/" .. animationName .. "-" .. i .. ".png")    
-    end
-
-    animations = {}
-    for i=1, numLayers do
-        animations[i] = newAnimation(sprites[i], width, height, animationSpeed, spriteFrameNums[i]) 
-    end
-
-    for i=1, #(animations) do
-        animations[i]:setMode(animationMode)
-    end
-
-    return animations
-end
 
 function Character:update(dt)
 
@@ -58,15 +42,15 @@ function Character:draw()
 
     love.graphics.rectangle("fill", self.x, self.y, 100,100)
 
-    --self.currentAnim:draw(self.x, self.y, 0, 1, 1, self.width / 2, self.height / 2)
-
-    --for i=1, #(self.currentAnimation) do
-    --    self.currentAnimation[i]:draw(self.x, self.y, 0, self.scale, self.scale, self.width / 2, self.height / 2)
+    --self.animation:draw(self.x, self.y, 0, 1, 1, 256 / 2, 256 / 2)
+    -- todo: load width and height properly
+    
+    --for i=1, #(self.animation) do
+        --self.animation[i]:draw(self.x, self.y, 0, self.scale, self.scale, 256 / 2, 256 / 2)
     --end
+    -- todo: load width and height properly
 
-    -- Variable reference:
-    -- position (x), position (y), ?, scale (x), scale (y), offset X, offsetY
-    -- TODO: check this offset. It might need to be scaled too.
+
 end
 
 function Character:getPosition()

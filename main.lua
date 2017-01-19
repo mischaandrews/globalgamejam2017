@@ -1,14 +1,16 @@
 -- Global Game Jam 2017 --
 
 require "Gamestate"
-require "Interface"
+require "Typography"
 
 local gamestate = Gamestate:new()
 local interface = Interface:new()
+local typography = Typography:new()
 
 function love.load()
     gamestate:load()
     interface:load()
+    typography:load()
 end
 
 function love.update(dt)

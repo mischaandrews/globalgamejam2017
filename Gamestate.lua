@@ -3,11 +3,13 @@ require "AnAL"
 require "Background"
 require "Character"
 require "Camera"
+require "Interface"
 
 
 testing = true
 
 Gamestate = {
+    stage, -- Stages: title, playing, gameover
     paused,
     camera,
     background,
@@ -26,6 +28,8 @@ end
 
 ----------------------------------------------------- LOAD
 function Gamestate:load()
+    
+    self.stage = "playing"
 
     self.paused = false
 
@@ -121,6 +125,20 @@ function Gamestate:draw()
     self.player:draw()  
     self.npc1:draw()  
     self.npc2:draw()
+    
+    ---- Draw interface
+    
+    if self.stage == "playing" then
+        
+        if self.paused == true then
+           drawDialogueBox("Paused") 
+        end
+        
+    elseif self.stage == "title" then
+        
+    elseif self.stage == "gameover" then
+        drawDialogueBox("Game over")
+    end
 
     ---- Unset camera
     self.camera:unset()
