@@ -118,3 +118,23 @@ function Animation:draw(x,y)
     -- position (x), position (y), ?, scale (x), scale (y), offset X, offsetY
     -- TODO: check this offset. It might need to be scaled too.
 end
+
+function createAnimationLayers(assetName, animationName, width, height, animationSpeed, numLayers, animationMode, spriteFrameNums)
+
+    sprites = {}
+    for i=1, numLayers do
+        -- Resource path example: assets/pink/idle-0.png
+        sprites[i] = love.graphics.newImage("assets/sprites/" .. assetName .. "/" .. animationName .. "-" .. i .. ".png")    
+    end
+
+    animations = {}
+    for i=1, numLayers do
+        animations[i] = newAnimation(sprites[i], width, height, animationSpeed, spriteFrameNums[i]) 
+    end
+
+    for i=1, #(animations) do
+        animations[i]:setMode(animationMode)
+    end
+
+    return animations
+end

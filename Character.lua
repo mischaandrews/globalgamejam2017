@@ -28,7 +28,7 @@ function Character:load(world, x, y, characterSprite)
 
     local animations = {}
     animations["idle"] = Animation:new()
-    animations["idle"].load(characterSprite, "idle")
+    animations["idle"]:load(characterSprite, "idle")
     
     self.currentAnimation = animations["idle"]
 
@@ -50,7 +50,7 @@ function Character:draw()
 
     love.graphics.rectangle("fill", self.x, self.y, 100,100)
 
-    --self.animation:draw(self.x, self.y, 0, 1, 1, 256 / 2, 256 / 2)
+    --self.currentAnimation:draw(self.x, self.y, 0, 1, 1, 256 / 2, 256 / 2)
     -- todo: load width and height properly
     
     --for i=1, #(self.animation) do
