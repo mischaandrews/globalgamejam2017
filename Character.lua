@@ -129,31 +129,7 @@ function Character:update(dt)
     --self.x, self.y = self.physics.body:getX(), self.physics.body:getY()
     --intPlayerVelX, intPlayerVelY = self.physics.body:getLinearVelocity()
 
-    ---- Keyboard RIGHT 
-    if love.keyboard.isDown("right") then
-        self.x = self.x + intPlayerSpeed
-        self.currentAnimation = self.animations["walk"]
-
-    ---- Keyboard LEFT
-    elseif love.keyboard.isDown("left") then
-        self.x = self.x - intPlayerSpeed
-        self.currentAnimation = self.animations["walk"]
-
-    ---- Keyboard UP
-    elseif love.keyboard.isDown("up") then
-        self.y = self.y - intPlayerSpeed
-        self.currentAnimation = self.animations["walk"]
-
-    ---- Keyboard DOWN
-    elseif love.keyboard.isDown("down") then 
-        self.y = self.y + intPlayerSpeed
-        self.currentAnimation = self.animations["walk"]
-
-    -- TODO: combined states (up/right, down/left, etc)
-
-    -- NO KEYBOARD
     else
-        movementKeyDown = false
         self.currentAnimation = self.animations["idle"]
     end
 end
