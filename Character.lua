@@ -60,7 +60,7 @@ function Character:update(dt)
 end
 
 function Character:draw()
-    self.animation:draw()
+    self.animation:draw(self.x,self.y)
 end
 
 function Character:getPosition()
