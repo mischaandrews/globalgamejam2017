@@ -3,6 +3,7 @@ require "AnAL"
 require "Background"
 require "Character"
 require "Camera"
+require "Map"
 require "Interface"
 require "Tile"
 
@@ -14,6 +15,7 @@ Gamestate = {
     paused,
     camera,
     background,
+    map,
     physics,
     player,
     npc1,
@@ -37,6 +39,10 @@ function Gamestate:load()
     self.camera = Camera:new()
 
     self.background = Background:new()
+
+    local map = Map:new()
+    map:load()
+    self.map = map
 
     ---- Variables
     intWindowX = 1000
@@ -76,6 +82,8 @@ end -- End load
 
 ----------------------------------------------------- UPDATE
 function Gamestate:update(dt)
+
+    self.map:update(dt)
 
     ---- Keyboard listeners for UI (not characters)
 
@@ -121,6 +129,8 @@ function Gamestate:draw()
     self.camera:set()
 
     self.background:draw()
+
+    self.map:draw()
 
     ---- Draw characters
     self.player:draw()  
