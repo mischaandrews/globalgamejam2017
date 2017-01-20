@@ -3,6 +3,7 @@ require "Animation"
 Player = {
     x,
     y,
+    scale,
     animations,
     currentAnimation
 }
@@ -15,9 +16,20 @@ function Player:new()
 end
 
 function Player:load(world, x, y, characterSprite)
-    local currentAnimation = Animation:new()
-    currentAnimation:load(characterSprite)
-    self.currentAnimation = currentAnimation
+
+    if characterSprite == nil then
+       print ">>> Error! Player:load(characterSprite) was null <<<"
+       love.event.quit()
+       os.exit()
+    end
+
+    self.x = x
+    self.y = y
+    self.scale = 0.6
+
+    self.animations = Animation.loadAnimations(characterSprite, {"idle", "walk"})
+    self.currentAnimation = self.animations["walk"]
+
 end
 
 function Player:update(dt)
@@ -56,5 +68,7 @@ function Player:update(dt)
 end
 
 function Player:draw()
-
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.rectangle("line", self.x-3, self.y-3, 106,106)
+    self.currentAnimation:draw(self.x, self.y, self.scale)
 end
