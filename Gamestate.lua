@@ -57,19 +57,19 @@ function Gamestate:load()
     local player_spawnX = 150
     local player_spawnY = 200
     local player = Player:new()
-    player:load(physics, player_spawnX, player_spawnY, "pink")
+    player:load(physics, player_spawnX, player_spawnY, "dugong")
     self.player = player
 
     local npc1_spawnX = 350
     local npc1_spawnY = 250
     local npc1 = Character:new()
-    npc1:load(physics, npc1_spawnX, npc1_spawnY, "blue")
+    npc1:load(physics, npc1_spawnX, npc1_spawnY, "octopus")
     self.npc1 = npc1
 
     local npc2_spawnX = 400
     local npc2_spawnY = 400
     local npc2 = Character:new()
-    npc2:load(physics, npc2_spawnX, npc2_spawnY, "pink")
+    npc2:load(physics, npc2_spawnX, npc2_spawnY, "octopus")
     self.npc2 = npc2
 
     ---- Initial graphics setup

@@ -26,10 +26,10 @@ function Character:load(world, x, y, characterSprite)
 
     self.x = x
     self.y = y
-    self.scale = 0.6
+    self.scale = 0.35
 
-    self.animations = Animation.loadAnimations(characterSprite, {"idle", "walk"})
-    self.currentAnimation = self.animations["walk"]
+    self.animations = Animation.loadAnimations(characterSprite, {"idle", "move"})
+    self.currentAnimation = self.animations["idle"]
 
     self.physics = {}
     --remember, the shape (the rectangle we create next) anchors to the body from its center

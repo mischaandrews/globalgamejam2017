@@ -5,7 +5,8 @@ Player = {
     y,
     scale,
     animations,
-    currentAnimation
+    currentAnimation,
+    movementSpeed
 }
 
 function Player:new()
@@ -25,44 +26,45 @@ function Player:load(world, x, y, characterSprite)
 
     self.x = x
     self.y = y
-    self.scale = 0.6
+    self.scale = 0.35
+    self.movementSpeed = 6
 
-    self.animations = Animation.loadAnimations(characterSprite, {"idle", "walk"})
-    self.currentAnimation = self.animations["walk"]
+    self.animations = Animation.loadAnimations(characterSprite, {"idle", "move"})
+    self.currentAnimation = self.animations["move"]
 
 end
 
 function Player:update(dt)
 
     ---- Update animation
-    --self.currentAnimation:update(dt)
+    self.currentAnimation:update(dt)
 
     ---- Keyboard RIGHT 
-    if love.keyboard.isDown("right") then
-        self.x = self.x + intPlayerSpeed
-        self.currentAnimation = self.animations["wiggle"]
+    if love.keyboard.isDown("right") or love.keyboard.isDown("d") then
+        self.x = self.x + self.movementSpeed
+        self.currentAnimation = self.animations["move"]
 
     ---- Keyboard LEFT
-    elseif love.keyboard.isDown("left") then
-        self.x = self.x - intPlayerSpeed
-        self.currentAnimation = self.animations["wiggle"]
+    elseif love.keyboard.isDown("left") or love.keyboard.isDown("a") then
+        self.x = self.x - self.movementSpeed
+        self.currentAnimation = self.animations["move"]
 
     ---- Keyboard UP
-    elseif love.keyboard.isDown("up") then
-        self.y = self.y - intPlayerSpeed
-        self.currentAnimation = self.animations["wiggle"]
+    elseif love.keyboard.isDown("up") or love.keyboard.isDown("w") then
+        self.y = self.y - self.movementSpeed
+        self.currentAnimation = self.animations["move"]
 
     ---- Keyboard DOWN
-    elseif love.keyboard.isDown("down") then 
-        self.y = self.y + intPlayerSpeed
-        self.currentAnimation = self.animations["wiggle"]
+    elseif love.keyboard.isDown("down") or love.keyboard.isDown("s") then 
+        self.y = self.y + self.movementSpeed
+        self.currentAnimation = self.animations["move"]
 
     -- TODO: combined states (up/right, down/left, etc)
 
     -- NO KEYBOARD
     else
         movementKeyDown = false
-        --self.currentAnimation = self.animations["idle"]
+        self.currentAnimation = self.animations["idle"]
     end
 
 end
