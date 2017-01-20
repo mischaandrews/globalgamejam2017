@@ -1,10 +1,10 @@
 
-local chanceToStartBlock = 0.4
+local chanceToStartBlock = 0.35
 local birthLimit = 4
 local deathLimit = 3
 
 function buildGrid(numCellsX, numCellsY)
-    
+
     local grid = initialise(numCellsX, numCellsY)
 
     for i=1,6 do

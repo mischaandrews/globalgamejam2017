@@ -3,8 +3,8 @@ require "Generation"
 Map = {
     numCellsX = 100,
     numCellsY = 100,
-    cellWidth = 20,
-    cellHeight = 20,
+    cellWidth = 16,
+    cellHeight = 16,
     grid
 }
 
