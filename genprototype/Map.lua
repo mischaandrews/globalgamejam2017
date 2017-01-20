@@ -3,8 +3,8 @@ require "Generation"
 Map = {
     numCellsX = 100,
     numCellsY = 100,
-    cellWidth = 4,
-    cellHeight = 4,
+    cellWidth = 20,
+    cellHeight = 20,
     grid
 }
 
@@ -27,18 +27,20 @@ function Map:draw()
     for j = 1, self.numCellsY do
         for i = 1, self.numCellsX do
             
-            local colour; 
+            local colour = 0; 
             
-            if self.grid[j][i] then
+            if self.grid[j][i] == "free" then
                 colour = 172
-            else
+            elseif self.grid[j][i] == "edge" then
                 colour = 64
+            elseif self.grid[j][i] == "block" then
+                colour = 140
             end
             
             love.graphics.setColor(colour, colour, colour, 255)
             
             love.graphics.rectangle(
-                "fill", self.cellWidth * i, self.cellHeight * j, self.cellWidth, self.cellHeight)
+                "fill", self.cellWidth * (i-1), self.cellHeight * (j-1), self.cellWidth, self.cellHeight)
         end
     end
 
