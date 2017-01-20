@@ -72,10 +72,6 @@ function Gamestate:load()
     npc2:load(physics, npc2_spawnX, npc2_spawnY, "pink")
     self.npc2 = npc2
 
-    ---- Initial graphics setup
-    --love.graphics.setMode(intWindowX, intWindowY)
-    -- TODO: set window size
-
 ---------------
 end -- End load
 

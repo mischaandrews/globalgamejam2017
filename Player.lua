@@ -5,7 +5,11 @@ Player = {
     y,
     scale,
     animations,
-    currentAnimation
+    currentAnimation,
+
+    vx,
+    vy
+
 }
 
 function Player:new()
@@ -28,43 +32,38 @@ function Player:load(world, x, y, characterSprite)
     self.scale = 0.6
 
     self.animations = Animation.loadAnimations(characterSprite, {"idle", "walk"})
-    self.currentAnimation = self.animations["walk"]
+    self.currentAnimation = self.animations["idle"]
 
 end
 
 function Player:update(dt)
 
+    local leftRight, upDown = self:getKeyboardVector()
+
+    self.x = self.x + dt * leftRight * 125
+    self.y = self.y + dt * upDown * 125
+
     ---- Update animation
-    --self.currentAnimation:update(dt)
+    self.currentAnimation:update(dt)
 
-    ---- Keyboard RIGHT 
-    if love.keyboard.isDown("right") then
-        self.x = self.x + intPlayerSpeed
-        self.currentAnimation = self.animations["wiggle"]
+end
 
-    ---- Keyboard LEFT
-    elseif love.keyboard.isDown("left") then
-        self.x = self.x - intPlayerSpeed
-        self.currentAnimation = self.animations["wiggle"]
-
-    ---- Keyboard UP
-    elseif love.keyboard.isDown("up") then
-        self.y = self.y - intPlayerSpeed
-        self.currentAnimation = self.animations["wiggle"]
-
-    ---- Keyboard DOWN
-    elseif love.keyboard.isDown("down") then 
-        self.y = self.y + intPlayerSpeed
-        self.currentAnimation = self.animations["wiggle"]
-
-    -- TODO: combined states (up/right, down/left, etc)
-
-    -- NO KEYBOARD
-    else
-        movementKeyDown = false
-        --self.currentAnimation = self.animations["idle"]
+function Player:getKeyboardVector()
+    local leftRight = 0
+    local upDown = 0
+    if love.keyboard.isDown("left") then
+        leftRight = leftRight - 1
     end
-
+    if love.keyboard.isDown("right") then
+        leftRight = leftRight + 1
+    end
+    if love.keyboard.isDown("up") then
+        upDown = upDown - 1
+    end
+    if love.keyboard.isDown("down") then
+        upDown = upDown + 1
+    end
+    return leftRight, upDown
 end
 
 function Player:draw()
