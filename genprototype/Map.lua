@@ -1,10 +1,10 @@
 require "Generation"
 
 Map = {
-    numCellsX = 70,
-    numCellsY = 30,
-    cellWidth = 10,
-    cellHeight = 10,
+    numCellsX = 100,
+    numCellsY = 100,
+    cellWidth = 4,
+    cellHeight = 4,
     grid
 }
 
