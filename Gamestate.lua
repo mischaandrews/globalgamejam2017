@@ -5,6 +5,7 @@ require "Character"
 require "Camera"
 require "Map"
 require "Interface"
+require "Player"
 require "Tile"
 
 
@@ -47,7 +48,7 @@ function Gamestate:load()
     ---- Variables
     intWindowX = 1000
     intWindowY = 800
-    
+
     ---- Load Physics
     local physics = love.physics.newWorld(0, 0, true)
     self.physics = physics
@@ -55,20 +56,20 @@ function Gamestate:load()
     ---- Create characters
     local player_spawnX = 150
     local player_spawnY = 200
-    local player = Character:new()
-    player:load(physics, player_spawnX, player_spawnY, "pink", "playable")
+    local player = Player:new()
+    player:load(physics, player_spawnX, player_spawnY, "pink")
     self.player = player
 
     local npc1_spawnX = 350
     local npc1_spawnY = 250
     local npc1 = Character:new()
-    npc1:load(physics, npc1_spawnX, npc1_spawnY, "blue", "npc")
+    npc1:load(physics, npc1_spawnX, npc1_spawnY, "blue")
     self.npc1 = npc1
-    
+
     local npc2_spawnX = 400
     local npc2_spawnY = 400
     local npc2 = Character:new()
-    npc2:load(physics, npc2_spawnX, npc2_spawnY, "pink", "npc")
+    npc2:load(physics, npc2_spawnX, npc2_spawnY, "pink")
     self.npc2 = npc2
 
     ---- Initial graphics setup

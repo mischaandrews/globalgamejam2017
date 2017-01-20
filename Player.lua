@@ -3,7 +3,9 @@ require "Animation"
 Player = {
     x,
     y,
-    animation
+    scale,
+    animations,
+    currentAnimation
 }
 
 function Player:new()
@@ -13,22 +15,27 @@ function Player:new()
     return o
 end
 
-function Player:load(characterSprite)
-    local animation = Animation:new()
-    animation:load(characterSprite)
-    self.animation = animation
+function Player:load(world, x, y, characterSprite)
+
+    if characterSprite == nil then
+       print ">>> Error! Player:load(characterSprite) was null <<<"
+       love.event.quit()
+       os.exit()
+    end
+
+    self.x = x
+    self.y = y
+    self.scale = 0.6
+
+    self.animations = Animation.loadAnimations(characterSprite, {"idle", "walk"})
+    self.currentAnimation = self.animations["walk"]
+
 end
 
 function Player:update(dt)
 
     ---- Update animation
-    for i=1, #(self.currentAnimation) do
-        self.currentAnimation[i]:update(dt)
-    end
-
-    ---- Update character variables
-    --self.x, self.y = self.physics.body:getX(), self.physics.body:getY()
-    --intPlayerVelX, intPlayerVelY = self.physics.body:getLinearVelocity()
+    --self.currentAnimation:update(dt)
 
     ---- Keyboard RIGHT 
     if love.keyboard.isDown("right") then
@@ -55,20 +62,13 @@ function Player:update(dt)
     -- NO KEYBOARD
     else
         movementKeyDown = false
-        self.currentAnimation = self.animations["idle"]
+        --self.currentAnimation = self.animations["idle"]
     end
 
 end
 
 function Player:draw()
-
-    --love.graphics.setColor(255, 255, 255, 255)
-    --self.currentAnim:draw(self.x, self.y, 0, 1, 1, self.width / 2, self.height / 2)
-
-    --self.currentAnimation[i]:draw(self.x, self.y, 0, self.scale, self.scale, self.width / 2, self.height / 2)
-
-    -- Variable reference:
-    -- position (x), position (y), ?, scale (x), scale (y), offset X, offsetY
-    -- TODO: check this offset. It might need to be scaled too.
-
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.rectangle("line", self.x-3, self.y-3, 106,106)
+    self.currentAnimation:draw(self.x, self.y, self.scale)
 end
