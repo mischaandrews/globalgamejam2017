@@ -28,13 +28,7 @@ function Character:load(world, x, y, characterSprite)
     self.y = y
     self.scale = 0.6
 
-    self.animations = {}
-    self.animations["idle"] = Animation:new()
-    self.animations["idle"]:load(characterSprite, "idle")
-
-    self.animations["walk"] = Animation:new()
-    self.animations["walk"]:load(characterSprite, "walk")
-
+    self.animations = Animation.loadAnimations(characterSprite, {"idle", "walk"})
     self.currentAnimation = self.animations["walk"]
 
     self.physics = {}

@@ -15,6 +15,15 @@ function Animation:new()
     return o
 end
 
+function Animation.loadAnimations(characterSprite, animsToLoad)
+    local animations = {}
+    for i=1,#animsToLoad do
+        animations[animsToLoad[i]] = Animation:new()
+        animations[animsToLoad[i]]:load(characterSprite, animsToLoad[i])
+    end
+    return animations
+end
+
 function Animation:load(characterSprite, animationName)
 
 
