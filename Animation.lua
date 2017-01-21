@@ -155,11 +155,11 @@ function Animation:update(dt)
     end
 end
 
-function Animation:draw(x,y,scale)
+function Animation:draw(x,y,scaleX,scaleY)
     love.graphics.setColor(255, 255, 255)
 
     for i=1,#self.spriteLayers do
-        self.spriteLayers[i]:draw(x, y, 0, scale, scale, self.width / 2, self.height / 2)
+        self.spriteLayers[i]:draw(x, y, 0, scaleX, scaleY, self.width / 2, self.height / 2)
     end
 
     -- Variable reference:

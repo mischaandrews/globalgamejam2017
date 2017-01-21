@@ -3,7 +3,8 @@ require "Animation"
 Character = {
     x,
     y,
-    scale,
+    scaleX,
+    scaleY,
     animations,
     currentAnimation,
     physics
@@ -26,7 +27,8 @@ function Character:load(world, x, y, characterSprite)
 
     self.x = x
     self.y = y
-    self.scale = 0.45
+    self.scaleX = 0.45
+    self.scaleY = 0.45
 
     self.animations = Animation.loadAnimations(characterSprite, {"idle", "move"})
     self.currentAnimation = self.animations["idle"]
@@ -47,11 +49,8 @@ function Character:draw()
     love.graphics.setColor(255, 255, 255)
 
     love.graphics.rectangle("line", self.x-3, self.y-3, 106,106)
-    self.currentAnimation:draw(self.x, self.y, self.scale)
+    self.currentAnimation:draw(self.x, self.y, self.scaleX, self.scaleY)
     
-    --for i=1, #(self.animation) do
-        --self.animation[i]:draw(self.x, self.y, 0, self.scale, self.scale, 256 / 2, 256 / 2)
-    --end
 end
 
 function Character:characterSprite()
