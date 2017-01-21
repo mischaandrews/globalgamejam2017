@@ -190,7 +190,7 @@ function Gamestate:draw()
     self.map:draw(self.camera)
 
     ---- Set camera
-    self.camera:set()
+    self.camera:set(1)
 
     ---- Draw characters
     self.player:draw()  

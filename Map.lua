@@ -6,6 +6,8 @@ Map = {
     cellWidth = 100,
     cellHeight = 100,
     activeGrid,
+    backGrid1,
+    backGrid2,
     mapPhys
 }
 
@@ -21,6 +23,9 @@ function Map:load(world)
     math.randomseed(12345)
 
     self.activeGrid = buildGrid(self.numCellsX, self.numCellsY)
+    self.backGrid1 = buildGrid(self.numCellsX, self.numCellsY)
+    self.backGrid2 = buildGrid(self.numCellsX, self.numCellsY)
+
     self:genPhysics(world)
 end
 
@@ -48,7 +53,21 @@ end
 
 function Map:draw(camera)
 
-    camera:set()
+    camera:set(0.15)
+    self:drawGrid(self.backGrid2, 255, 0.83)
+    camera:unset()
+
+    camera:set(0.66)
+    self:drawGrid(self.backGrid1, 128, 0.66)
+    camera:unset()
+
+    camera:set(1)
+    self:drawGrid(self.activeGrid, 128, 1)
+    camera:unset()
+
+end
+
+function Map:drawGrid(grid, alpha, scale)
 
     local halfCellWidth = self.cellWidth / 2
     local halfCellHeight = self.cellHeight / 2
@@ -59,22 +78,25 @@ function Map:draw(camera)
             local colour_r = 0; 
             local colour_g = 0;
             local colour_b = 0;
+            local colour_a = alpha
 
-            if self.activeGrid[j][i] == "free" then
+            if grid[j][i] == "free" then
                 colour_r = 40
                 colour_g = 91
                 colour_b = 93
-            elseif self.activeGrid[j][i] == "edge" then
-                colour_r = 18
+            elseif grid[j][i] == "edge" then
+                colour_r = 18 
                 colour_g = 44
                 colour_b = 45
-            elseif self.activeGrid[j][i] == "block" then
-                colour_r = 21
-                colour_g = 59
-                colour_b = 61
+                colour_a = 255
+            elseif grid[j][i] == "block" then
+                colour_r = 21 * scale
+                colour_g = 59 * scale
+                colour_b = 61 * scale
+                colour_a = 255
             end
 
-            love.graphics.setColor(colour_r, colour_g, colour_b, 255)
+            love.graphics.setColor(colour_r, colour_g, colour_b, colour_a)
 
             local drawAtX = self.cellWidth * (i-1)    -- Because lua indexes from 1
                           + halfCellWidth             -- Because physics calls x,y the centre
@@ -83,10 +105,8 @@ function Map:draw(camera)
                           + halfCellHeight            -- Because physics calls x,y the centre
 
             love.graphics.rectangle(
-                "fill", drawAtX, drawAtY, self.cellWidth, self.cellHeight)
+                "fill", scale * drawAtX, scale * drawAtY, scale * self.cellWidth, scale * self.cellHeight)
         end
     end
-
-    camera:unset()
-
 end
+
