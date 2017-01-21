@@ -3,8 +3,6 @@ require "Animation"
 Player = {
     x,
     y,
-    vx,
-    vy,
     playerPhys,
     scale,
     animations,
@@ -38,19 +36,19 @@ function Player:load(world, x, y, characterSprite)
     self.healthPercent = 50
     self.boostPercent = 50
 
-    self.playerPhys = loadPhysics(world)
+    self.playerPhys = loadPhysics(world, x, y)
 
     self.animations = Animation.loadAnimations(characterSprite, {"idle", "move"})
     self.currentAnimation = self.animations["move"]
 
 end
 
-function loadPhysics(world)
+function loadPhysics(world, x, y)
     local playerPhys = {}
     playerPhys.body = love.physics.newBody(world, x, y, "dynamic") 
     playerPhys.shape = love.physics.newCircleShape(playerRadius)
     playerPhys.fixture = love.physics.newFixture(playerPhys.body, playerPhys.shape, 1) 
-    playerPhys.fixture:setRestitution(0.9)
+    playerPhys.fixture:setRestitution(0.8)
     return playerPhys
 end
 
@@ -65,12 +63,15 @@ function Player:update(dt)
     forceY = forceY + playerGravY
 
     --Add player keyboard force
+    local keyBoardForce = 1700
     local leftRight, upDown = self:getKeyboardVector()
-    forceX = forceX + leftRight * 300
-    forceY = forceY + upDown * 300 
+    forceX = forceX + leftRight * keyBoardForce
+    forceY = forceY + upDown * keyBoardForce 
 
     --Limit max force - calculate drag perhaps?
-
+    local dragX, dragY = getDrag(self.playerPhys.body:getLinearVelocity())
+    forceX = forceX + dragX
+    forceY = forceY + dragY
 
     --Pass the force to the physics engine
     self.playerPhys.body:applyForce(forceX, forceY)
@@ -85,6 +86,11 @@ end
 function Player:getPlayerGravity()
     --Here we can apply sinking or floating in water, etc.
     return 0, 10
+end
+
+function getDrag(velX, velY)
+    local dragCoeff = -8
+    return dragCoeff * velX, dragCoeff * velY
 end
 
 function Player:getKeyboardVector()

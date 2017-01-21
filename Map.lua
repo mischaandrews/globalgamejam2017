@@ -1,11 +1,12 @@
 require "Generation"
 
 Map = {
-    numCellsX = 100,
-    numCellsY = 100,
-    cellWidth = 64,
-    cellHeight = 64,
-    grid
+    numCellsX = 64,
+    numCellsY = 64,
+    cellWidth = 128,
+    cellHeight = 128,
+    grid,
+    mapPhys
 }
 
 function Map:new()
@@ -15,8 +16,27 @@ function Map:new()
     return o
 end
 
-function Map:load()
+function Map:load(world)
     self.grid = buildGrid(self.numCellsX, self.numCellsY)
+    self:genPhysics(world)
+end
+
+function Map:genPhysics(world)
+    local mapPhys = {}
+    for j = 1, self.numCellsY do
+        for i = 1, self.numCellsX do
+            if self.grid[j][i] == "edge" then
+                genBlock(world, self.cellWidth * i, self.cellHeight * j, self.cellWidth, self.cellHeight)
+            end
+        end
+    end
+    return mapPhys
+end
+
+function genBlock(world, x, y, width, height)
+    local body = love.physics.newBody(world, x, y, "static")
+    local shape = love.physics.newRectangleShape(width, height)
+    local fixture = love.physics.newFixture(body, shape, 1)
 end
 
 function Map:update(dt)
@@ -24,14 +44,16 @@ end
 
 function Map:draw()
 
+    local halfCellWidth = self.cellWidth / 2
+    local halfCellHeight = self.cellHeight / 2
+
     for j = 1, self.numCellsY do
         for i = 1, self.numCellsX do
             
             local colour_r = 0; 
             local colour_g = 0;
             local colour_b = 0;
-            
-            
+
             if self.grid[j][i] == "free" then
                 colour_r = 40
                 colour_g = 91
@@ -45,11 +67,17 @@ function Map:draw()
                 colour_g = 59
                 colour_b = 61
             end
-            
+
             love.graphics.setColor(colour_r, colour_g, colour_b, 255)
-            
+
+            local drawAtX = self.cellWidth * (i-1)    -- Because lua indexes from 1
+                          + halfCellWidth             -- Because physics calls x,y the centre
+
+            local drawAtY = self.cellHeight * (j-1)   -- Because lua indexes from 1
+                          + halfCellHeight            -- Because physics calls x,y the centre
+
             love.graphics.rectangle(
-                "fill", self.cellWidth * (i-1), self.cellHeight * (j-1), self.cellWidth, self.cellHeight)
+                "fill", drawAtX, drawAtY, self.cellWidth, self.cellHeight)
         end
     end
 
