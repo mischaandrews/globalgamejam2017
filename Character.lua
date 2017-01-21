@@ -48,16 +48,10 @@ function Character:draw()
 
     love.graphics.rectangle("line", self.x-3, self.y-3, 106,106)
     self.currentAnimation:draw(self.x, self.y, self.scale)
-
-    -- todo: load width and height properly
     
     --for i=1, #(self.animation) do
         --self.animation[i]:draw(self.x, self.y, 0, self.scale, self.scale, 256 / 2, 256 / 2)
     --end
-    -- todo: load width and height properly
-
-
-    --self.animation:draw(self.x,self.y)
 end
 
 function Character:getPosition()

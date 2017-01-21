@@ -50,7 +50,7 @@ function Gamestate:load()
 
     ---- Variables
     intWindowX = 1000
-    intWindowY = 800
+    intWindowY = 550
 
     ---- Load Physics
     local physics = love.physics.newWorld(0, 0, true)
@@ -100,7 +100,7 @@ function Gamestate:load()
     self.pickups[3] = pickup3
 
     ---- Initial graphics setup
-    --love.graphics.setMode(intWindowX, intWindowY)
+    love.window.setMode(intWindowX, intWindowY)
     -- TODO: set window size
 
 ---------------
@@ -130,11 +130,7 @@ function Gamestate:update(dt)
 
         self.background:update(dt)
 
-        ---- Update camera
-        --playerX, playerY = self.player.x, self.player.y
-        --camera.x = playerX - (intWindowX/2)
-        --camera.y = playerY - (intWindowY/2)
-        -- TODO: reintroduce camera
+        
 
         -- Update characters
         self.player:update(dt)
@@ -146,6 +142,11 @@ function Gamestate:update(dt)
         for i=1,#self.pickups do
             self.pickups[i]:update(dt)
         end
+        
+        ---- Update camera
+        playerX, playerY = self.player.x, self.player.y
+        self.camera.x = playerX - (intWindowX/2)
+        self.camera.y = playerY - (intWindowY/2)
         
         velocities = {}
         
@@ -182,13 +183,13 @@ function Gamestate:draw()
     if self.stage == "playing" then
         
         if self.paused == true then
-           drawDialogueBox("Paused") 
+           drawScreen("pause") 
         end
         
     elseif self.stage == "title" then
         
     elseif self.stage == "gameover" then
-        drawDialogueBox("Game over")
+        drawScreen("gameover")
     end
 
     ---- Unset camera
