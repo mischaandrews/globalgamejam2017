@@ -48,7 +48,7 @@ function loadPhysics(world, x, y)
     playerPhys.body = love.physics.newBody(world, x, y, "dynamic") 
     playerPhys.shape = love.physics.newCircleShape(playerRadius)
     playerPhys.fixture = love.physics.newFixture(playerPhys.body, playerPhys.shape, 1) 
-    playerPhys.fixture:setRestitution(0.9)
+    playerPhys.fixture:setRestitution(0.8)
     return playerPhys
 end
 
@@ -63,7 +63,7 @@ function Player:update(dt)
     forceY = forceY + playerGravY
 
     --Add player keyboard force
-    local keyBoardForce = 1400
+    local keyBoardForce = 1700
     local leftRight, upDown = self:getKeyboardVector()
     forceX = forceX + leftRight * keyBoardForce
     forceY = forceY + upDown * keyBoardForce 

@@ -44,14 +44,16 @@ end
 
 function Map:draw()
 
+    local halfCellWidth = self.cellWidth / 2
+    local halfCellHeight = self.cellHeight / 2
+
     for j = 1, self.numCellsY do
         for i = 1, self.numCellsX do
             
             local colour_r = 0; 
             local colour_g = 0;
             local colour_b = 0;
-            
-            
+
             if self.grid[j][i] == "free" then
                 colour_r = 40
                 colour_g = 91
@@ -65,11 +67,17 @@ function Map:draw()
                 colour_g = 59
                 colour_b = 61
             end
-            
+
             love.graphics.setColor(colour_r, colour_g, colour_b, 255)
-            
+
+            local drawAtX = self.cellWidth * (i-1)    -- Because lua indexes from 1
+                          + halfCellWidth             -- Because physics calls x,y the centre
+
+            local drawAtY = self.cellHeight * (j-1)   -- Because lua indexes from 1
+                          + halfCellHeight            -- Because physics calls x,y the centre
+
             love.graphics.rectangle(
-                "fill", self.cellWidth * (i-1), self.cellHeight * (j-1), self.cellWidth, self.cellHeight)
+                "fill", drawAtX, drawAtY, self.cellWidth, self.cellHeight)
         end
     end
 
