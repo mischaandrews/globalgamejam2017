@@ -70,8 +70,8 @@ function Gamestate:load()
     map:load(physics)
     self.map = map
 
-    intWindowX = 1000
-    intWindowY = 550
+    intWindowX = 1370
+    intWindowY = 700
     love.window.setMode( intWindowX, intWindowY )
 
     ---- Create characters

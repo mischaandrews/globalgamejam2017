@@ -3,20 +3,12 @@ local chanceToStartBlock = 0.45
 local birthLimit = 4
 local deathLimit = 3
 
-local mapSeed = 12345
-
 function buildGrid(numCellsX, numCellsY)
-
-    math.randomseed(mapSeed)
-
     local grid = initialise(numCellsX, numCellsY)
-
     for i=1,6 do
         grid = updateMap(grid)
     end
-
     labelEdges(grid, numCellsX, numCellsY)
-
     return grid
 end
 

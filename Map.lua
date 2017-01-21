@@ -3,9 +3,9 @@ require "Generation"
 Map = {
     numCellsX = 64,
     numCellsY = 64,
-    cellWidth = 128,
-    cellHeight = 128,
-    grid,
+    cellWidth = 100,
+    cellHeight = 100,
+    activeGrid,
     mapPhys
 }
 
@@ -17,7 +17,10 @@ function Map:new()
 end
 
 function Map:load(world)
-    self.grid = buildGrid(self.numCellsX, self.numCellsY)
+
+    math.randomseed(12345)
+
+    self.activeGrid = buildGrid(self.numCellsX, self.numCellsY)
     self:genPhysics(world)
 end
 
@@ -25,7 +28,7 @@ function Map:genPhysics(world)
     local mapPhys = {}
     for j = 1, self.numCellsY do
         for i = 1, self.numCellsX do
-            if self.grid[j][i] == "edge" then
+            if self.activeGrid[j][i] == "edge" then
                 genBlock(world, self.cellWidth * i, self.cellHeight * j, self.cellWidth, self.cellHeight)
             end
         end
@@ -55,15 +58,15 @@ function Map:draw()
             local colour_g = 0;
             local colour_b = 0;
 
-            if self.grid[j][i] == "free" then
+            if self.activeGrid[j][i] == "free" then
                 colour_r = 40
                 colour_g = 91
                 colour_b = 93
-            elseif self.grid[j][i] == "edge" then
+            elseif self.activeGrid[j][i] == "edge" then
                 colour_r = 18
                 colour_g = 44
                 colour_b = 45
-            elseif self.grid[j][i] == "block" then
+            elseif self.activeGrid[j][i] == "block" then
                 colour_r = 21
                 colour_g = 59
                 colour_b = 61

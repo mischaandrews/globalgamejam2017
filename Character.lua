@@ -54,31 +54,6 @@ function Character:draw()
     --end
 end
 
-function Character:getPosition()
-    return self.x, self.y
-end
-
-function Character:getVelocity()
-    return self.physics.body:getLinearVelocity()
-end
-
-function Character:getTotalVelocity()
-    local vx, vy = self.physics.body:getLinearVelocity()
-    return math.sqrt(vx*vx + vy*vy)
-end
-
-function Character:applyForce(fx,fy)
-    self.physics.body:applyForce(fx,fy)
-end
-
-function Character:setMass(mass)
-    self.physics.body:setMass(mass)
-end
-
-function Character:getPhysics()
-    return self.physics
-end
-
 function Character:characterSprite()
     if self.characterSprite == nil then
         return "unknown"
