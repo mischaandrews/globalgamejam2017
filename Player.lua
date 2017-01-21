@@ -36,9 +36,8 @@ function Player:load(world, x, y, characterSprite)
     self.x = x
     self.y = y
     self.z = 0
-    self.originalScale = 0.4
-    self.scaleX = self.originalScale
-    self.scaleY = self.originalScale
+    self.scaleX = 0.4
+    self.scaleY = 0.4
     self.movementSpeed = 6
     self.boostPercent = 50
     self.facingDirection = "left" -- left or right
@@ -63,10 +62,10 @@ function Player:switchFacingDirection()
    
     if self.facingDirection == "right" then
         self.facingDirection = "left"
-        self.scaleX = self.originalScale * 1
+        self.scaleX = self.scaleX * 1
     elseif self.facingDirection == "left" then
         self.facingDirection = "right"
-        self.scaleX = self.originalScale * -1
+        self.scaleX = self.scaleX * -1
     end
     
 end
@@ -185,7 +184,11 @@ end
 function Player:draw()
     love.graphics.setColor(255, 255, 255)
 
-    self.currentAnimations:draw(self.x, self.y, self.scaleX + self.z * 0.1, self.scaleY + self.z * 0.1)
+    self.currentAnimations:draw(
+        self.x,
+        self.y,
+        self.scaleX + self.z * 0.1,
+        self.scaleY + self.z * 0.1)
 
     -- Bounding circle
     --love.graphics.circle("line", self.x, self.y, playerRadius)
