@@ -69,7 +69,7 @@ function Player:update(dt)
     forceY = forceY + upDown * keyBoardForce 
 
     --Limit max force - calculate drag perhaps?
-    local dragX, dragY = getDrag(self.playerPhys.body:getLinearVelocity())
+    local dragX, dragY = getPlayerDrag(self.playerPhys.body:getLinearVelocity())
     forceX = forceX + dragX
     forceY = forceY + dragY
 
@@ -85,10 +85,10 @@ end
 
 function Player:getPlayerGravity()
     --Here we can apply sinking or floating in water, etc.
-    return 0, 10
+    return 0, 100
 end
 
-function getDrag(velX, velY)
+function getPlayerDrag(velX, velY)
     local dragCoeff = -8
     return dragCoeff * velX, dragCoeff * velY
 end
