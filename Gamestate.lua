@@ -2,6 +2,7 @@
 require "AnAL"
 require "Background"
 require "Character"
+require "Generation"
 require "Pickup"
 require "Camera"
 require "Map"
@@ -104,16 +105,15 @@ function loadNpcs(physics)
     local npc2_spawnY = 400
     local npc2 = Character:new()
     npc2:load(physics, npc2_spawnX, npc2_spawnY, "octopus")
-    
+
     local npc3_spawnX = 700
     local npc3_spawnY = 400
     local npc3 = Character:new()
     npc3:load(physics, npc3_spawnX, npc3_spawnY, "eel")
-    
+
     ---- Create pickups
     -- TODO: do this better! lots of lettuce!
     --self.pickups = {}
-
 
     return {npc1, npc2, npc3}
 
@@ -121,22 +121,7 @@ end
 
 function loadPickups(physics)
 
-    local pickup1_spawnX = 400
-    local pickup1_spawnY = 350
-    local pickup1 = Pickup:new()
-    pickup1:load(physics, pickup1_spawnX, pickup1_spawnY, "lettuce")
-
-    local pickup2_spawnX = 250
-    local pickup2_spawnY = 100
-    local pickup2 = Pickup:new()
-    pickup2:load(physics, pickup2_spawnX, pickup2_spawnY, "lettuce")
-
-    local pickup3_spawnX = 410
-    local pickup3_spawnY = 460
-    local pickup3 = Pickup:new()
-    pickup3:load(physics, pickup3_spawnX, pickup3_spawnY, "lettuce")
-
-    return {pickup1, pickup2, pickup3}
+    return populateLettuces(physics)
 
 end
 
