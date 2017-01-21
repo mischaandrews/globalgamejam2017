@@ -56,18 +56,35 @@ end
 
 function Player:update(dt)
 
-    self.playerPhys.body:applyForce(0, 10)
+    local forceX = 0
+    local forceY = 0
 
+    --Calculate gravity (or whatever)
+    local playerGravX, playerGravY = self:getPlayerGravity()
+    forceX = forceX + playerGravX
+    forceY = forceY + playerGravY
+
+    --Add player keyboard force
     local leftRight, upDown = self:getKeyboardVector()
+    forceX = forceX + leftRight * 300
+    forceY = forceY + upDown * 300 
 
-    self.x = self.x + dt * leftRight * 125
-    self.y = self.y + dt * upDown * 125
+    --Limit max force - calculate drag perhaps?
+
+
+    --Pass the force to the physics engine
+    self.playerPhys.body:applyForce(forceX, forceY)
 
     ---- Update animation
     self.currentAnimation:update(dt)
 
     self.x, self.y = self.playerPhys.body:getPosition()
 
+end
+
+function Player:getPlayerGravity()
+    --Here we can apply sinking or floating in water, etc.
+    return 0, 10
 end
 
 function Player:getKeyboardVector()
