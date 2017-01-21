@@ -55,19 +55,29 @@ end
 function Player:getKeyboardVector()
     local leftRight = 0
     local upDown = 0
-    if love.keyboard.isDown("left") then
+
+    if keysDown({"left","a"}) then
         leftRight = leftRight - 1
     end
-    if love.keyboard.isDown("right") then
+    if keysDown({"right","d"}) then
         leftRight = leftRight + 1
     end
-    if love.keyboard.isDown("up") then
+    if keysDown({"up","w"}) then
         upDown = upDown - 1
     end
-    if love.keyboard.isDown("down") then
+    if keysDown({"down","s"}) then
         upDown = upDown + 1
     end
     return leftRight, upDown
+end
+
+function keysDown(keys)
+   for i=1,#keys do
+       if love.keyboard.isDown(keys[i]) then
+           return true
+       end
+   end
+   return false
 end
 
 function Player:draw()

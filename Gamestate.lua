@@ -63,51 +63,59 @@ function Gamestate:load()
     player:load(physics, player_spawnX, player_spawnY, "dugong")
     self.player = player
 
-    self.npcs = {}
-    
+    self.npcs = loadNpcs(physics)
+
+    self.pickups = loadPickups(physics)
+
+---------------
+end -- End load
+
+function loadNpcs(physics)
+
     local npc1_spawnX = 350
     local npc1_spawnY = 250
     local npc1 = Character:new()
     npc1:load(physics, npc1_spawnX, npc1_spawnY, "octopus")
-    self.npcs[1] = npc1
 
     local npc2_spawnX = 400
     local npc2_spawnY = 400
     local npc2 = Character:new()
     npc2:load(physics, npc2_spawnX, npc2_spawnY, "octopus")
-    self.npcs[2] = npc2
     
     local npc3_spawnX = 700
     local npc3_spawnY = 400
     local npc3 = Character:new()
     npc3:load(physics, npc3_spawnX, npc3_spawnY, "eel")
-    self.npcs[3] = npc3
     
     ---- Create pickups
     -- TODO: do this better! lots of lettuce!
-    self.pickups = {}
-    
+    --self.pickups = {}
+
+
+    return {npc1, npc2, npc3}
+
+end
+
+function loadPickups(physics)
+
     local pickup1_spawnX = 400
     local pickup1_spawnY = 350
     local pickup1 = Pickup:new()
     pickup1:load(physics, pickup1_spawnX, pickup1_spawnY, "lettuce")
-    self.pickups[1] = pickup1
-    
+
     local pickup2_spawnX = 250
     local pickup2_spawnY = 100
     local pickup2 = Pickup:new()
     pickup2:load(physics, pickup2_spawnX, pickup2_spawnY, "lettuce")
-    self.pickups[2] = pickup2
-    
+
     local pickup3_spawnX = 410
     local pickup3_spawnY = 460
     local pickup3 = Pickup:new()
     pickup3:load(physics, pickup3_spawnX, pickup3_spawnY, "lettuce")
-    self.pickups[3] = pickup3
 
----------------
-end -- End load
+    return {pickup1, pickup2, pickup3}
 
+end
 
 
 ----------------------------------------------------- UPDATE
@@ -140,16 +148,14 @@ function Gamestate:update(dt)
         for i=1,#self.npcs do
             self.npcs[i]:update(dt)
         end
-        
+
         for i=1,#self.pickups do
             self.pickups[i]:update(dt)
         end
-        
+
         ---- Update camera
-        playerX, playerY = self.player.x, self.player.y
-        self.camera.x = playerX - (intWindowX/2)
-        self.camera.y = playerY - (intWindowY/2)
-        
+        self.camera:setPosition(self.player.x-(intWindowX/2), self.player.y - (intWindowY/2))
+
         velocities = {}
         
     end
