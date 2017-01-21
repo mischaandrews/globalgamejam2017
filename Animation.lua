@@ -73,7 +73,7 @@ function Animation:loadDugongSprite(animationName)
         self.spriteLayers = createAnimationLayers("dugong", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "loop"}, {1, 1, 1, 1, 9}, math.random(self.numSpriteVariations))
     -- Boost
     elseif animationName == "boost" then
-        self.spriteLayers = createAnimationLayers("dugong", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "loop"}, {1, 1, 1, 1, 9}, math.random(self.numSpriteVariations))
+        self.spriteLayers = createAnimationLayers("dugong", animationName, self.width, self.height, self.animationSpeed / 3, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 18, 1, 1}, math.random(self.numSpriteVariations))
     else
         print ("Couldn't load animation: " .. animationName)
     end
