@@ -5,7 +5,7 @@ Animation = {
     height,
     animationSpeed,
     numLayers,
-    layers
+    spriteLayers
 }
 
 function Animation:new()
@@ -54,15 +54,15 @@ function Animation:loadDugongSprite(animationName)
     self.height = 384
     self.animationSpeed = 0.2
     self.numLayers = 5
-    self.layers = {}
+    self.spriteLayers = {}
     self.numSpriteVariations = 1
 
     -- Idle
     if animationName == "idle" then
-        self.layers = createAnimationLayers("dugong", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 1, 1, 1}, math.random(self.numSpriteVariations))
+        self.spriteLayers = createAnimationLayers("dugong", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 1, 1, 1}, math.random(self.numSpriteVariations))
     -- Move
     elseif animationName == "move" then
-        self.layers = createAnimationLayers("dugong", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 2, 1, 1}, math.random(self.numSpriteVariations))
+        self.spriteLayers = createAnimationLayers("dugong", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 8, 1, 1}, math.random(self.numSpriteVariations))
     else
         print ("Couldn't load animation: " .. animationName)
     end
@@ -76,15 +76,15 @@ function Animation:loadOctopusSprite(animationName)
     self.height = 384
     self.animationSpeed = 0.2
     self.numLayers = 5
-    self.layers = {}
+    self.spriteLayers = {}
     self.numSpriteVariations = 2
 
     -- Idle
     if animationName == "idle" then
-        self.layers = createAnimationLayers("octopus", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 1, 1, 1}, math.random(self.numSpriteVariations))
+        self.spriteLayers = createAnimationLayers("octopus", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 1, 1, 1}, math.random(self.numSpriteVariations))
     -- Move
     elseif animationName == "grab" then
-        self.layers = createAnimationLayers("octopus", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 1, 1, 1}, math.random(self.numSpriteVariations))
+        self.spriteLayers = createAnimationLayers("octopus", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 1, 1, 1}, math.random(self.numSpriteVariations))
     else
         print ("Couldn't load animation: " .. animationName)
     end
@@ -100,15 +100,15 @@ function Animation:loadEelSprite(animationName)
     self.height = 384
     self.animationSpeed = 0.2
     self.numLayers = 3
-    self.layers = {}
+    self.spriteLayers = {}
     self.numSpriteVariations = 1
 
     -- Idle
     if animationName == "idle" then
-        self.layers = createAnimationLayers("eel", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 1, 1, 1}, math.random(self.numSpriteVariations))
+        self.spriteLayers = createAnimationLayers("eel", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 1, 1, 1}, math.random(self.numSpriteVariations))
     -- Move
     elseif animationName == "move" then
-        self.layers = createAnimationLayers("eel", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce"}, {1, 1, 1}, math.random(self.numSpriteVariations))
+        self.spriteLayers = createAnimationLayers("eel", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce"}, {1, 1, 1}, math.random(self.numSpriteVariations))
     else
         print ("Couldn't load animation: " .. animationName)
     end
@@ -123,12 +123,12 @@ function Animation:loadLettuceSprite(animationName)
     self.height = 64
     self.animationSpeed = 0.2
     self.numLayers = 1
-    self.layers = {}
+    self.spriteLayers = {}
     self.numSpriteVariations = 2
 
     -- Float
     if animationName == "float" then
-        self.layers = createAnimationLayers("lettuce", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce"}, {1}, math.random(self.numSpriteVariations))
+        self.spriteLayers = createAnimationLayers("lettuce", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce"}, {1}, math.random(self.numSpriteVariations))
     else
         print ("Couldn't load animation: " .. animationName)
     end
@@ -139,20 +139,16 @@ end
 
 function Animation:update(dt)
     for i=1,self.numLayers do
-        self.layers[i]:update(dt)
+        self.spriteLayers[i]:update(dt)
     end
 end
 
 function Animation:draw(x,y,scale)
     love.graphics.setColor(255, 255, 255)
 
-    for i=1,#self.layers do
-        self.layers[i]:draw(x, y, 0, scale, scale, self.width / 2, self.height / 2)
+    for i=1,#self.spriteLayers do
+        self.spriteLayers[i]:draw(x, y, 0, scale, scale, self.width / 2, self.height / 2)
     end
-
-    --for i=1, #(self.currentAnimation) do
-    --    self.currentAnimation[i]:draw(self.x, self.y, 0, self.scale, self.scale, self.width / 2, self.height / 2)
-    --end
 
     -- Variable reference:
     -- position (x), position (y), ?, scale (x), scale (y), offset X, offsetY
