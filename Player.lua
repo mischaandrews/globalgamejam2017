@@ -21,7 +21,7 @@ function Player:new()
     return o
 end
 
-local playerRadius = 20
+local playerRadius = 40
 
 function Player:load(world, x, y, characterSprite)
 
@@ -117,6 +117,6 @@ end
 
 function Player:draw()
     love.graphics.setColor(255, 255, 255)
-    love.graphics.rectangle("line", self.x-3, self.y-3, 106,106)
     self.currentAnimation:draw(self.x, self.y, self.scale)
+    love.graphics.circle("line", self.x, self.y, playerRadius)
 end
