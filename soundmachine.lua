@@ -1,6 +1,10 @@
 -- Adapted from Organ Donor code. Thanks Paul!
 
-soundmachine = {}
+soundmachine = {
+    soundpaused = false
+}
+
+
 
 soundErrors = {}
 soundErrors.add = function(errorMsg)
@@ -213,6 +217,16 @@ soundmachine.resume = function(tag)
   TEsound.resume(tag);
 end
 
+soundmachine.toggle = function(tag)
+    if soundmachine.soundpaused == true then
+        soundmachine.soundpaused = false
+        soundmachine.resume()
+    else
+        soundmachine.soundpaused = true
+        soundmachine.pause()
+    end
+    -- TODO: fix pausing of sound
+end
 
 --[[
 carSoundBank = {

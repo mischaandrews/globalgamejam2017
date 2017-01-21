@@ -138,6 +138,7 @@ function Gamestate:update(dt)
         ---- Check for pause
         if key == "escape" then
             self.paused = not self.paused
+            soundmachine.toggle()
         end
     end
 

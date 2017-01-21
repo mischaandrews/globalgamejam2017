@@ -5,7 +5,8 @@ Player = {
     x,
     y,
     physics,
-    scale,
+    scaleX,
+    scaleY,
     animations,
     currentAnimation,
     movementSpeed,
@@ -23,6 +24,8 @@ end
 
 local playerRadius = 40
 
+
+
 function Player:load(world, x, y, characterSprite)
 
     if characterSprite == nil then
@@ -33,11 +36,14 @@ function Player:load(world, x, y, characterSprite)
 
     self.x = x
     self.y = y
-    self.scale = 0.4
+    self.originalScale = 0.4
+    self.scaleX = self.originalScale
+    self.scaleY = self.originalScale
     self.movementSpeed = 6
     self.healthPercent = 50
     self.boostPercent = 50
     self.animationTimer = 0 -- used by some animations to run for a certain amount of time
+    self.facingDirection = "left" -- left or right
 
     self.physics = Player.loadPhysics(world, x, y)
 
@@ -45,6 +51,20 @@ function Player:load(world, x, y, characterSprite)
     self.currentAnimation = self.animations["idle"]
 
 end
+
+
+function Player:switchFacingDirection()
+   
+    if self.facingDirection == "right" then
+        self.facingDirection = "left"
+        self.scaleX = self.originalScale * 1
+    elseif self.facingDirection == "left" then
+        self.facingDirection = "right"
+        self.scaleX = self.originalScale * -1
+    end
+    
+end
+
 
 function Player.loadPhysics(world, x, y)
     local physics = {}
@@ -61,6 +81,7 @@ function Player:update(dt)
     self:updateMovement()
 
     self:updateAnimation(dt)
+    
 
 end
 
@@ -103,10 +124,19 @@ function Player:getKeyboardVector()
     if keysDown({"left","a"}) then
         leftRight = leftRight - 1
         self.currentAnimation = self.animations["move"]
+        if self.facingDirection == "right" then
+            self:switchFacingDirection()
+        end
+        
     end
     if keysDown({"right","d"}) then
         leftRight = leftRight + 1
         self.currentAnimation = self.animations["move"]
+        self.facingDirection = "right"
+        if self.facingDirection == "left" then
+            self:switchFacingDirection()
+        end
+        
     end
     if keysDown({"up","w"}) then
         upDown = upDown - 1
@@ -135,6 +165,6 @@ end
 
 function Player:draw()
     love.graphics.setColor(255, 255, 255)
-    self.currentAnimation:draw(self.x, self.y, self.scale)
+    self.currentAnimation:draw(self.x, self.y, self.scaleX, self.scaleY)
     love.graphics.circle("line", self.x, self.y, playerRadius)
 end

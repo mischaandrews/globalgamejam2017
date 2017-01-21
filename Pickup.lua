@@ -3,7 +3,8 @@ require "Animation"
 Pickup = {
     x,
     y,
-    scale,
+    scaleX,
+    scaleY,
     animations,
     currentAnimation,
     physics
@@ -28,7 +29,8 @@ function Pickup:load(world, x, y, pickupSprite)
 
     self.x = x
     self.y = y
-    self.scale = 0.6
+    self.scaleX = 0.6
+    self.scaleY = 0.6
 
     self.animations = Animation.loadAnimations(pickupSprite, {"float"})
     self.currentAnimation = self.animations["float"]
@@ -66,7 +68,7 @@ end
 
 function Pickup:draw()
     love.graphics.setColor(255, 255, 255)
-    self.currentAnimation:draw(self.x, self.y, self.scale)
+    self.currentAnimation:draw(self.x, self.y, self.scaleX, self.scaleY)
     love.graphics.circle("line", self.x, self.y, pickupRadius)
 end
 
