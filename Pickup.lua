@@ -47,7 +47,21 @@ function Pickup.loadPhysics(world, x, y)
 end
 
 function Pickup:update(dt)
+    self:updateMovement()
     self.currentAnimation:update(dt)
+end
+
+function Pickup:updateMovement()
+
+    local forceX, forceY = getOceanForce(self)
+
+    --Pass the force to the physics engine
+    self.physics.body:applyForce(forceX, forceY)
+
+    --Get the position back out of the physics engine
+    --From last frame, but whatever
+    self.x, self.y = self.physics.body:getPosition()
+
 end
 
 function Pickup:draw()

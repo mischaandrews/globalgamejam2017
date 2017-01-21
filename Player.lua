@@ -1,9 +1,10 @@
 require "Animation"
+require "Physics"
 
 Player = {
     x,
     y,
-    playerPhys,
+    physics,
     scale,
     animations,
     currentAnimation,
@@ -38,7 +39,7 @@ function Player:load(world, x, y, characterSprite)
     self.boostPercent = 50
     self.animationTimer = 0 -- used by some animations to run for a certain amount of time
 
-    self.playerPhys = Player.loadPhysics(world, x, y)
+    self.physics = Player.loadPhysics(world, x, y)
 
     self.animations = Animation.loadAnimations(characterSprite, {"idle", "move", "eat", "boost"})
     self.currentAnimation = self.animations["idle"]
@@ -46,42 +47,26 @@ function Player:load(world, x, y, characterSprite)
 end
 
 function Player.loadPhysics(world, x, y)
-    local playerPhys = {}
-    playerPhys.body = love.physics.newBody(world, x, y, "dynamic") 
-    playerPhys.shape = love.physics.newCircleShape(playerRadius)
-    playerPhys.fixture = love.physics.newFixture(playerPhys.body, playerPhys.shape, 1)
-    playerPhys.fixture:setUserData("player")
-    playerPhys.fixture:setRestitution(0.8)
-    return playerPhys
+    local physics = {}
+    physics.body = love.physics.newBody(world, x, y, "dynamic") 
+    physics.shape = love.physics.newCircleShape(playerRadius)
+    physics.fixture = love.physics.newFixture(physics.body, physics.shape, 1)
+    physics.fixture:setUserData("player")
+    physics.fixture:setRestitution(0.8)
+    return physics
 end
 
 function Player:update(dt)
 
-    local forceX = 0
-    local forceY = 0
+    self:updateMovement()
 
-    --Calculate gravity (or whatever)
-    local playerGravX, playerGravY = self:getPlayerGravity()
-    forceX = forceX + playerGravX
-    forceY = forceY + playerGravY
+    self:updateAnimation(dt)
 
-    --Add player keyboard force
-    local keyBoardForce = 1700
-    local leftRight, upDown = self:getKeyboardVector()
-    forceX = forceX + leftRight * keyBoardForce
-    forceY = forceY + upDown * keyBoardForce 
+end
 
-    --Limit max force - calculate drag perhaps?
-    local dragX, dragY = getPlayerDrag(self.playerPhys.body:getLinearVelocity())
-    forceX = forceX + dragX
-    forceY = forceY + dragY
-
-    --Pass the force to the physics engine
-    self.playerPhys.body:applyForce(forceX, forceY)
-
-    ---- Update animation
+function Player:updateAnimation(dt)
+    --Update animation
     self.currentAnimation:update(dt)
-
     
     if self.currentAnimation == self.animations["eat"] then
         self.animationTimer = self.animationTimer - dt
@@ -89,21 +74,27 @@ function Player:update(dt)
            self.currentAnimation = self.animations["idle"] 
         end
     end
-    
-    
-    self.x, self.y = self.playerPhys.body:getPosition()
-
 end
 
-function Player:getPlayerGravity()
-    --Here we can apply sinking or floating in water, etc.
-    return 0, 100
+function Player:updateMovement()
+
+    local forceX, forceY = getOceanForce(self)
+
+    --Add player keyboard force
+    local keyBoardForce = 1700
+    local leftRight, upDown = self:getKeyboardVector()
+    forceX = forceX + leftRight * keyBoardForce
+    forceY = forceY + upDown * keyBoardForce 
+
+    --Pass the force to the physics engine
+    self.physics.body:applyForce(forceX, forceY)
+
+    --Get the position back out of the physics engine
+    --From last frame, but whatever
+    self.x, self.y = self.physics.body:getPosition()
 end
 
-function getPlayerDrag(velX, velY)
-    local dragCoeff = -8
-    return dragCoeff * velX, dragCoeff * velY
-end
+
 
 function Player:getKeyboardVector()
     local leftRight = 0
