@@ -81,8 +81,18 @@ function loadNpcs(physics)
     local npc2_spawnY = 400
     local npc2 = Character:new()
     npc2:load(physics, npc2_spawnX, npc2_spawnY, "octopus")
+    
+    local npc3_spawnX = 700
+    local npc3_spawnY = 400
+    local npc3 = Character:new()
+    npc3:load(physics, npc3_spawnX, npc3_spawnY, "eel")
+    
+    ---- Create pickups
+    -- TODO: do this better! lots of lettuce!
+    --self.pickups = {}
 
-    return {npc1, npc2}
+
+    return {npc1, npc2, npc3}
 
 end
 

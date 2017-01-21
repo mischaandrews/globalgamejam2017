@@ -41,6 +41,8 @@ function Animation:load(spriteName, animationName)
         self:loadOctopusSprite(animationName)
     elseif spriteName == "lettuce" then
         self:loadLettuceSprite(animationName)
+    elseif spriteName == "eel" then
+        self:loadEelSprite(animationName)
     else
         print ("Couldn't load animation: " .. spriteName)
     end
@@ -57,10 +59,10 @@ function Animation:loadDugongSprite(animationName)
 
     -- Idle
     if animationName == "idle" then
-        self.layers = createAnimationLayers("dugong", "idle", self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 1, 1, 1}, math.random(self.numSpriteVariations))
+        self.layers = createAnimationLayers("dugong", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 1, 1, 1}, math.random(self.numSpriteVariations))
     -- Move
     elseif animationName == "move" then
-        self.layers = createAnimationLayers("dugong", "move", self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 2, 1, 1}, math.random(self.numSpriteVariations))
+        self.layers = createAnimationLayers("dugong", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 2, 1, 1}, math.random(self.numSpriteVariations))
     else
         print ("Couldn't load animation: " .. animationName)
     end
@@ -79,10 +81,34 @@ function Animation:loadOctopusSprite(animationName)
 
     -- Idle
     if animationName == "idle" then
-        self.layers = createAnimationLayers("octopus", "idle", self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 1, 1, 1}, math.random(self.numSpriteVariations))
+        self.layers = createAnimationLayers("octopus", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 1, 1, 1}, math.random(self.numSpriteVariations))
     -- Move
     elseif animationName == "grab" then
-        self.layers = createAnimationLayers("octopus", "grab", self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 1, 1, 1}, math.random(self.numSpriteVariations))
+        self.layers = createAnimationLayers("octopus", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 1, 1, 1}, math.random(self.numSpriteVariations))
+    else
+        print ("Couldn't load animation: " .. animationName)
+    end
+    
+end
+
+
+
+
+function Animation:loadEelSprite(animationName)
+
+    self.width = 384
+    self.height = 384
+    self.animationSpeed = 0.2
+    self.numLayers = 3
+    self.layers = {}
+    self.numSpriteVariations = 1
+
+    -- Idle
+    if animationName == "idle" then
+        self.layers = createAnimationLayers("eel", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 1, 1, 1}, math.random(self.numSpriteVariations))
+    -- Move
+    elseif animationName == "move" then
+        self.layers = createAnimationLayers("eel", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce"}, {1, 1, 1}, math.random(self.numSpriteVariations))
     else
         print ("Couldn't load animation: " .. animationName)
     end
@@ -102,7 +128,7 @@ function Animation:loadLettuceSprite(animationName)
 
     -- Float
     if animationName == "float" then
-        self.layers = createAnimationLayers("lettuce", "float", self.width, self.height, self.animationSpeed, self.numLayers, {"bounce"}, {1}, math.random(self.numSpriteVariations))
+        self.layers = createAnimationLayers("lettuce", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce"}, {1}, math.random(self.numSpriteVariations))
     else
         print ("Couldn't load animation: " .. animationName)
     end
