@@ -77,6 +77,12 @@ function Gamestate:load()
     npc2:load(physics, npc2_spawnX, npc2_spawnY, "octopus")
     self.npcs[2] = npc2
     
+    local npc3_spawnX = 700
+    local npc3_spawnY = 400
+    local npc3 = Character:new()
+    npc3:load(physics, npc3_spawnX, npc3_spawnY, "eel")
+    self.npcs[3] = npc3
+    
     ---- Create pickups
     -- TODO: do this better! lots of lettuce!
     self.pickups = {}

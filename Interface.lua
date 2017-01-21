@@ -113,7 +113,7 @@ end -- End load
 ----------------------------------------------------- UPDATE
 function Interface:update(dt)
     
-    --drawText("small-ui", 50, "booster", posX, posY, 255, 255, 255)
+    
     
 -----------------
 end -- End update
