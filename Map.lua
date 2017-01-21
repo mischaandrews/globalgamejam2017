@@ -17,6 +17,9 @@ function Map:new()
 end
 
 function Map:load(world)
+
+    math.randomseed(12345)
+
     self.activeGrid = buildGrid(self.numCellsX, self.numCellsY)
     self:genPhysics(world)
 end
