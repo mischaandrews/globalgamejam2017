@@ -3,10 +3,11 @@ require "Generation"
 local numCellsX = 128
 local numCellsY = 128
 
+local cellWidth = 100
+local cellHeight = 100
+
 Map = {
     player,
-    cellWidth,
-    cellHeight,
     activeGrid,
     backGrid1,
     backGrid2,
@@ -20,7 +21,7 @@ function Map:new()
     return o
 end
 
-function Map:load(world, player, cellWidth, cellHeight)
+function Map:load(world, player)
 
     math.randomseed(12345)
 
@@ -28,12 +29,13 @@ function Map:load(world, player, cellWidth, cellHeight)
     self.backGrid1 = buildGrid(numCellsX, numCellsY)
     self.backGrid2 = buildGrid(numCellsX, numCellsY)
 
-    self.cellWidth = cellWidth
-    self.cellHeight = cellHeight
-    
     self.player = player
 
     --self:genPhysics(world)
+end
+
+function Map:populateLettuces(physics)
+    return populateLettuces(physics, self.activeGrid, cellWidth, cellHeight)
 end
 
 function Map:genPhysics(world)
@@ -41,7 +43,7 @@ function Map:genPhysics(world)
     for j = 1, numCellsY do
         for i = 1, numCellsX do
             if self.activeGrid[j][i] == "edge" then
-                genBlock(world, self.cellWidth * i, self.cellHeight * j, self.cellWidth, self.cellHeight)
+                genBlock(world, cellWidth * i, cellHeight * j, cellWidth, cellHeight)
             end
         end
     end
@@ -79,9 +81,6 @@ end
 
 function Map:getDrawRange(camera, winWidth, winHeight, scale)
 
-    local cellWidth = self.cellWidth
-    local cellHeight = self.cellHeight
-
     local blocksToLeft = math.ceil ((camera.x - cellWidth / 2) / cellWidth)
     local blocksPerScreenW = math.ceil (winWidth / (cellWidth * scale))
     local blocksToRight = blocksToLeft + blocksPerScreenW
@@ -98,10 +97,10 @@ end
 
 function Map:drawPlayerCell(grid)
 
-    local halfCellWidth = self.cellWidth / 2
-    local halfCellHeight = self.cellHeight / 2
+    local halfCellWidth = cellWidth / 2
+    local halfCellHeight = cellHeight / 2
 
-    local cx, cy = self.player:getCurrentCell(self.cellWidth, self.cellHeight)
+    local cx, cy = self.player:getCurrentCell(cellWidth, cellHeight)
 
     if grid ~= nil and grid[cy][cx] ~= "free" then
         love.graphics.setColor(200, 64, 64, 192)
@@ -109,15 +108,15 @@ function Map:drawPlayerCell(grid)
         love.graphics.setColor(200, 200, 64, 192)
     end
 
-    local drawAtX = self.cellWidth * (cx-1)    -- Because lua indexes from 1
-                  + halfCellWidth              -- Because physics calls x,y the centre
+    local drawAtX = cellWidth * (cx-1)    -- Because lua indexes from 1
+                  + halfCellWidth         -- Because physics calls x,y the centre
 
-    local drawAtY = self.cellHeight * (cy-1)   -- Because lua indexes from 1
-                  + halfCellHeight             -- Because physics calls x,y the centre
+    local drawAtY = cellHeight * (cy-1)   -- Because lua indexes from 1
+                  + halfCellHeight        -- Because physics calls x,y the centre
 
     love.graphics.rectangle(
                 "fill", drawAtX, drawAtY,
-                self.cellWidth, self.cellHeight)
+                cellWidth, cellHeight)
 
 end
 
@@ -128,8 +127,8 @@ function Map:drawGrid(grid, camera, winWidth, winHeight, alpha, scale)
 
     local blocksDrawn = 0
 
-    local halfCellWidth = self.cellWidth / 2
-    local halfCellHeight = self.cellHeight / 2
+    local halfCellWidth = cellWidth / 2
+    local halfCellHeight = cellHeight / 2
 
     for j = blocksToTop, blocksToBottom do
         for i = blocksToLeft, blocksToRight do
@@ -157,17 +156,17 @@ function Map:drawGrid(grid, camera, winWidth, winHeight, alpha, scale)
 
             love.graphics.setColor(colour_r, colour_g, colour_b, colour_a)
 
-            local drawAtX = self.cellWidth * (i-1)    -- Because lua indexes from 1
+            local drawAtX = cellWidth * (i-1)    -- Because lua indexes from 1
                           + halfCellWidth             -- Because physics calls x,y the centre
 
-            local drawAtY = self.cellHeight * (j-1)   -- Because lua indexes from 1
+            local drawAtY = cellHeight * (j-1)   -- Because lua indexes from 1
                           + halfCellHeight            -- Because physics calls x,y the centre
 
             blocksDrawn = blocksDrawn + 1
 
             love.graphics.rectangle(
                 "fill", drawAtX, drawAtY,
-                self.cellWidth, self.cellHeight)
+                cellWidth, cellHeight)
         end
     end
 

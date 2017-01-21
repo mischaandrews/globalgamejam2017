@@ -36,9 +36,6 @@ function Gamestate:new()
     return o
 end
 
-local cellWidth = 100
-local cellHeight = 100
-
 ----------------------------------------------------- LOAD
 function Gamestate:load()
     
@@ -87,7 +84,8 @@ function Gamestate:load()
     self.player = player
 
     local map = Map:new()
-    map:load(physics, player, cellWidth, cellHeight)
+    map:load(physics, player)
+    self.pickups = map:populateLettuces(physics)
     self.map = map
 
     self.npcs = loadNpcs(physics)
@@ -95,7 +93,6 @@ function Gamestate:load()
 
     ---- Start music
     soundmachine.playEntityAction("level", "underwater", "loop")
-    self.pickups = populateLettuces(physics, map.activeGrid, cellWidth, cellHeight)
 
 ---------------
 end -- End load
