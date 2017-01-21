@@ -45,7 +45,13 @@ function Player:load(world, x, y, characterSprite)
     self.animationTimer = 0 -- used by some animations to run for a certain amount of time
     self.facingDirection = "left" -- left or right
 
-    self.physics = Player.loadPhysics(world, x, y)
+    self.physics = {}
+    --Player:loadPhysics(world, x, y)
+    self.physics.body = love.physics.newBody(world, x, y, "dynamic") 
+    self.physics.shape = love.physics.newCircleShape(playerRadius)
+    self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape, 1)
+    self.physics.fixture:setUserData({"player",self})
+    self.physics.fixture:setRestitution(0.8)
 
     self.animations = Animation.loadAnimations(characterSprite, {"idle", "move", "eat", "boost"})
     self.currentAnimation = self.animations["idle"]
@@ -66,15 +72,15 @@ function Player:switchFacingDirection()
 end
 
 
-function Player.loadPhysics(world, x, y)
-    local physics = {}
-    physics.body = love.physics.newBody(world, x, y, "dynamic") 
-    physics.shape = love.physics.newCircleShape(playerRadius)
-    physics.fixture = love.physics.newFixture(physics.body, physics.shape, 1)
-    physics.fixture:setUserData("player")
-    physics.fixture:setRestitution(0.8)
-    return physics
+--[[
+function Player:loadPhysics(world, x, y)
+    self.physics.body = love.physics.newBody(world, x, y, "dynamic") 
+    self.physics.shape = love.physics.newCircleShape(playerRadius)
+    self.physics.fixture = love.physics.newFixture(physics.body, physics.shape, 1)
+    self.physics.fixture:setUserData("player")
+    self.physics.fixture:setRestitution(0.8)
 end
+]]--
 
 function Player:update(dt)
 
@@ -132,7 +138,6 @@ function Player:getKeyboardVector()
     if keysDown({"right","d"}) then
         leftRight = leftRight + 1
         self.currentAnimation = self.animations["move"]
-        self.facingDirection = "right"
         if self.facingDirection == "left" then
             self:switchFacingDirection()
         end
@@ -166,5 +171,7 @@ end
 function Player:draw()
     love.graphics.setColor(255, 255, 255)
     self.currentAnimation:draw(self.x, self.y, self.scaleX, self.scaleY)
-    love.graphics.circle("line", self.x, self.y, playerRadius)
+    
+    -- Bounding circle
+    --love.graphics.circle("line", self.x, self.y, playerRadius)
 end

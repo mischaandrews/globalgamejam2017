@@ -237,14 +237,15 @@ function Gamestate:postSolve(a, b, coll, normalimpulse, tangentimpulse)
 end
 
 function Gamestate:playerCollide(player, other, coll)
-
-    if other:getUserData() == "pickup" then
+    love.event.quit()
+    if other:getUserData()["type"] == "pickup" then
         print "Player collided with pickup"
         soundmachine.playEntityAction("dugong", "eat", "single")
-        --self.animationTimer = 0.5
+        --player.animationTimer = 0.5
         --player.currentAnimation = player.animations["eat"]
         playerBoost = playerBoost + 5
-    elseif other:getUserData() == "edge" then
+        
+    elseif other:getUserData()["type"] == "edge" then
         print "Player collided with edge" 
     end
 
