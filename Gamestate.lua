@@ -8,6 +8,8 @@ require "Map"
 require "Interface"
 require "Player"
 require "Tile"
+require "TEsound"
+require "soundmachine"
 
 
 testing = true
@@ -112,6 +114,8 @@ end -- End load
 function Gamestate:update(dt)
 
     self.map:update(dt)
+    
+    soundmachine.update()
 
     ---- Keyboard listeners for UI (not characters)
 

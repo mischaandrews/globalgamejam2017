@@ -74,12 +74,26 @@ end
 drawBoostUI = function ()
    
     local width = 200
-    local height = 50
+    local padding = 30
     
-    local posX = 100
-    local posY = intWindowX - width - 20
+    local posX = intWindowX - (width + padding)
+    local posY = intWindowY - padding
     
     drawText("small-ui", width, "boosty", posX, posY, 255, 255, 255)
+    
+end
+
+
+
+drawHealthUI = function ()
+   
+    local width = 200
+    local padding = 30
+    
+    local posX = intWindowX - (width + padding)
+    local posY = intWindowY - padding - 25
+    
+    drawText("small-ui", width, "health", posX, posY, 255, 255, 255)
     
 end
 
@@ -113,7 +127,7 @@ end -- End update
 function Interface:draw()
     
     drawBoostUI()
-    
+    drawHealthUI()
             
 ---------------
 end -- End draw
