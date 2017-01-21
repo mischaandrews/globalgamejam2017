@@ -9,7 +9,8 @@ Player = {
     currentAnimation,
     movementSpeed,
     healthPercent,
-    boostPercent
+    boostPercent,
+    animationTimer
 }
 
 function Player:new()
@@ -31,14 +32,15 @@ function Player:load(world, x, y, characterSprite)
 
     self.x = x
     self.y = y
-    self.scale = 0.35
+    self.scale = 0.4
     self.movementSpeed = 6
     self.healthPercent = 50
     self.boostPercent = 50
+    self.animationTimer = 0 -- used by some animations to run for a certain amount of time
 
     self.playerPhys = Player.loadPhysics(world, x, y)
 
-    self.animations = Animation.loadAnimations(characterSprite, {"idle", "move", "eat"})
+    self.animations = Animation.loadAnimations(characterSprite, {"idle", "move", "eat", "boost"})
     self.currentAnimation = self.animations["idle"]
 
 end
@@ -59,6 +61,13 @@ function Player:update(dt)
 
     --Update animation
     self.currentAnimation:update(dt)
+    
+    if self.currentAnimation == self.animations["eat"] then
+        self.animationTimer = self.animationTimer - dt
+        if self.animationTimer <= 0 then
+           self.currentAnimation = self.animations["idle"] 
+        end
+    end
 
 end
 
@@ -121,7 +130,9 @@ function Player:getKeyboardVector()
         self.currentAnimation = self.animations["move"]
     end
     if keysDown({"space"}) then
-        self.currentAnimation = self.animations["eat"]
+        self.currentAnimation = self.animations["boost"]
+        --self.animationTimer = 0.5
+        --self.currentAnimation = self.animations["eat"]
     end
     return leftRight, upDown
 end

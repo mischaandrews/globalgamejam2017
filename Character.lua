@@ -26,7 +26,7 @@ function Character:load(world, x, y, characterSprite)
 
     self.x = x
     self.y = y
-    self.scale = 0.35
+    self.scale = 0.45
 
     self.animations = Animation.loadAnimations(characterSprite, {"idle", "move"})
     self.currentAnimation = self.animations["idle"]
