@@ -10,9 +10,7 @@ Player = {
     animations,
     currentAnimation,
     movementSpeed,
-    healthPercent,
-    boostPercent,
-    animationTimer
+    boostPercent
 }
 
 function Player:new()
@@ -40,9 +38,7 @@ function Player:load(world, x, y, characterSprite)
     self.scaleX = self.originalScale
     self.scaleY = self.originalScale
     self.movementSpeed = 6
-    self.healthPercent = 50
     self.boostPercent = 50
-    self.animationTimer = 0 -- used by some animations to run for a certain amount of time
     self.facingDirection = "left" -- left or right
 
     self.physics = {}
@@ -90,10 +86,10 @@ function Player:updateAnimation(dt)
     self.currentAnimation:update(dt)
     
     if self.currentAnimation == self.animations["eat"] then
-        self.animationTimer = self.animationTimer - dt
-        if self.animationTimer <= 0 then
-           self.currentAnimation = self.animations["idle"] 
-        end
+        --self.animationTimer = self.animationTimer - dt
+        --if self.animationTimer <= 0 then
+           --self.currentAnimation = self.animations["idle"] 
+        --end
     end
 end
 
@@ -146,17 +142,17 @@ function Player:getKeyboardVector()
         movementKeyDown = true
     end
     if keysDown({"space"}) then
-        self.animationTimer = 5
-        self.currentAnimation = self.animations["eat"]
-        soundmachine.playEntityAction("dugong", "fart", "single")
+        self.currentAnimation = self.animations["boost"]
+        --soundmachine.playEntityAction("dugong", "fart", "single")
     end
     
-    if movementKeyDown == true and self.animationTimer <= 0 then
+    if movementKeyDown == true then
         self.currentAnimation = self.animations["move"]
     end
     
     return leftRight, upDown
 end
+
 
 function keysDown(keys)
    for i=1,#keys do
@@ -165,6 +161,10 @@ function keysDown(keys)
        end
    end
    return false
+end
+
+function Player:resetCurrentAnimation()
+    self.currentAnimation:reset()
 end
 
 function Player:draw()
