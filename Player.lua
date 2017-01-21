@@ -35,8 +35,8 @@ function Player:load(world, x, y, characterSprite)
     self.y = y
     self.scale = 0.35
     self.movementSpeed = 6
-    self.healthPercent = 100
-    self.boostPercent = 100
+    self.healthPercent = 50
+    self.boostPercent = 50
 
     self.playerPhys = loadPhysics(world)
 
