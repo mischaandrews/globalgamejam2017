@@ -139,9 +139,7 @@ function Gamestate:update(dt)
     
     if not self.paused then
 
-        self.physics:update(dt) --this puts the world into motion
-
-        self.background:update(dt)
+        self.physics:update(dt)
 
         -- Update characters
         self.player:update(dt)
@@ -156,8 +154,6 @@ function Gamestate:update(dt)
 
         ---- Update camera
         self.camera:setPosition(self.player.x-(intWindowX/2), self.player.y - (intWindowY/2))
-
-        velocities = {}
 
     end
 

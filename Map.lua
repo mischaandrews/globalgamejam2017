@@ -11,6 +11,7 @@ Map = {
     activeGrid,
     backGrid1,
     backGrid2,
+    backGrid3, -- invisible
     mapPhys
 }
 
@@ -28,6 +29,7 @@ function Map:load(world, player)
     self.activeGrid = buildGrid(numCellsX, numCellsY)
     self.backGrid1 = buildGrid(numCellsX, numCellsY)
     self.backGrid2 = buildGrid(numCellsX, numCellsY)
+    self.backGrid3 = buildGrid(numCellsX, numCellsY)
 
     self.player = player
 
@@ -62,13 +64,18 @@ end
 
 function Map:draw(camera, winWidth, winHeight)
 
-    camera:set(0.15)
-    self:drawGrid(self.backGrid2, camera, winWidth, winHeight, 255, 0.15)
+    camera:set(0.12)
+    self:drawGrid(self.backGrid3, camera, winWidth, winHeight, 255, 0.12)
+    self:drawPlayerCell(self.backGrid3)
+    camera:unset()
+
+    camera:set(0.25)
+    self:drawGrid(self.backGrid2, camera, winWidth, winHeight, 128, 0.25)
     self:drawPlayerCell(self.backGrid2)
     camera:unset()
 
-    camera:set(0.33)
-    self:drawGrid(self.backGrid1, camera, winWidth, winHeight, 192, 0.33)
+    camera:set(0.50)
+    self:drawGrid(self.backGrid1, camera, winWidth, winHeight, 128, 0.50)
     self:drawPlayerCell(self.backGrid1)
     camera:unset()
 
