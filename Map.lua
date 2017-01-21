@@ -12,7 +12,10 @@ Map = {
     backGrid1,
     backGrid2,
     backGrid3, -- invisible
-    mapPhys
+    mapPhys,
+
+    transitionState = "none",  -- "none" -> "fartPrep" -> "farting" -> "none"
+    transitionAmount = "0"  -- [0.0, 1.0)
 }
 
 function Map:new()
@@ -64,22 +67,24 @@ end
 
 function Map:draw(camera, winWidth, winHeight)
 
-    camera:set(0.12)
+    local fartScale = self.player.z
+
+    camera:set(0.12 - fartScale / 40)
     self:drawGrid(self.backGrid3, camera, winWidth, winHeight, 255, 0.12)
     self:drawPlayerCell(self.backGrid3)
     camera:unset()
 
-    camera:set(0.25)
+    camera:set(0.25 - fartScale / 30)
     self:drawGrid(self.backGrid2, camera, winWidth, winHeight, 128, 0.25)
     self:drawPlayerCell(self.backGrid2)
     camera:unset()
 
-    camera:set(0.50)
+    camera:set(0.50 - fartScale / 20)
     self:drawGrid(self.backGrid1, camera, winWidth, winHeight, 128, 0.50)
     self:drawPlayerCell(self.backGrid1)
     camera:unset()
 
-    camera:set(1)
+    camera:set(1 - fartScale / 10)
     self:drawGrid(self.activeGrid, camera, winWidth, winHeight, 128, 1)
     --self:drawPlayerCell()
     camera:unset()

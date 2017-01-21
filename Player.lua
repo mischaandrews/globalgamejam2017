@@ -4,6 +4,7 @@ require "Physics"
 Player = {
     x,
     y,
+    z,
     physics,
     scaleX,
     scaleY,
@@ -34,6 +35,7 @@ function Player:load(world, x, y, characterSprite)
 
     self.x = x
     self.y = y
+    self.z = 0
     self.originalScale = 0.4
     self.scaleX = self.originalScale
     self.scaleY = self.originalScale
@@ -72,13 +74,28 @@ function Player:getCurrentCell(cellWidth, cellHeight)
            math.ceil ((self.y - (cellHeight / 2)) / (cellHeight))
 end
 
-function Player:update(dt)
+function Player:update(dt, map)
 
     self:updateMovement()
 
     self:updateAnimation(dt)
-    
 
+    self:updateTransitions(dt, map)
+
+end
+
+function Player:updateTransitions(dt, map)
+
+    local outFartSpeed = 2
+
+    if love.keyboard.isDown("return") then
+
+        --Check amount of charge here
+        if true and map.transitionState == "none" then
+            self.z = math.min(self.z + outFartSpeed * dt, 1)
+        else
+        end
+    end
 end
 
 function Player:updateAnimation(dt)
@@ -169,7 +186,7 @@ end
 
 function Player:draw()
     love.graphics.setColor(255, 255, 255)
-    self.currentAnimation:draw(self.x, self.y, self.scaleX, self.scaleY)
+    self.currentAnimation:draw(self.x, self.y, self.scaleX + self.z * 0.2, self.scaleY + self.z * 0.2)
     
     -- Bounding circle
     --love.graphics.circle("line", self.x, self.y, playerRadius)

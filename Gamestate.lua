@@ -121,10 +121,6 @@ end
 ----------------------------------------------------- UPDATE
 function Gamestate:update(dt)
 
-    self.map:update(dt)
-    
-    soundmachine.update()
-
     ---- Keyboard listeners for UI (not characters)
 
     function love.keypressed(key)
@@ -135,15 +131,20 @@ function Gamestate:update(dt)
         end
     end
 
+    self.map:update(dt)
+
+    soundmachine.update()
+
     ------------ Animations ------------
     
     if not self.paused then
 
         self.physics:update(dt)
 
-        -- Update characters
-        self.player:update(dt)
+        --Update player
+        self.player:update(dt, self.map)
 
+        -- Update characters
         for i=1,#self.npcs do
             self.npcs[i]:update(dt)
         end
