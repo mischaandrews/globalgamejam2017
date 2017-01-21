@@ -57,8 +57,8 @@ function Gamestate:load()
     self.physics = physics
 
     ---- Create characters
-    local player_spawnX = 150
-    local player_spawnY = 200
+    local player_spawnX = 400
+    local player_spawnY = 750
     local player = Player:new()
     player:load(physics, player_spawnX, player_spawnY, "dugong")
     self.player = player
