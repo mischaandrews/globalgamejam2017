@@ -173,7 +173,7 @@ function Gamestate:draw()
     self.camera:set(1)
 
     ---- Draw characters
-    self.player:draw()  
+    self.player:draw(self.map)  
 
     for i=1,#self.npcs do
         self.npcs[i]:draw(dt)

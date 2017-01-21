@@ -8,10 +8,9 @@ local cellHeight = 100
 
 Map = {
     player,
-    activeGrid,
-    backGrid1,
-    backGrid2,
-    backGrid3, -- invisible
+    grids,
+    gridScales,
+    gridOpacities,
     mapPhys,
 
     transitionState = "none",  -- "none" -> "fartPrep" -> "farting" -> "none"
@@ -28,26 +27,36 @@ end
 function Map:load(world, player)
 
     math.randomseed(12345)
-
-    self.activeGrid = buildGrid(numCellsX, numCellsY)
-    self.backGrid1 = buildGrid(numCellsX, numCellsY)
-    self.backGrid2 = buildGrid(numCellsX, numCellsY)
-    self.backGrid3 = buildGrid(numCellsX, numCellsY)
-
+    self.grids, self.gridScales, self.gridOpacities = Map.loadGridsAndScalesAndOpacs()
     self.player = player
+    self:genPhysics(world)
 
-    --self:genPhysics(world)
+end
+
+function Map.loadGridsAndScalesAndOpacs()
+    local activeGrid = buildGrid(numCellsX, numCellsY)
+    local backGrid1 = buildGrid(numCellsX, numCellsY)
+    local backGrid2 = buildGrid(numCellsX, numCellsY)
+    local backGrid3 = buildGrid(numCellsX, numCellsY)
+
+    return {backGrid3, backGrid2, backGrid1, activeGrid},
+           {     0.12,      0.25,      0.50,          1},
+           {      255,       128,       128,        128}
 end
 
 function Map:populateLettuces(physics)
-    return populateLettuces(physics, self.activeGrid, cellWidth, cellHeight)
+    return populateLettuces(physics, self:getActiveGrid(), cellWidth, cellHeight)
+end
+
+function Map:getActiveGrid()
+   return self.grids[4]
 end
 
 function Map:genPhysics(world)
     local mapPhys = {}
     for j = 1, numCellsY do
         for i = 1, numCellsX do
-            if self.activeGrid[j][i] == "edge" then
+            if self:getActiveGrid()[j][i] == "edge" then
                 genBlock(world, cellWidth * i, cellHeight * j, cellWidth, cellHeight)
             end
         end
@@ -69,29 +78,21 @@ function Map:draw(camera, winWidth, winHeight)
 
     local fartScale = self.player.z
 
-    local scale4 = 0.12 - fartScale / 40
-    camera:set(scale4)
-    self:drawGrid(self.backGrid3, camera, winWidth, winHeight, 255, scale4)
-    self:drawPlayerCell(self.backGrid3)
-    camera:unset()
+    for layerNum=1,4 do
 
-    local scale3 = 0.25 - fartScale / 30
-    camera:set(scale3)
-    self:drawGrid(self.backGrid2, camera, winWidth, winHeight, 128, scale3)
-    self:drawPlayerCell(self.backGrid2)
-    camera:unset()
+        local scaleAdjustment = 50 + 10 * layerNum
+        local scale = self.gridScales[layerNum] - fartScale / scaleAdjustment
 
-    local scale2 = 0.50 - fartScale / 20
-    camera:set(scale2)
-    self:drawGrid(self.backGrid1, camera, winWidth, winHeight, 128, scale2)
-    self:drawPlayerCell(self.backGrid1)
-    camera:unset()
+        camera:set(scale)
+        self:drawGrid(self.grids[layerNum], camera, winWidth, winHeight, self.gridOpacities[layerNum], scale)
 
-    local scale1 = 1 - fartScale / 10
-    camera:set(scale1)
-    self:drawGrid(self.activeGrid, camera, winWidth, winHeight, 128, scale1)
-    --self:drawPlayerCell()
-    camera:unset()
+        if layerNum == 3 then
+            self:drawPlayerCell(self.grids[layerNum])
+        end
+
+        camera:unset()
+    end
+
 
 end
 
@@ -119,9 +120,9 @@ function Map:drawPlayerCell(grid)
     local cx, cy = self.player:getCurrentCell(cellWidth, cellHeight)
 
     if grid ~= nil and grid[cy][cx] ~= "free" then
-        love.graphics.setColor(200, 64, 64, 192)
+        love.graphics.setColor(200, 64, 64, 224 * self.player.z)
     else
-        love.graphics.setColor(200, 200, 64, 192)
+        love.graphics.setColor(200, 200, 64, 224 * self.player.z)
     end
 
     local drawAtX = cellWidth * (cx-1)    -- Because lua indexes from 1

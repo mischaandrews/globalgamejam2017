@@ -88,9 +88,11 @@ function Player:updateTransitions(dt, map)
     local prepFartSpeed = 2
     local execFartSpeed = 10
 
-    if love.keyboard.isDown("return") and
-       true and --Check amount of charge here
-       map.transitionState == "none" then
+    if love.keyboard.isDown("return")
+            and true --Check amount of charge here
+            and (map.transitionState == "none" or map.transitionState == "fartPrep") then
+
+        map.transitionState = "fartPrep"
         self.z = math.min(self.z + prepFartSpeed * dt, 1)
     else
         self.z = math.max(self.z - execFartSpeed * dt, 0)
@@ -179,14 +181,22 @@ function Player:resetCurrentAnimations(scope)
     end
 end
 
-function Player:draw()
+function Player:draw(map)
     love.graphics.setColor(255, 255, 255)
+
+    local extraScaleX
+    local extraScaleY = self.z * 0.1
+    if self.facingDirection == "left" then
+        extraScaleX = self.z * 0.1
+    else
+        extraScaleX = - self.z * 0.1
+    end
 
     self.currentAnimations:draw(
         self.x,
         self.y,
-        self.scaleX + self.z * 0.1,
-        self.scaleY + self.z * 0.1)
+        self.scaleX + extraScaleX,
+        self.scaleY + extraScaleY)
 
     -- Bounding circle
     --love.graphics.circle("line", self.x, self.y, playerRadius)
