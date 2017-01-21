@@ -18,7 +18,7 @@ function Pickup:new()
     return o
 end
 
-local pickupRadius = 20
+local pickupRadius = 10
 
 function Pickup:load(world, x, y, pickupSprite)
 
@@ -28,8 +28,9 @@ function Pickup:load(world, x, y, pickupSprite)
        os.exit()
     end
 
-    self.x = x
-    self.y = y
+    local jitter = 50
+    self.x = x + math.random(-jitter, jitter)
+    self.y = y + math.random(-jitter, jitter)
     self.scaleX = 0.6
     self.scaleY = 0.6
 
@@ -37,7 +38,7 @@ function Pickup:load(world, x, y, pickupSprite)
     self.currentAnimation = self.animations["float"]
 
     self.physics = {}
-    self.physics.body = love.physics.newBody(world, x, y, "dynamic") 
+    self.physics.body = love.physics.newBody(world, self.x, self.y, "dynamic") 
     self.physics.shape = love.physics.newCircleShape(pickupRadius)
     self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape, 1)
     self.physics.fixture:setUserData({"pickup",self})
