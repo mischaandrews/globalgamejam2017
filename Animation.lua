@@ -44,8 +44,8 @@ function Animation:load(spriteName, animationName)
         self:loadOctopusSprite(animationName)
     elseif spriteName == "lettuce" then
         self:loadLettuceSprite(animationName)
-    elseif spriteName == "eel" then
-        self:loadEelSprite(animationName)
+    --elseif spriteName == "eel" then
+        --self:loadEelSprite(animationName)
     else
         print ("Couldn't load animation: " .. spriteName)
     end
@@ -104,7 +104,7 @@ end
 
 
 
-
+--[[
 function Animation:loadEelSprite(animationName)
 
     self.width = 384
@@ -125,7 +125,7 @@ function Animation:loadEelSprite(animationName)
     end
     
 end
-
+]]--
 
 
 function Animation:loadLettuceSprite(animationName)

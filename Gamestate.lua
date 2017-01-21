@@ -76,7 +76,7 @@ function Gamestate:load()
     map:load(physics)
     self.map = map
 
-    intWindowX = 1270
+    intWindowX = 1200
     intWindowY = 700
     love.window.setMode( intWindowX, intWindowY )
 
@@ -90,6 +90,10 @@ function Gamestate:load()
     self.npcs = loadNpcs(physics)
 
     self.pickups = loadPickups(physics)
+    
+    
+    ---- Start music
+    soundmachine.playEntityAction("level", "underwater", "loop")
 
 ---------------
 end -- End load
@@ -109,7 +113,7 @@ function loadNpcs(physics)
     local npc3_spawnX = 700
     local npc3_spawnY = 400
     local npc3 = Character:new()
-    npc3:load(physics, npc3_spawnX, npc3_spawnY, "eel")
+    npc3:load(physics, npc3_spawnX, npc3_spawnY, "octopus")
 
     ---- Create pickups
     -- TODO: do this better! lots of lettuce!
@@ -240,7 +244,7 @@ function Gamestate:playerCollide(player, other, coll)
 
     if other:getUserData() == "pickup" then
         print "Player collided with pickup"
-        soundmachine.playEntityAction("dugong", "eat")
+        soundmachine.playEntityAction("dugong", "eat", "single")
         --self.animationTimer = 0.5
         --player.currentAnimation = player.animations["eat"]
         playerBoost = playerBoost + 5

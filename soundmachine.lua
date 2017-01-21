@@ -15,15 +15,23 @@ soundbank = {
         "assets/sounds/dugong/lettuce2.ogg",
         "assets/sounds/dugong/lettuce1.ogg"
         },
-      tags = {},
-      volume = 0.5
+      tag = {"squeak"},
+      volume = 0.3
+    },
+    fart = {
+      files = {
+        "assets/sounds/dugong/longfart1.ogg",
+        "assets/sounds/dugong/longfart2.ogg"
+        },
+      tag = {"fart"},
+      volume = 0.3
     }
   },
-  Level = {
-    Start = {
-      file = {"assets/sounds/level/Underwater_Pool-Mike_Koenig-355864284.ogg"},
-      tags = {"loop", "amb"},
-      volume =  0.5
+  level = {
+    underwater = {
+      files = {"assets/sounds/level/underwater1.ogg"},
+      tag = {"ambience"},
+      volume =  2
       }
   },
   GUI = {
@@ -31,21 +39,35 @@ soundbank = {
   }
 }
 
-soundmachine.playEntityAction = function(entityName, action)
+soundmachine.playEntityAction = function(entityName, action, behaviour)
 
-  variationSml = math.random(95, 105)*0.01
-  variationMed = math.random(90, 110)*0.01
-  volumeAdj = 1
+  volumeMultiplier = 1
   pitch = 1
 
-    
-if entityName == "dugong" and action == "eat" then
-
-    TEsound.play(soundbank[entityName][action].files[1],
-      soundbank[entityName][action].tags,
-      soundbank[entityName][action].volume*volumeAdj,
-      pitch)
+    if behaviour == "loop" then
+        TEsound.playLooping(soundbank[entityName][action].files[1],
+            soundbank[entityName][action].tag,
+            1000,
+            soundbank[entityName][action].volume*volumeMultiplier,
+            pitch)
+    elseif behaviour == "single" then
+        TEsound.play(soundbank[entityName][action].files[1],
+            soundbank[entityName][action].tag,
+            soundbank[entityName][action].volume*volumeMultiplier,
+            pitch)    
+    elseif behaviour == "basic" then
+        TEsound.play(soundbank[entityName][action].files[1],
+            soundbank[entityName][action].tag,
+            soundbank[entityName][action].volume*volumeMultiplier,
+            pitch)   
     end
+    
+--if entityName == "dugong" and action == "eat" then
+    --TEsound.play(soundbank[entityName][action].files[1],
+        --soundbank[entityName][action].tags,
+        --soundbank[entityName][action].volume*volumeAdj,
+        --pitch)        
+--end
     
     --[[
     

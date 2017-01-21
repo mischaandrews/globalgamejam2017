@@ -119,6 +119,7 @@ function Player:getKeyboardVector()
     if keysDown({"space"}) then
         self.animationTimer = 5
         self.currentAnimation = self.animations["eat"]
+        soundmachine.playEntityAction("dugong", "fart", "single")
     end
     return leftRight, upDown
 end
