@@ -36,9 +36,6 @@ function Gamestate:new()
     return o
 end
 
-local cellWidth = 100
-local cellHeight = 100
-
 ----------------------------------------------------- LOAD
 function Gamestate:load()
     
@@ -75,10 +72,6 @@ function Gamestate:load()
     physics:setCallbacks(beginContact, endContact, preSolve, postSolve)
     self.physics = physics
 
-    local map = Map:new()
-    map:load(physics, cellWidth, cellHeight)
-    self.map = map
-
     intWindowX = 1200
     intWindowY = 700
     love.window.setMode( intWindowX, intWindowY )
@@ -90,12 +83,16 @@ function Gamestate:load()
     player:load(physics, player_spawnX, player_spawnY, "dugong")
     self.player = player
 
+    local map = Map:new()
+    map:load(physics, player)
+    self.pickups = map:populateLettuces(physics)
+    self.map = map
+
     self.npcs = loadNpcs(physics)
 
 
     ---- Start music
     soundmachine.playEntityAction("level", "underwater", "loop")
-    self.pickups = populateLettuces(physics, map.activeGrid, cellWidth, cellHeight)
 
 ---------------
 end -- End load
@@ -116,10 +113,6 @@ function loadNpcs(physics)
     local npc3_spawnY = 400
     local npc3 = Character:new()
     npc3:load(physics, npc3_spawnX, npc3_spawnY, "octopus")
-
-    ---- Create pickups
-    -- TODO: do this better! lots of lettuce!
-    --self.pickups = {}
 
     return {npc1, npc2, npc3}
 
@@ -146,9 +139,7 @@ function Gamestate:update(dt)
     
     if not self.paused then
 
-        self.physics:update(dt) --this puts the world into motion
-
-        self.background:update(dt)
+        self.physics:update(dt)
 
         -- Update characters
         self.player:update(dt)
@@ -163,8 +154,6 @@ function Gamestate:update(dt)
 
         ---- Update camera
         self.camera:setPosition(self.player.x-(intWindowX/2), self.player.y - (intWindowY/2))
-
-        velocities = {}
 
     end
 

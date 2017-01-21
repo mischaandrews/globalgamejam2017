@@ -1,13 +1,17 @@
 require "Generation"
 
+local numCellsX = 128
+local numCellsY = 128
+
+local cellWidth = 100
+local cellHeight = 100
+
 Map = {
-    numCellsX = 128,
-    numCellsY = 128,
-    cellWidth,
-    cellHeight,
+    player,
     activeGrid,
     backGrid1,
     backGrid2,
+    backGrid3, -- invisible
     mapPhys
 }
 
@@ -18,26 +22,30 @@ function Map:new()
     return o
 end
 
-function Map:load(world, cellWidth, cellHeight)
+function Map:load(world, player)
 
     math.randomseed(12345)
 
-    self.activeGrid = buildGrid(self.numCellsX, self.numCellsY)
-    self.backGrid1 = buildGrid(self.numCellsX, self.numCellsY)
-    self.backGrid2 = buildGrid(self.numCellsX, self.numCellsY)
+    self.activeGrid = buildGrid(numCellsX, numCellsY)
+    self.backGrid1 = buildGrid(numCellsX, numCellsY)
+    self.backGrid2 = buildGrid(numCellsX, numCellsY)
+    self.backGrid3 = buildGrid(numCellsX, numCellsY)
 
-    self.cellWidth = cellWidth
-    self.cellHeight = cellHeight
-    
-    self:genPhysics(world)
+    self.player = player
+
+    --self:genPhysics(world)
+end
+
+function Map:populateLettuces(physics)
+    return populateLettuces(physics, self.activeGrid, cellWidth, cellHeight)
 end
 
 function Map:genPhysics(world)
     local mapPhys = {}
-    for j = 1, self.numCellsY do
-        for i = 1, self.numCellsX do
+    for j = 1, numCellsY do
+        for i = 1, numCellsX do
             if self.activeGrid[j][i] == "edge" then
-                genBlock(world, self.cellWidth * i, self.cellHeight * j, self.cellWidth, self.cellHeight)
+                genBlock(world, cellWidth * i, cellHeight * j, cellWidth, cellHeight)
             end
         end
     end
@@ -56,24 +64,29 @@ end
 
 function Map:draw(camera, winWidth, winHeight)
 
-    camera:set(0.15)
-    self:drawGrid(self.backGrid2, camera, winWidth, winHeight, 255, 0.15)
+    camera:set(0.12)
+    self:drawGrid(self.backGrid3, camera, winWidth, winHeight, 255, 0.12)
+    self:drawPlayerCell(self.backGrid3)
     camera:unset()
 
-    camera:set(0.33)
-    self:drawGrid(self.backGrid1, camera, winWidth, winHeight, 192, 0.33)
+    camera:set(0.25)
+    self:drawGrid(self.backGrid2, camera, winWidth, winHeight, 128, 0.25)
+    self:drawPlayerCell(self.backGrid2)
+    camera:unset()
+
+    camera:set(0.50)
+    self:drawGrid(self.backGrid1, camera, winWidth, winHeight, 128, 0.50)
+    self:drawPlayerCell(self.backGrid1)
     camera:unset()
 
     camera:set(1)
     self:drawGrid(self.activeGrid, camera, winWidth, winHeight, 128, 1)
+    --self:drawPlayerCell()
     camera:unset()
 
 end
 
 function Map:getDrawRange(camera, winWidth, winHeight, scale)
-
-    local cellWidth = self.cellWidth
-    local cellHeight = self.cellHeight
 
     local blocksToLeft = math.ceil ((camera.x - cellWidth / 2) / cellWidth)
     local blocksPerScreenW = math.ceil (winWidth / (cellWidth * scale))
@@ -84,9 +97,34 @@ function Map:getDrawRange(camera, winWidth, winHeight, scale)
     local blocksToBottom = blocksToTop + blocksPerScreenH
 
     return math.max (blocksToLeft, 1),
-           math.min (blocksToRight, self.numCellsX),
+           math.min (blocksToRight, numCellsX),
            math.max (blocksToTop, 1),
-           math.min (blocksToBottom, self.numCellsY)
+           math.min (blocksToBottom, numCellsY)
+end
+
+function Map:drawPlayerCell(grid)
+
+    local halfCellWidth = cellWidth / 2
+    local halfCellHeight = cellHeight / 2
+
+    local cx, cy = self.player:getCurrentCell(cellWidth, cellHeight)
+
+    if grid ~= nil and grid[cy][cx] ~= "free" then
+        love.graphics.setColor(200, 64, 64, 192)
+    else
+        love.graphics.setColor(200, 200, 64, 192)
+    end
+
+    local drawAtX = cellWidth * (cx-1)    -- Because lua indexes from 1
+                  + halfCellWidth         -- Because physics calls x,y the centre
+
+    local drawAtY = cellHeight * (cy-1)   -- Because lua indexes from 1
+                  + halfCellHeight        -- Because physics calls x,y the centre
+
+    love.graphics.rectangle(
+                "fill", drawAtX, drawAtY,
+                cellWidth, cellHeight)
+
 end
 
 function Map:drawGrid(grid, camera, winWidth, winHeight, alpha, scale)
@@ -96,8 +134,8 @@ function Map:drawGrid(grid, camera, winWidth, winHeight, alpha, scale)
 
     local blocksDrawn = 0
 
-    local halfCellWidth = self.cellWidth / 2
-    local halfCellHeight = self.cellHeight / 2
+    local halfCellWidth = cellWidth / 2
+    local halfCellHeight = cellHeight / 2
 
     for j = blocksToTop, blocksToBottom do
         for i = blocksToLeft, blocksToRight do
@@ -125,17 +163,17 @@ function Map:drawGrid(grid, camera, winWidth, winHeight, alpha, scale)
 
             love.graphics.setColor(colour_r, colour_g, colour_b, colour_a)
 
-            local drawAtX = self.cellWidth * (i-1)    -- Because lua indexes from 1
+            local drawAtX = cellWidth * (i-1)    -- Because lua indexes from 1
                           + halfCellWidth             -- Because physics calls x,y the centre
 
-            local drawAtY = self.cellHeight * (j-1)   -- Because lua indexes from 1
+            local drawAtY = cellHeight * (j-1)   -- Because lua indexes from 1
                           + halfCellHeight            -- Because physics calls x,y the centre
 
             blocksDrawn = blocksDrawn + 1
 
             love.graphics.rectangle(
                 "fill", drawAtX, drawAtY,
-                self.cellWidth, self.cellHeight)
+                cellWidth, cellHeight)
         end
     end
 

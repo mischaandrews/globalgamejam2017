@@ -13,10 +13,6 @@ function Background:new()
     return o
 end
 
-function Background:update(dt)
-
-end
-
 function Background:draw()
     love.graphics.setBackgroundColor(self.bgColor_r, self.bgColor_g, self.bgColor_b, self.bgColor_a)
 end
