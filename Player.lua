@@ -59,6 +59,11 @@ function Player:update(dt)
 
     self:updateMovement()
 
+    self:updateAnimation(dt)
+
+end
+
+function Player:updateAnimation(dt)
     --Update animation
     self.currentAnimation:update(dt)
     
@@ -68,7 +73,6 @@ function Player:update(dt)
            self.currentAnimation = self.animations["idle"] 
         end
     end
-
 end
 
 function Player:updateMovement()
