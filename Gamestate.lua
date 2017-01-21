@@ -133,16 +133,14 @@ function Gamestate:update(dt)
         for i=1,#self.npcs do
             self.npcs[i]:update(dt)
         end
-        
+
         for i=1,#self.pickups do
             self.pickups[i]:update(dt)
         end
-        
+
         ---- Update camera
-        playerX, playerY = self.player.x, self.player.y
-        self.camera.x = playerX - (intWindowX/2)
-        self.camera.y = playerY - (intWindowY/2)
-        
+        self.camera:setPosition(self.player.x-(intWindowX/2), self.player.y - (intWindowY/2))
+
         velocities = {}
         
     end

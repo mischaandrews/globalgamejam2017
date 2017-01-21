@@ -40,8 +40,8 @@ function Camera:scale(sx, sy)
 end
 
 function Camera:setPosition(x, y)
-  self.x = x or self.x
-  self.y = y or self.y
+  self.x = x
+  self.y = y
 end
 
 function Camera:getPosition()
