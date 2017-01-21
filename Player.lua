@@ -3,8 +3,6 @@ require "Animation"
 Player = {
     x,
     y,
-    vx,
-    vy,
     playerPhys,
     scale,
     animations,
