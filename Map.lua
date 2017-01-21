@@ -56,36 +56,31 @@ end
 
 function Map:draw(camera, winWidth, winHeight)
 
-    --camera:set(0.15)
-    --self:drawGrid(self.backGrid2, 255, 0.83)
-    --camera:unset()
+    camera:set(0.15)
+    self:drawGrid(self.backGrid2, camera, winWidth, winHeight, 255, 0.15)
+    camera:unset()
 
-    --camera:set(0.66)
-    --self:drawGrid(self.backGrid1, 128, 0.66)
-    --camera:unset()
+    camera:set(0.33)
+    self:drawGrid(self.backGrid1, camera, winWidth, winHeight, 192, 0.33)
+    camera:unset()
 
     camera:set(1)
-
-    local blocksToLeft, blocksToRight, blocksToTop, blocksToBottom =
-            self:getDrawRange(camera, winWidth, winHeight)
-
-    self:drawGrid(self.activeGrid,
-        blocksToLeft, blocksToRight,
-        blocksToTop, blocksToBottom,
-        128, 1)
-
+    self:drawGrid(self.activeGrid, camera, winWidth, winHeight, 128, 1)
     camera:unset()
 
 end
 
-function Map:getDrawRange(camera, winWidth, winHeight) --todo scale too?
+function Map:getDrawRange(camera, winWidth, winHeight, scale)
 
-    local blocksToLeft = math.ceil ((camera.x - self.cellWidth / 2) / self.cellWidth)
-    local blocksPerScreenW = math.ceil (winWidth / self.cellWidth)
+    local cellWidth = self.cellWidth
+    local cellHeight = self.cellHeight
+
+    local blocksToLeft = math.ceil ((camera.x - cellWidth / 2) / cellWidth)
+    local blocksPerScreenW = math.ceil (winWidth / (cellWidth * scale))
     local blocksToRight = blocksToLeft + blocksPerScreenW
 
-    local blocksToTop = math.ceil ((camera.y - self.cellHeight / 2) / self.cellHeight)
-    local blocksPerScreenH = math.ceil (winHeight / self.cellHeight)
+    local blocksToTop = math.ceil ((camera.y - cellHeight / 2) / cellHeight)
+    local blocksPerScreenH = math.ceil (winHeight / (cellHeight * scale))
     local blocksToBottom = blocksToTop + blocksPerScreenH
 
     return math.max (blocksToLeft, 1),
@@ -94,9 +89,12 @@ function Map:getDrawRange(camera, winWidth, winHeight) --todo scale too?
            math.min (blocksToBottom, self.numCellsY)
 end
 
-function Map:drawGrid(grid, blocksToLeft, blocksToRight, blocksToTop, blocksToBottom, alpha, scale)
+function Map:drawGrid(grid, camera, winWidth, winHeight, alpha, scale)
 
-    --local blocksDrawn = 0
+    local blocksToLeft, blocksToRight, blocksToTop, blocksToBottom =
+            self:getDrawRange(camera, winWidth, winHeight, scale)
+
+    local blocksDrawn = 0
 
     local halfCellWidth = self.cellWidth / 2
     local halfCellHeight = self.cellHeight / 2
@@ -133,11 +131,11 @@ function Map:drawGrid(grid, blocksToLeft, blocksToRight, blocksToTop, blocksToBo
             local drawAtY = self.cellHeight * (j-1)   -- Because lua indexes from 1
                           + halfCellHeight            -- Because physics calls x,y the centre
 
-            --blocksDrawn = blocksDrawn + 1
+            blocksDrawn = blocksDrawn + 1
 
             love.graphics.rectangle(
-                "fill", scale * drawAtX, scale * drawAtY,
-                scale * self.cellWidth, scale * self.cellHeight)
+                "fill", drawAtX, drawAtY,
+                self.cellWidth, self.cellHeight)
         end
     end
 
