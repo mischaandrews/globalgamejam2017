@@ -3,8 +3,8 @@ require "Generation"
 Map = {
     numCellsX = 64,
     numCellsY = 64,
-    cellWidth = 100,
-    cellHeight = 100,
+    cellWidth,
+    cellHeight,
     activeGrid,
     backGrid1,
     backGrid2,
@@ -18,7 +18,7 @@ function Map:new()
     return o
 end
 
-function Map:load(world)
+function Map:load(world, cellWidth, cellHeight)
 
     math.randomseed(12345)
 
@@ -26,6 +26,9 @@ function Map:load(world)
     self.backGrid1 = buildGrid(self.numCellsX, self.numCellsY)
     self.backGrid2 = buildGrid(self.numCellsX, self.numCellsY)
 
+    self.cellWidth = cellWidth
+    self.cellHeight = cellHeight
+    
     self:genPhysics(world)
 end
 

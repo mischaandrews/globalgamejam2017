@@ -34,6 +34,9 @@ function Gamestate:new()
     return o
 end
 
+local cellWidth = 100
+local cellHeight = 100
+
 ----------------------------------------------------- LOAD
 function Gamestate:load()
     
@@ -68,7 +71,7 @@ function Gamestate:load()
     self.physics = physics
 
     local map = Map:new()
-    map:load(physics)
+    map:load(physics, cellWidth, cellHeight)
     self.map = map
 
     intWindowX = 1270
@@ -84,7 +87,7 @@ function Gamestate:load()
 
     self.npcs = loadNpcs(physics)
 
-    self.pickups = loadPickups(physics)
+    self.pickups = populateLettuces(physics, map.activeGrid, cellWidth, cellHeight)
 
 ---------------
 end -- End load
@@ -113,13 +116,6 @@ function loadNpcs(physics)
     return {npc1, npc2, npc3}
 
 end
-
-function loadPickups(physics)
-
-    return populateLettuces(physics)
-
-end
-
 
 ----------------------------------------------------- UPDATE
 function Gamestate:update(dt)
@@ -160,9 +156,9 @@ function Gamestate:update(dt)
         self.camera:setPosition(self.player.x-(intWindowX/2), self.player.y - (intWindowY/2))
 
         velocities = {}
-        
+
     end
-    
+
 -----------------
 end -- End update
 
