@@ -38,8 +38,8 @@ function Player:load(world, x, y, characterSprite)
 
     self.playerPhys = loadPhysics(world, x, y)
 
-    self.animations = Animation.loadAnimations(characterSprite, {"idle", "move"})
-    self.currentAnimation = self.animations["move"]
+    self.animations = Animation.loadAnimations(characterSprite, {"idle", "move", "eat"})
+    self.currentAnimation = self.animations["idle"]
 
 end
 
@@ -99,15 +99,22 @@ function Player:getKeyboardVector()
 
     if keysDown({"left","a"}) then
         leftRight = leftRight - 1
+        self.currentAnimation = self.animations["move"]
     end
     if keysDown({"right","d"}) then
         leftRight = leftRight + 1
+        self.currentAnimation = self.animations["move"]
     end
     if keysDown({"up","w"}) then
         upDown = upDown - 1
+        self.currentAnimation = self.animations["move"]
     end
     if keysDown({"down","s"}) then
         upDown = upDown + 1
+        self.currentAnimation = self.animations["move"]
+    end
+    if keysDown({"space"}) then
+        self.currentAnimation = self.animations["eat"]
     end
     return leftRight, upDown
 end

@@ -52,17 +52,20 @@ function Animation:loadDugongSprite(animationName)
 
     self.width = 384
     self.height = 384
-    self.animationSpeed = 0.2
+    self.animationSpeed = 0.1
     self.numLayers = 5
     self.spriteLayers = {}
     self.numSpriteVariations = 1
 
     -- Idle
     if animationName == "idle" then
-        self.spriteLayers = createAnimationLayers("dugong", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 1, 1, 1}, math.random(self.numSpriteVariations))
+        self.spriteLayers = createAnimationLayers("dugong", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 6, 1, 1}, math.random(self.numSpriteVariations))
     -- Move
     elseif animationName == "move" then
-        self.spriteLayers = createAnimationLayers("dugong", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 8, 1, 1}, math.random(self.numSpriteVariations))
+        self.spriteLayers = createAnimationLayers("dugong", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 10, 1, 1}, math.random(self.numSpriteVariations))
+    -- Eat
+    elseif animationName == "eat" then
+        self.spriteLayers = createAnimationLayers("dugong", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 1, 1, 1}, math.random(self.numSpriteVariations))
     else
         print ("Couldn't load animation: " .. animationName)
     end
