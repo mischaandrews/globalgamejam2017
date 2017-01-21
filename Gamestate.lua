@@ -248,5 +248,10 @@ end
 
 function Gamestate:playerCollide(player, other, coll)
 
-    print ("Player collided with " .. other:getUserData())
+    if other:getUserData() == "pickup" then
+        print "Player collided with pickup"
+    elseif other:getUserData() == "edge" then
+        print "Player collided with edge" 
+    end
+
 end
