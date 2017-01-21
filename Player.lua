@@ -59,15 +59,13 @@ end
 
 
 function Player:switchFacingDirection()
-   
     if self.facingDirection == "right" then
         self.facingDirection = "left"
-        self.scaleX = self.scaleX * 1
+        self.scaleX = self.scaleX * -1
     elseif self.facingDirection == "left" then
         self.facingDirection = "right"
         self.scaleX = self.scaleX * -1
     end
-    
 end
 
 function Player:getCurrentCell(cellWidth, cellHeight)
