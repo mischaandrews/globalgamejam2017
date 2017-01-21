@@ -3,11 +3,12 @@ require "Animation"
 Player = {
     x,
     y,
+    vx,
+    vy,
+    playerPhys,
     scale,
     animations,
     currentAnimation,
-    vx,
-    vy,
     movementSpeed,
     healthPercent,
     boostPercent
@@ -19,6 +20,8 @@ function Player:new()
     self.__index = self
     return o
 end
+
+local playerRadius = 20
 
 function Player:load(world, x, y, characterSprite)
 
@@ -35,12 +38,25 @@ function Player:load(world, x, y, characterSprite)
     self.healthPercent = 100
     self.boostPercent = 100
 
+    self.playerPhys = loadPhysics(world)
+
     self.animations = Animation.loadAnimations(characterSprite, {"idle", "move"})
     self.currentAnimation = self.animations["move"]
 
 end
 
+function loadPhysics(world)
+    local playerPhys = {}
+    playerPhys.body = love.physics.newBody(world, x, y, "dynamic") 
+    playerPhys.shape = love.physics.newCircleShape(playerRadius)
+    playerPhys.fixture = love.physics.newFixture(playerPhys.body, playerPhys.shape, 1) 
+    playerPhys.fixture:setRestitution(0.9)
+    return playerPhys
+end
+
 function Player:update(dt)
+
+    self.playerPhys.body:applyForce(0, 10)
 
     local leftRight, upDown = self:getKeyboardVector()
 
@@ -49,6 +65,8 @@ function Player:update(dt)
 
     ---- Update animation
     self.currentAnimation:update(dt)
+
+    self.x, self.y = self.playerPhys.body:getPosition()
 
 end
 
