@@ -79,29 +79,31 @@ function Gamestate:load()
     
     ---- Create pickups
     -- TODO: do this better! lots of lettuce!
-    self.pickups = {}
-    
-    local pickup1_spawnX = 400
-    local pickup1_spawnY = 350
-    local pickup1 = Pickup:new()
-    pickup1:load(physics, pickup1_spawnX, pickup1_spawnY, "lettuce")
-    self.pickups[1] = pickup1
-    
-    local pickup2_spawnX = 250
-    local pickup2_spawnY = 100
-    local pickup2 = Pickup:new()
-    pickup2:load(physics, pickup2_spawnX, pickup2_spawnY, "lettuce")
-    self.pickups[2] = pickup2
-    
-    local pickup3_spawnX = 410
-    local pickup3_spawnY = 460
-    local pickup3 = Pickup:new()
-    pickup3:load(physics, pickup3_spawnX, pickup3_spawnY, "lettuce")
-    self.pickups[3] = pickup3
+    self.pickups = loadPickups(physics)
 
 ---------------
 end -- End load
 
+function loadPickups(physics)
+
+    local pickup1_spawnX = 400
+    local pickup1_spawnY = 350
+    local pickup1 = Pickup:new()
+    pickup1:load(physics, pickup1_spawnX, pickup1_spawnY, "lettuce")
+
+    local pickup2_spawnX = 250
+    local pickup2_spawnY = 100
+    local pickup2 = Pickup:new()
+    pickup2:load(physics, pickup2_spawnX, pickup2_spawnY, "lettuce")
+
+    local pickup3_spawnX = 410
+    local pickup3_spawnY = 460
+    local pickup3 = Pickup:new()
+    pickup3:load(physics, pickup3_spawnX, pickup3_spawnY, "lettuce")
+
+    return {pickup1, pickup2, pickup3}
+
+end
 
 
 ----------------------------------------------------- UPDATE
