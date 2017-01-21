@@ -33,6 +33,9 @@ function Gamestate:new()
     return o
 end
 
+--A reference to gameState just for use in the collision functions
+local collisionGameState
+
 ----------------------------------------------------- LOAD
 function Gamestate:load()
     
@@ -68,6 +71,7 @@ function Gamestate:load()
 
     self.pickups = loadPickups(physics)
 
+    collisionGameState = self
 ---------------
 end -- End load
 
@@ -213,6 +217,7 @@ end -- End draw
 -- b is the second fixture object in the collision.
 -- coll is the contact object created.
 
+-- collisionGameState : A reference to gameState just for use in the collision functions
 function beginContact(a, b, coll)
 
     print ("Collide " .. a:getUserData() .. " " .. b:getUserData())
