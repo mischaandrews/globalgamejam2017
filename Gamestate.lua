@@ -63,26 +63,28 @@ function Gamestate:load()
     player:load(physics, player_spawnX, player_spawnY, "dugong")
     self.player = player
 
-    self.npcs = {}
-    
+    self.npcs = loadNpcs(physics)
+
+    self.pickups = loadPickups(physics)
+
+---------------
+end -- End load
+
+function loadNpcs(physics)
+
     local npc1_spawnX = 350
     local npc1_spawnY = 250
     local npc1 = Character:new()
     npc1:load(physics, npc1_spawnX, npc1_spawnY, "octopus")
-    self.npcs[1] = npc1
 
     local npc2_spawnX = 400
     local npc2_spawnY = 400
     local npc2 = Character:new()
     npc2:load(physics, npc2_spawnX, npc2_spawnY, "octopus")
-    self.npcs[2] = npc2
-    
-    ---- Create pickups
-    -- TODO: do this better! lots of lettuce!
-    self.pickups = loadPickups(physics)
 
----------------
-end -- End load
+    return {npc1, npc2}
+
+end
 
 function loadPickups(physics)
 
