@@ -5,7 +5,8 @@ Map = {
     numCellsY = 64,
     cellWidth = 128,
     cellHeight = 128,
-    grid
+    grid,
+    mapPhys
 }
 
 function Map:new()
@@ -15,8 +16,27 @@ function Map:new()
     return o
 end
 
-function Map:load()
+function Map:load(world)
     self.grid = buildGrid(self.numCellsX, self.numCellsY)
+    self:genPhysics(world)
+end
+
+function Map:genPhysics(world)
+    local mapPhys = {}
+    for j = 1, self.numCellsY do
+        for i = 1, self.numCellsX do
+            if self.grid[j][i] == "edge" then
+                genBlock(world, self.cellWidth * i, self.cellHeight * j, self.cellWidth, self.cellHeight)
+            end
+        end
+    end
+    return mapPhys
+end
+
+function genBlock(world, x, y, width, height)
+    local body = love.physics.newBody(world, x, y, "static")
+    local shape = love.physics.newRectangleShape(width, height)
+    local fixture = love.physics.newFixture(body, shape, 1)
 end
 
 function Map:update(dt)
