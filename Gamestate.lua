@@ -70,7 +70,7 @@ function Gamestate:load()
     map:load(physics)
     self.map = map
 
-    intWindowX = 1370
+    intWindowX = 1270
     intWindowY = 700
     love.window.setMode( intWindowX, intWindowY )
 

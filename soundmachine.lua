@@ -9,8 +9,8 @@ end
 
 
 soundbank = {
-  Dugong = {
-    EatLettuce = {
+  dugong = {
+    eat = {
       file = {
         loop1 = "assets/sounds/dugong/lettuce1.ogg",
         loop2 = "assets/sounds/dugong/lettuce2.ogg"
@@ -38,6 +38,14 @@ soundmachine.playEntityAction = function(entityName, action)
   volumeAdj = 1
   pitch = 1
 
+    
+if entityName == "dugong" and action == "eat" then
+
+    TEsound.play(soundbank[entityName][action].file.loop1,
+      soundbank[entityName][action].tags,
+      soundbank[entityName][action].volume*volumeAdj,
+      pitch)
+    end
     
     --[[
     
