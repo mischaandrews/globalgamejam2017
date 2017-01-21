@@ -7,7 +7,8 @@ Character = {
     scaleY,
     animations,
     currentAnimations,
-    physics
+    physics,
+    spriteLayerNames
 }
 
 function Character:new()
@@ -30,7 +31,9 @@ function Character:load(world, x, y, characterSprite)
     self.scaleX = 0.45
     self.scaleY = 0.45
 
-    self.animations = Animation.loadAnimations(characterSprite, {"idle", "grab"})
+    self.spriteLayerNames = {"body", "bottomlegs", "rightarm", "leftarm", "face"}
+    
+    self.animations = Animation.loadAnimations(characterSprite, {"idle", "grab"}, self.spriteLayerNames)
     self.currentAnimations = self.animations["idle"]
 
     self.physics = {}
@@ -41,7 +44,10 @@ end
 
 
 function Character:update(dt)
-   self.currentAnimations:update(dt)
+  -- self.currentAnimations:update(dt, self.spriteLayerNames)
+    for i=1, #self.spriteLayerNames do
+        self.currentAnimations[self.spriteLayerNames[i]]:update(dt, self.spriteLayerNames)
+    end
 end
 
 function Character:draw()
@@ -51,7 +57,11 @@ function Character:draw()
     -- Bounding box
     --love.graphics.rectangle("line", self.x-3, self.y-3, 106,106)
     
-    self.currentAnimations:draw(self.x, self.y, self.scaleX, self.scaleY)
+    
+    for i=1, #self.spriteLayerNames do
+        self.currentAnimations[self.spriteLayerNames[i]]:draw(self.x, self.y, self.scaleX, self.scaleY, self.spriteLayerNames)
+    end
+    --self.currentAnimations:draw(self.x, self.y, self.scaleX, self.scaleY, self.spriteLayerNames)
     
 end
 

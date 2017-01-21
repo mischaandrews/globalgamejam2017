@@ -9,8 +9,12 @@ Player = {
     scaleY,
     animations,
     currentAnimations,
+    numLayers,
     movementSpeed,
-    boostPercent
+    boostPercent,
+    spriteLayerNames,
+    animationNames,
+    currentLayerAnimationNames
 }
 
 function Player:new()
@@ -40,6 +44,11 @@ function Player:load(world, x, y, characterSprite)
     self.movementSpeed = 6
     self.boostPercent = 50
     self.facingDirection = "left" -- left or right
+    self.spriteLayerNames = {"backfin", "body", "rearfin", "frontfin", "face"}
+    self.animationNames = {"idle", "move", "eat", "boost"}
+    
+    local initialAnimation = "idle"
+    self.currentLayerAnimationNames = {initialAnimation, initialAnimation, initialAnimation, initialAnimation, initialAnimation}
 
     self.physics = {}
     --Player:loadPhysics(world, x, y)
@@ -49,11 +58,18 @@ function Player:load(world, x, y, characterSprite)
     self.physics.fixture:setUserData({"player",self})
     self.physics.fixture:setRestitution(0.8)
 
-    self.animations = Animation.loadAnimations(characterSprite, {"idle", "move", "eat", "boost"})
+    self.animations = Animation.loadAnimations(characterSprite, self.animationNames, self.spriteLayerNames)
 
-    self.currentAnimations = self.animations["idle"]
-
-
+    self.currentAnimations = {}
+    
+    self.currentAnimations["backfin"] = self.animations[initialAnimation]["backfin"]
+    self.currentAnimations["body"] = self.animations[initialAnimation]["body"]
+    self.currentAnimations["rearfin"] = self.animations[initialAnimation]["rearfin"]
+    self.currentAnimations["frontfin"] = self.animations[initialAnimation]["frontfin"]
+    self.currentAnimations["face"] = self.animations[initialAnimation]["face"]
+    
+    self.numLayers = #self.currentAnimations
+    
 end
 
 
@@ -77,17 +93,11 @@ end
 function Player:update(dt)
 
     self:updateMovement()
-
     self:updateAnimation(dt)
-    
 
 end
 
-function Player:updateAnimation(dt)
-    --Update animation
-    self.currentAnimations:update(dt)
-    
-end
+
 
 function Player:updateMovement()
 
@@ -138,12 +148,14 @@ function Player:getKeyboardVector()
         movementKeyDown = true
     end
     if keysDown({"space"}) then
-        self.currentAnimations = self.animations["boost"]
+        --self.currentAnimations["rearfin"] = self.animations["boost"]
+        self:changeAnimationLayer("rearfin", "boost")
         --soundmachine.playEntityAction("dugong", "fart", "single")
     end
     
     if movementKeyDown == true then
-        self.currentAnimations = self.animations["move"]
+        self:changeAnimationLayer("rearfin", "move")
+        --self.currentAnimations["rearfin"] = self.animations["move"]
     end
     
     return leftRight, upDown
@@ -161,14 +173,55 @@ end
 
 function Player:resetCurrentAnimations(scope)
     if scope == "all" then
-        self.currentAnimations:reset()
+        self.animations:reset()
+    end
+end
+
+
+function Player:changeAnimationLayer(layerName, animationName)
+    
+    for i=1,#self.spriteLayerNames do
+       if self.spriteLayerNames[i] == layerName then
+           layerNumber = i 
+        end
+    end
+    
+    self.currentAnimations[layerName] = self.animations[animationName][layerName]
+    self.currentLayerAnimationNames[layerNumber] = animationName
+    --self.animations[animationName][layerName]:reset()
+    
+    --player:getUserData()[2].currentAnimations = player:getUserData()[2].animations["eat"] 
+    --player:getUserData()[2]:resetCurrentAnimations("all")
+end
+
+
+
+
+function Player:updateAnimation(dt)
+    --Update animation
+    --self.currentAnimations:update(dt)
+    --for i=1, #self.spriteLayerNames do 
+      --self.animations[self.currentAnimationName]:update(dt, self.spriteLayerNames)
+    --end
+    for i=1, #self.spriteLayerNames do
+        self.animations[self.currentLayerAnimationNames[i]][self.spriteLayerNames[i]]:update(dt, self.spriteLayerNames)
     end
 end
 
 function Player:draw()
     love.graphics.setColor(255, 255, 255)
-    self.currentAnimations:draw(self.x, self.y, self.scaleX, self.scaleY)
+    
+    for i=1, #self.spriteLayerNames do
+        self.animations[self.currentLayerAnimationNames[i]][self.spriteLayerNames[i]]:draw(self.x, self.y, self.scaleX, self.scaleY, self.spriteLayerNames)
+    end
+    
+    
+    --for i=1, #self.animationNames do 
+      --self.animations[self.currentAnimationName]:draw(self.x, self.y, self.scaleX, self.scaleY, self.spriteLayerNames)
+    --end
+    
+    --self.currentAnimations["face"]:draw(self.x, self.y, self.scaleX, self.scaleY)
     
     -- Bounding circle
-    --love.graphics.circle("line", self.x, self.y, playerRadius)
+    love.graphics.circle("line", self.x, self.y, playerRadius)
 end

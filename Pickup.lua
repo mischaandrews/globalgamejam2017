@@ -8,7 +8,8 @@ Pickup = {
     animations,
     currentAnimations,
     physics,
-    destroyed
+    destroyed,
+    spriteLayerNames
 }
 
 function Pickup:new()
@@ -34,7 +35,9 @@ function Pickup:load(world, x, y, pickupSprite)
     self.scaleX = 0.6
     self.scaleY = 0.6
 
-    self.animations = Animation.loadAnimations(pickupSprite, {"float"})
+    self.spriteLayerNames = {"body"}
+    
+    self.animations = Animation.loadAnimations(pickupSprite, {"float"}, self.spriteLayerNames)
     self.currentAnimations = self.animations["float"]
 
     self.physics = {}
@@ -72,7 +75,10 @@ end
 
 function Pickup:draw()
     love.graphics.setColor(255, 255, 255)
-    self.currentAnimations:draw(self.x, self.y, self.scaleX, self.scaleY)
+    --self.currentAnimations:draw(self.x, self.y, self.scaleX, self.scaleY, self.spriteLayerNames)
+    for i=1, #self.spriteLayerNames do
+        self.currentAnimations[self.spriteLayerNames[i]]:draw(self.x, self.y, self.scaleX, self.scaleY, self.spriteLayerNames)
+    end
     
     -- Bounding box
     --love.graphics.circle("line", self.x, self.y, pickupRadius)
