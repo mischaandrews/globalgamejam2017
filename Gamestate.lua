@@ -246,8 +246,8 @@ function Gamestate:playerCollide(player, other, coll)
         soundmachine.playEntityAction("dugong", "eat", "single")
         
         -- Play eating animation
-        player:getUserData()[2].animationTimer = 0.5
         player:getUserData()[2].currentAnimation = player:getUserData()[2].animations["eat"]
+        player:getUserData()[2]:resetCurrentAnimation()
         
         -- Increase available boost
         playerBoost = playerBoost + 5

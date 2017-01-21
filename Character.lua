@@ -62,3 +62,4 @@ function Character:characterSprite()
         return self.characterSprite
     end
 end
+

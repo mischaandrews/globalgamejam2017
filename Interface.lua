@@ -154,7 +154,7 @@ end -- End update
 function Interface:draw()
     
     drawBoostUI()
-    drawHealthUI()
+    --drawHealthUI()
             
 ---------------
 end -- End draw
