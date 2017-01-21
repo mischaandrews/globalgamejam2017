@@ -4,6 +4,7 @@ require "Physics"
 Player = {
     x,
     y,
+    z,
     physics,
     scaleX,
     scaleY,
@@ -38,9 +39,9 @@ function Player:load(world, x, y, characterSprite)
 
     self.x = x
     self.y = y
-    self.originalScale = 0.4
-    self.scaleX = self.originalScale
-    self.scaleY = self.originalScale
+    self.z = 0
+    self.scaleX = 0.4
+    self.scaleY = 0.4
     self.movementSpeed = 6
     self.boostPercent = 50
     self.facingDirection = "left" -- left or right
@@ -74,15 +75,13 @@ end
 
 
 function Player:switchFacingDirection()
-   
     if self.facingDirection == "right" then
         self.facingDirection = "left"
-        self.scaleX = self.originalScale * 1
+        self.scaleX = self.scaleX * -1
     elseif self.facingDirection == "left" then
         self.facingDirection = "right"
-        self.scaleX = self.originalScale * -1
+        self.scaleX = self.scaleX * -1
     end
-    
 end
 
 function Player:getCurrentCell(cellWidth, cellHeight)
@@ -90,14 +89,34 @@ function Player:getCurrentCell(cellWidth, cellHeight)
            math.ceil ((self.y - (cellHeight / 2)) / (cellHeight))
 end
 
-function Player:update(dt)
+function Player:update(dt, map)
 
     self:updateMovement()
     self:updateAnimation(dt)
 
+    self:updateTransitions(dt, map)
+
 end
 
+function Player:updateTransitions(dt, map)
 
+    local prepFartSpeed = 2
+    local execFartSpeed = 10
+
+    if love.keyboard.isDown("return") and
+       true and --Check amount of charge here
+       map.transitionState == "none" then
+        self.z = math.min(self.z + prepFartSpeed * dt, 1)
+    else
+        self.z = math.max(self.z - execFartSpeed * dt, 0)
+    end
+end
+
+function Player:updateAnimation(dt)
+    --Update animation
+    self.currentAnimations:update(dt)
+    
+end
 
 function Player:updateMovement()
 
@@ -210,18 +229,21 @@ end
 
 function Player:draw()
     love.graphics.setColor(255, 255, 255)
+
     
     for i=1, #self.spriteLayerNames do
-        self.animations[self.currentLayerAnimationNames[i]][self.spriteLayerNames[i]]:draw(self.x, self.y, self.scaleX, self.scaleY, self.spriteLayerNames)
+        self.animations[self.currentLayerAnimationNames[i]][self.spriteLayerNames[i]]:draw(
+        self.x,
+        self.y,
+        self.scaleX + self.z * 0.1,
+        self.scaleY + self.z * 0.1,
+        self.spriteLayerNames)
+    
     end
-    
-    
-    --for i=1, #self.animationNames do 
-      --self.animations[self.currentAnimationName]:draw(self.x, self.y, self.scaleX, self.scaleY, self.spriteLayerNames)
-    --end
-    
-    --self.currentAnimations["face"]:draw(self.x, self.y, self.scaleX, self.scaleY)
-    
+
+
+
+
     -- Bounding circle
     love.graphics.circle("line", self.x, self.y, playerRadius)
 end
