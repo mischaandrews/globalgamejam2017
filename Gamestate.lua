@@ -50,6 +50,7 @@ function Gamestate:load()
 
     intWindowX = 1000
     intWindowY = 550
+    love.window.setMode( intWindowX, intWindowY )
     
     ---- Load Physics
     local physics = love.physics.newWorld(0, 0, true)
