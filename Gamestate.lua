@@ -23,7 +23,9 @@ Gamestate = {
     physics,
     player,
     npcs,
-    pickups
+    pickups,
+    playerHealth,
+    playerBoost
 }
 
 function Gamestate:new()
@@ -43,6 +45,9 @@ function Gamestate:load()
     self.camera = Camera:new()
 
     self.background = Background:new()
+    
+    self.playerHealth = 100
+    playerBoost = 20
 
     ---- Load Physics
     local physics = love.physics.newWorld(0, 0, true)
@@ -251,6 +256,9 @@ function Gamestate:playerCollide(player, other, coll)
     if other:getUserData() == "pickup" then
         print "Player collided with pickup"
         soundmachine.playEntityAction("dugong", "eat")
+        --self.animationTimer = 0.5
+        --player.currentAnimation = player.animations["eat"]
+        playerBoost = playerBoost + 5
     elseif other:getUserData() == "edge" then
         print "Player collided with edge" 
     end

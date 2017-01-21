@@ -81,15 +81,13 @@ drawBoostUI = function ()
     local posX = intWindowX - (width + offsetX)
     local posY = intWindowY - (height + offsetY)
     
-    playerHealth = 95 -- todo
-
     -- draw the background (black)
     love.graphics.setColor(0, 0, 0)
     love.graphics.rectangle("fill", posX, posY, width, height)
     
     -- draw the bar (green)
     love.graphics.setColor(81, 199, 77)
-    love.graphics.rectangle("fill", posX, posY, playerHealth/100*width, height)
+    love.graphics.rectangle("fill", posX, posY, playerBoost/100*width, height)
     
     love.graphics.setColor(255, 255, 255)
     -- draw the sprite
@@ -110,7 +108,7 @@ drawHealthUI = function ()
     local posX = intWindowX - (width + offsetX)
     local posY = intWindowY - (height + offsetY)
     
-    playerBoost = 50 -- todo
+    playerHealth = 100 -- todo
 
     -- draw the background (black)
     love.graphics.setColor(0, 0, 0)
@@ -118,7 +116,7 @@ drawHealthUI = function ()
     
     -- draw the bar (pink)
     love.graphics.setColor(235, 55, 115)
-    love.graphics.rectangle("fill", posX, posY, playerBoost/100*width, height)
+    love.graphics.rectangle("fill", posX, posY, playerHealth/100*width, height)
     
     love.graphics.setColor(255, 255, 255)
     -- draw the sprite

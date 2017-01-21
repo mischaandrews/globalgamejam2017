@@ -117,10 +117,8 @@ function Player:getKeyboardVector()
         self.currentAnimation = self.animations["move"]
     end
     if keysDown({"space"}) then
-        self.animationTimer = 0.5
+        self.animationTimer = 5
         self.currentAnimation = self.animations["eat"]
-        --self.animationTimer = 0.5
-        --self.currentAnimation = self.animations["eat"]
     end
     return leftRight, upDown
 end
