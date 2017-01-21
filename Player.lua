@@ -88,15 +88,15 @@ end
 
 function Player:updateTransitions(dt, map)
 
-    local outFartSpeed = 2
+    local prepFartSpeed = 2
+    local execFartSpeed = 10
 
-    if love.keyboard.isDown("return") then
-
-        --Check amount of charge here
-        if true and map.transitionState == "none" then
-            self.z = math.min(self.z + outFartSpeed * dt, 1)
-        else
-        end
+    if love.keyboard.isDown("return") and
+       true and --Check amount of charge here
+       map.transitionState == "none" then
+        self.z = math.min(self.z + prepFartSpeed * dt, 1)
+    else
+        self.z = math.max(self.z - execFartSpeed * dt, 0)
     end
 end
 
@@ -185,7 +185,7 @@ end
 function Player:draw()
     love.graphics.setColor(255, 255, 255)
 
-    self.currentAnimations:draw(self.x, self.y, self.scaleX + self.z * 0.2, self.scaleY + self.z * 0.2)
+    self.currentAnimations:draw(self.x, self.y, self.scaleX + self.z * 0.1, self.scaleY + self.z * 0.1)
 
     -- Bounding circle
     --love.graphics.circle("line", self.x, self.y, playerRadius)
