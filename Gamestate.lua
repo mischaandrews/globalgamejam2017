@@ -43,17 +43,14 @@ function Gamestate:load()
     self.camera = Camera:new()
 
     self.background = Background:new()
-    
-
 
     local map = Map:new()
     map:load()
     self.map = map
 
-    ---- Variables
     intWindowX = 1000
     intWindowY = 550
-
+    
     ---- Load Physics
     local physics = love.physics.newWorld(0, 0, true)
     self.physics = physics
@@ -101,10 +98,6 @@ function Gamestate:load()
     pickup3:load(physics, pickup3_spawnX, pickup3_spawnY, "lettuce")
     self.pickups[3] = pickup3
 
-    ---- Initial graphics setup
-    love.window.setMode(intWindowX, intWindowY)
-    -- TODO: set window size
-
 ---------------
 end -- End load
 
@@ -133,8 +126,6 @@ function Gamestate:update(dt)
         self.physics:update(dt) --this puts the world into motion
 
         self.background:update(dt)
-
-        
 
         -- Update characters
         self.player:update(dt)

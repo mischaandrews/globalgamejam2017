@@ -10,7 +10,6 @@ local interface = Interface:new()
 local typography = Typography:new()
 
 function love.load()
-    love.window.setMode(1024, 768)
     gamestate:load()
     interface:load()
     typography:load()

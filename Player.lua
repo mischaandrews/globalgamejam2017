@@ -6,6 +6,8 @@ Player = {
     scale,
     animations,
     currentAnimation,
+    vx,
+    vy,
     movementSpeed,
     healthPercent,
     boostPercent
@@ -40,37 +42,32 @@ end
 
 function Player:update(dt)
 
+    local leftRight, upDown = self:getKeyboardVector()
+
+    self.x = self.x + dt * leftRight * 125
+    self.y = self.y + dt * upDown * 125
+
     ---- Update animation
     self.currentAnimation:update(dt)
 
-    ---- Keyboard RIGHT 
-    if love.keyboard.isDown("right") or love.keyboard.isDown("d") then
-        self.x = self.x + self.movementSpeed
-        self.currentAnimation = self.animations["move"]
+end
 
-    ---- Keyboard LEFT
-    elseif love.keyboard.isDown("left") or love.keyboard.isDown("a") then
-        self.x = self.x - self.movementSpeed
-        self.currentAnimation = self.animations["move"]
-
-    ---- Keyboard UP
-    elseif love.keyboard.isDown("up") or love.keyboard.isDown("w") then
-        self.y = self.y - self.movementSpeed
-        self.currentAnimation = self.animations["move"]
-
-    ---- Keyboard DOWN
-    elseif love.keyboard.isDown("down") or love.keyboard.isDown("s") then 
-        self.y = self.y + self.movementSpeed
-        self.currentAnimation = self.animations["move"]
-
-    -- TODO: combined states (up/right, down/left, etc)
-
-    -- NO KEYBOARD
-    else
-        movementKeyDown = false
-        self.currentAnimation = self.animations["idle"]
+function Player:getKeyboardVector()
+    local leftRight = 0
+    local upDown = 0
+    if love.keyboard.isDown("left") then
+        leftRight = leftRight - 1
     end
-
+    if love.keyboard.isDown("right") then
+        leftRight = leftRight + 1
+    end
+    if love.keyboard.isDown("up") then
+        upDown = upDown - 1
+    end
+    if love.keyboard.isDown("down") then
+        upDown = upDown + 1
+    end
+    return leftRight, upDown
 end
 
 function Player:draw()
