@@ -65,12 +65,15 @@ function Player:update(dt)
     forceY = forceY + playerGravY
 
     --Add player keyboard force
+    local keyBoardForce = 1400
     local leftRight, upDown = self:getKeyboardVector()
-    forceX = forceX + leftRight * 300
-    forceY = forceY + upDown * 300 
+    forceX = forceX + leftRight * keyBoardForce
+    forceY = forceY + upDown * keyBoardForce 
 
     --Limit max force - calculate drag perhaps?
-
+    local dragX, dragY = getDrag(self.playerPhys.body:getLinearVelocity())
+    forceX = forceX + dragX
+    forceY = forceY + dragY
 
     --Pass the force to the physics engine
     self.playerPhys.body:applyForce(forceX, forceY)
@@ -85,6 +88,11 @@ end
 function Player:getPlayerGravity()
     --Here we can apply sinking or floating in water, etc.
     return 0, 10
+end
+
+function getDrag(velX, velY)
+    local dragCoeff = -8
+    return dragCoeff * velX, dragCoeff * velY
 end
 
 function Player:getKeyboardVector()
