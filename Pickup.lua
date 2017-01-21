@@ -7,7 +7,8 @@ Pickup = {
     scaleY,
     animations,
     currentAnimation,
-    physics
+    physics,
+    destroyed
 }
 
 function Pickup:new()
@@ -42,13 +43,17 @@ function Pickup:load(world, x, y, pickupSprite)
     self.physics.fixture:setUserData({"pickup",self})
     self.physics.fixture:setRestitution(0.0) --TODO 
 
+    self.destroyed = false
+    
 end
 
 
 
 function Pickup:update(dt)
-    self:updateMovement()
-    self.currentAnimation:update(dt)
+    if self.destroyed == false then
+        self:updateMovement()
+        self.currentAnimation:update(dt)
+    end
 end
 
 function Pickup:updateMovement()
@@ -78,4 +83,14 @@ function Pickup:pickupSprite()
     else
         return self.pickupSprite
     end
+end
+
+
+function Pickup:destroy()
+-- TODO: please fix this John? thank you :)
+    self.x = -999999
+    self.y = -999999
+    self.physics.body:destroy()
+    self.destroyed = true
+
 end

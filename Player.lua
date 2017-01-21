@@ -118,10 +118,11 @@ end
 function Player:getKeyboardVector()
     local leftRight = 0
     local upDown = 0
+    local movementKeyDown = false
 
     if keysDown({"left","a"}) then
         leftRight = leftRight - 1
-        self.currentAnimation = self.animations["move"]
+        movementKeyDown = true
         if self.facingDirection == "right" then
             self:switchFacingDirection()
         end
@@ -129,25 +130,29 @@ function Player:getKeyboardVector()
     end
     if keysDown({"right","d"}) then
         leftRight = leftRight + 1
-        self.currentAnimation = self.animations["move"]
+        movementKeyDown = true
         if self.facingDirection == "left" then
             self:switchFacingDirection()
         end
-        
     end
     if keysDown({"up","w"}) then
         upDown = upDown - 1
-        self.currentAnimation = self.animations["move"]
+        movementKeyDown = true
     end
     if keysDown({"down","s"}) then
         upDown = upDown + 1
-        self.currentAnimation = self.animations["move"]
+        movementKeyDown = true
     end
     if keysDown({"space"}) then
         self.animationTimer = 5
         self.currentAnimation = self.animations["eat"]
         soundmachine.playEntityAction("dugong", "fart", "single")
     end
+    
+    if movementKeyDown == true and self.animationTimer <= 0 then
+        self.currentAnimation = self.animations["move"]
+    end
+    
     return leftRight, upDown
 end
 

@@ -217,32 +217,7 @@ end -- End draw
 
 -- a is the first fixture object in the collision.
 -- b is the second fixture object in the collision.
--- coll is the contact object created.
-
---[[
-local nameA = a:getUserData()[1]
-	  local nameB = b:getUserData()[1]
-
-	  local playDefaultSound = true
-	
-	  if (nameA ~= nil) and (nameB ~= nil) then
-	     if (nameA == "car" and nameB == "heart") or (nameA == "heart" and nameB == "car") then
-	        playDefaultSound = false
-	        
-	        if boolPlayerJustHit == false then
-	        	soundmachine.playEntityAction("Organ", "Slam")
-	        	intPlayerHealth = intPlayerHealth - 25
-	        	boolPlayerJustHit = true
-	        end
-	     elseif (nameA == "organ" and nameB == "hospital") or (nameA == "hospital" and nameB == "organ") then
-	        
-	        --Work out which collidee was the organ
-                if nameA == "organ" then
-                   org = a:getUserData()[2]
-                else
-                   org = b:getUserData()[2]
-            
-         --]]   
+-- coll is the contact object created. 
 
 function Gamestate:beginContact(a, b, coll)
     
@@ -264,11 +239,24 @@ end
 
 function Gamestate:playerCollide(player, other, coll)
     if other:getUserData()[1] == "pickup" then
+        
         print "Player collided with pickup"
+        
+        -- Play eating sound
         soundmachine.playEntityAction("dugong", "eat", "single")
+        
+        -- Play eating animation
         player:getUserData()[2].animationTimer = 0.5
         player:getUserData()[2].currentAnimation = player:getUserData()[2].animations["eat"]
+        
+        -- Increase available boost
         playerBoost = playerBoost + 5
+        if playerBoost > 100 then
+            playerBoost = 100
+        end
+        
+        -- Delete the lettuce
+        other:getUserData()[2]:destroy()
         
     elseif other:getUserData()[1] == "edge" then
         print "Player collided with edge" 
