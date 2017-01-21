@@ -72,15 +72,7 @@ function Player:switchFacingDirection()
 end
 
 
---[[
-function Player:loadPhysics(world, x, y)
-    self.physics.body = love.physics.newBody(world, x, y, "dynamic") 
-    self.physics.shape = love.physics.newCircleShape(playerRadius)
-    self.physics.fixture = love.physics.newFixture(physics.body, physics.shape, 1)
-    self.physics.fixture:setUserData("player")
-    self.physics.fixture:setRestitution(0.8)
-end
-]]--
+
 
 function Player:update(dt)
 

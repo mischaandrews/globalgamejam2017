@@ -219,10 +219,36 @@ end -- End draw
 -- b is the second fixture object in the collision.
 -- coll is the contact object created.
 
+--[[
+local nameA = a:getUserData()[1]
+	  local nameB = b:getUserData()[1]
+
+	  local playDefaultSound = true
+	
+	  if (nameA ~= nil) and (nameB ~= nil) then
+	     if (nameA == "car" and nameB == "heart") or (nameA == "heart" and nameB == "car") then
+	        playDefaultSound = false
+	        
+	        if boolPlayerJustHit == false then
+	        	soundmachine.playEntityAction("Organ", "Slam")
+	        	intPlayerHealth = intPlayerHealth - 25
+	        	boolPlayerJustHit = true
+	        end
+	     elseif (nameA == "organ" and nameB == "hospital") or (nameA == "hospital" and nameB == "organ") then
+	        
+	        --Work out which collidee was the organ
+                if nameA == "organ" then
+                   org = a:getUserData()[2]
+                else
+                   org = b:getUserData()[2]
+            
+         --]]   
+
 function Gamestate:beginContact(a, b, coll)
-    if (a:getUserData() == "player") then
+    
+    if (a:getUserData()[1] == "player") then    
         self:playerCollide(a, b, coll)
-    elseif (b:getUserData() == "player") then
+    elseif (b:getUserData()[1] == "player") then
         self:playerCollide(b, a, coll)
     end
 end
@@ -237,15 +263,14 @@ function Gamestate:postSolve(a, b, coll, normalimpulse, tangentimpulse)
 end
 
 function Gamestate:playerCollide(player, other, coll)
-    love.event.quit()
-    if other:getUserData()["type"] == "pickup" then
+    if other:getUserData()[1] == "pickup" then
         print "Player collided with pickup"
         soundmachine.playEntityAction("dugong", "eat", "single")
-        --player.animationTimer = 0.5
-        --player.currentAnimation = player.animations["eat"]
+        player:getUserData()[2].animationTimer = 0.5
+        player:getUserData()[2].currentAnimation = player:getUserData()[2].animations["eat"]
         playerBoost = playerBoost + 5
         
-    elseif other:getUserData()["type"] == "edge" then
+    elseif other:getUserData()[1] == "edge" then
         print "Player collided with edge" 
     end
 
