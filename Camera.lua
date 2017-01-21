@@ -13,10 +13,10 @@ function Camera:new()
     return o
 end
 
-function Camera:set()
+function Camera:set(scale)
   love.graphics.push()
   love.graphics.rotate(-self.rotation)
-  love.graphics.scale(1 / self.scaleX, 1 / self.scaleY)
+  love.graphics.scale(scale / self.scaleX, scale / self.scaleY)
   love.graphics.translate(-self.x, -self.y)
 end
 
