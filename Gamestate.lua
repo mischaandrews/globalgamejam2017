@@ -75,10 +75,6 @@ function Gamestate:load()
     physics:setCallbacks(beginContact, endContact, preSolve, postSolve)
     self.physics = physics
 
-    local map = Map:new()
-    map:load(physics, cellWidth, cellHeight)
-    self.map = map
-
     intWindowX = 1200
     intWindowY = 700
     love.window.setMode( intWindowX, intWindowY )
@@ -89,6 +85,10 @@ function Gamestate:load()
     local player = Player:new()
     player:load(physics, player_spawnX, player_spawnY, "dugong")
     self.player = player
+
+    local map = Map:new()
+    map:load(physics, player, cellWidth, cellHeight)
+    self.map = map
 
     self.npcs = loadNpcs(physics)
 

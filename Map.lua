@@ -3,6 +3,7 @@ require "Generation"
 Map = {
     numCellsX = 128,
     numCellsY = 128,
+    player,
     cellWidth,
     cellHeight,
     activeGrid,
@@ -18,7 +19,7 @@ function Map:new()
     return o
 end
 
-function Map:load(world, cellWidth, cellHeight)
+function Map:load(world, player, cellWidth, cellHeight)
 
     math.randomseed(12345)
 
@@ -29,7 +30,9 @@ function Map:load(world, cellWidth, cellHeight)
     self.cellWidth = cellWidth
     self.cellHeight = cellHeight
     
-    self:genPhysics(world)
+    self.player = player
+
+    --self:genPhysics(world)
 end
 
 function Map:genPhysics(world)
@@ -89,6 +92,27 @@ function Map:getDrawRange(camera, winWidth, winHeight, scale)
            math.min (blocksToBottom, self.numCellsY)
 end
 
+function Map:drawPlayerCell()
+
+    local halfCellWidth = self.cellWidth / 2
+    local halfCellHeight = self.cellHeight / 2
+
+    local cx, cy = self.player:getCurrentCell(self.cellWidth, self.cellHeight)
+
+    love.graphics.setColor(200, 64, 64, 192)
+
+    local drawAtX = self.cellWidth * (cx-1)    -- Because lua indexes from 1
+                  + halfCellWidth              -- Because physics calls x,y the centre
+
+    local drawAtY = self.cellHeight * (cy-1)   -- Because lua indexes from 1
+                  + halfCellHeight             -- Because physics calls x,y the centre
+
+    love.graphics.rectangle(
+                "fill", drawAtX, drawAtY,
+                self.cellWidth, self.cellHeight)
+
+end
+
 function Map:drawGrid(grid, camera, winWidth, winHeight, alpha, scale)
 
     local blocksToLeft, blocksToRight, blocksToTop, blocksToBottom =
@@ -138,6 +162,8 @@ function Map:drawGrid(grid, camera, winWidth, winHeight, alpha, scale)
                 self.cellWidth, self.cellHeight)
         end
     end
+
+    self:drawPlayerCell()
 
     --print (blocksDrawn)
 
