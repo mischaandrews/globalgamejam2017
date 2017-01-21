@@ -231,7 +231,11 @@ end -- End draw
 -- coll is the contact object created.
 
 function Gamestate:beginContact(a, b, coll)
-    print ("Collide " .. a:getUserData() .. " " .. b:getUserData())    
+    if (a:getUserData() == "player") then
+        self:playerCollide(a, b, coll)
+    elseif (b:getUserData() == "player") then
+        self:playerCollide(b, a, coll)
+    end
 end
 
 function Gamestate:endContact(a, b, coll)
@@ -241,4 +245,9 @@ function Gamestate:preSolve(a, b, coll)
 end
 
 function Gamestate:postSolve(a, b, coll, normalimpulse, tangentimpulse)
+end
+
+function Gamestate:playerCollide(player, other, coll)
+
+    print ("Player collided with " .. other:getUserData())
 end
