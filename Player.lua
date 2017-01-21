@@ -55,6 +55,14 @@ end
 
 function Player:update(dt)
 
+    self:updateMovement()
+
+    --Update animation
+    self.currentAnimation:update(dt)
+
+end
+
+function Player:updateMovement()
     local forceX = 0
     local forceY = 0
 
@@ -77,11 +85,9 @@ function Player:update(dt)
     --Pass the force to the physics engine
     self.playerPhys.body:applyForce(forceX, forceY)
 
-    ---- Update animation
-    self.currentAnimation:update(dt)
-
+    --Get the position back out of the physics engine
+    --From last frame, but whatever
     self.x, self.y = self.playerPhys.body:getPosition()
-
 end
 
 function Player:getPlayerGravity()
