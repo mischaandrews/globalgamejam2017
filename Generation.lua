@@ -1,5 +1,5 @@
 
-local chanceToStartBlock = 0.35
+local chanceToStartBlock = 0.45
 local birthLimit = 4
 local deathLimit = 3
 
