@@ -46,6 +46,7 @@ function Gamestate:load()
 
     ---- Load Physics
     local physics = love.physics.newWorld(0, 0, true)
+    physics:setCallbacks(beginContact, endContact, preSolve, postSolve)
     self.physics = physics
 
     local map = Map:new()
@@ -205,3 +206,24 @@ function Gamestate:draw()
 
 ---------------
 end -- End draw
+
+----------------------------------------------------- COLLISIONS
+
+-- a is the first fixture object in the collision.
+-- b is the second fixture object in the collision.
+-- coll is the contact object created.
+
+function beginContact(a, b, coll)
+
+    print ("Collide " .. a:getUserData() .. " " .. b:getUserData())
+
+end
+
+function endContact(a, b, coll)
+end
+
+function preSolve(a, b, coll)
+end
+
+function postSolve(a, b, coll, normalimpulse, tangentimpulse)
+end

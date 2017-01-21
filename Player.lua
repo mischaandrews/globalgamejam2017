@@ -47,7 +47,8 @@ function loadPhysics(world, x, y)
     local playerPhys = {}
     playerPhys.body = love.physics.newBody(world, x, y, "dynamic") 
     playerPhys.shape = love.physics.newCircleShape(playerRadius)
-    playerPhys.fixture = love.physics.newFixture(playerPhys.body, playerPhys.shape, 1) 
+    playerPhys.fixture = love.physics.newFixture(playerPhys.body, playerPhys.shape, 1)
+    playerPhys.fixture:setUserData("player")
     playerPhys.fixture:setRestitution(0.8)
     return playerPhys
 end

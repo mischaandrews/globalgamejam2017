@@ -37,6 +37,7 @@ function genBlock(world, x, y, width, height)
     local body = love.physics.newBody(world, x, y, "static")
     local shape = love.physics.newRectangleShape(width, height)
     local fixture = love.physics.newFixture(body, shape, 1)
+    fixture:setUserData("edge")
 end
 
 function Map:update(dt)
