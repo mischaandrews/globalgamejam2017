@@ -1,8 +1,9 @@
 require "Generation"
 
+local numCellsX = 128
+local numCellsY = 128
+
 Map = {
-    numCellsX = 128,
-    numCellsY = 128,
     player,
     cellWidth,
     cellHeight,
@@ -23,9 +24,9 @@ function Map:load(world, player, cellWidth, cellHeight)
 
     math.randomseed(12345)
 
-    self.activeGrid = buildGrid(self.numCellsX, self.numCellsY)
-    self.backGrid1 = buildGrid(self.numCellsX, self.numCellsY)
-    self.backGrid2 = buildGrid(self.numCellsX, self.numCellsY)
+    self.activeGrid = buildGrid(numCellsX, numCellsY)
+    self.backGrid1 = buildGrid(numCellsX, numCellsY)
+    self.backGrid2 = buildGrid(numCellsX, numCellsY)
 
     self.cellWidth = cellWidth
     self.cellHeight = cellHeight
@@ -37,8 +38,8 @@ end
 
 function Map:genPhysics(world)
     local mapPhys = {}
-    for j = 1, self.numCellsY do
-        for i = 1, self.numCellsX do
+    for j = 1, numCellsY do
+        for i = 1, numCellsX do
             if self.activeGrid[j][i] == "edge" then
                 genBlock(world, self.cellWidth * i, self.cellHeight * j, self.cellWidth, self.cellHeight)
             end
@@ -61,14 +62,17 @@ function Map:draw(camera, winWidth, winHeight)
 
     camera:set(0.15)
     self:drawGrid(self.backGrid2, camera, winWidth, winHeight, 255, 0.15)
+    self:drawPlayerCell(self.backGrid2)
     camera:unset()
 
     camera:set(0.33)
     self:drawGrid(self.backGrid1, camera, winWidth, winHeight, 192, 0.33)
+    self:drawPlayerCell(self.backGrid1)
     camera:unset()
 
     camera:set(1)
     self:drawGrid(self.activeGrid, camera, winWidth, winHeight, 128, 1)
+    --self:drawPlayerCell()
     camera:unset()
 
 end
@@ -87,19 +91,23 @@ function Map:getDrawRange(camera, winWidth, winHeight, scale)
     local blocksToBottom = blocksToTop + blocksPerScreenH
 
     return math.max (blocksToLeft, 1),
-           math.min (blocksToRight, self.numCellsX),
+           math.min (blocksToRight, numCellsX),
            math.max (blocksToTop, 1),
-           math.min (blocksToBottom, self.numCellsY)
+           math.min (blocksToBottom, numCellsY)
 end
 
-function Map:drawPlayerCell()
+function Map:drawPlayerCell(grid)
 
     local halfCellWidth = self.cellWidth / 2
     local halfCellHeight = self.cellHeight / 2
 
     local cx, cy = self.player:getCurrentCell(self.cellWidth, self.cellHeight)
 
-    love.graphics.setColor(200, 64, 64, 192)
+    if grid ~= nil and grid[cy][cx] ~= "free" then
+        love.graphics.setColor(200, 64, 64, 192)
+    else
+        love.graphics.setColor(200, 200, 64, 192)
+    end
 
     local drawAtX = self.cellWidth * (cx-1)    -- Because lua indexes from 1
                   + halfCellWidth              -- Because physics calls x,y the centre
@@ -162,8 +170,6 @@ function Map:drawGrid(grid, camera, winWidth, winHeight, alpha, scale)
                 self.cellWidth, self.cellHeight)
         end
     end
-
-    self:drawPlayerCell()
 
     --print (blocksDrawn)
 
