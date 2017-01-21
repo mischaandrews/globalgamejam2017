@@ -34,7 +34,10 @@ function Animation:load(spriteName, animationName)
        os.exit()
     end
     
+    
+    
 
+    
     if spriteName == "dugong" then
         self:loadDugongSprite(animationName)
     elseif spriteName == "octopus" then
@@ -56,6 +59,8 @@ function Animation:loadDugongSprite(animationName)
     self.numLayers = 5
     self.spriteLayers = {}
     self.numSpriteVariations = 1
+    
+    
 
     -- Idle
     if animationName == "idle" then
@@ -65,7 +70,10 @@ function Animation:loadDugongSprite(animationName)
         self.spriteLayers = createAnimationLayers("dugong", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 10, 1, 1}, math.random(self.numSpriteVariations))
     -- Eat
     elseif animationName == "eat" then
-        self.spriteLayers = createAnimationLayers("dugong", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "bounce"}, {1, 1, 1, 1, 1}, math.random(self.numSpriteVariations))
+        self.spriteLayers = createAnimationLayers("dugong", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "loop"}, {1, 1, 1, 1, 9}, math.random(self.numSpriteVariations))
+    -- Boost
+    elseif animationName == "boost" then
+        self.spriteLayers = createAnimationLayers("dugong", animationName, self.width, self.height, self.animationSpeed, self.numLayers, {"bounce", "bounce", "bounce", "bounce", "loop"}, {1, 1, 1, 1, 9}, math.random(self.numSpriteVariations))
     else
         print ("Couldn't load animation: " .. animationName)
     end
@@ -140,6 +148,7 @@ end
 
 
 
+
 function Animation:update(dt)
     for i=1,self.numLayers do
         self.spriteLayers[i]:update(dt)
@@ -175,3 +184,5 @@ function createAnimationLayers(assetName, animationName, width, height, animatio
 
     return layers
 end
+
+
