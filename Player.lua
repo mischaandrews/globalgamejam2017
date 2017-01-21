@@ -6,10 +6,11 @@ Player = {
     scale,
     animations,
     currentAnimation,
-
     vx,
-    vy
-
+    vy,
+    movementSpeed,
+    healthPercent,
+    boostPercent
 }
 
 function Player:new()
@@ -29,10 +30,13 @@ function Player:load(world, x, y, characterSprite)
 
     self.x = x
     self.y = y
-    self.scale = 0.6
+    self.scale = 0.35
+    self.movementSpeed = 6
+    self.healthPercent = 100
+    self.boostPercent = 100
 
-    self.animations = Animation.loadAnimations(characterSprite, {"idle", "walk"})
-    self.currentAnimation = self.animations["idle"]
+    self.animations = Animation.loadAnimations(characterSprite, {"idle", "move"})
+    self.currentAnimation = self.animations["move"]
 
 end
 

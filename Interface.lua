@@ -44,14 +44,43 @@ drawText = function ( fontStyle, textBoxSize, message, posX, posY, colourR, colo
 end
 
 -- Specific functions for drawing styled boxes/text
-drawDialogueBox = function ( message )
+drawPauseBox = function ( message )
     -- TODO: draw box
     local textBoxSize = 300
     drawText("large-ui", textBoxSize, message, (intWindowX/2) - (textBoxSize), (intWindowY/2) - textBoxSize, 255, 255, 255)
 end
 
-drawLittleMessage = function ( message, posX, posY )
-    drawText("small-ui", 50, message, posX, posY, 255, 255, 255)
+--drawLittleMessage = function ( message, posX, posY )
+  --  drawText("small-ui", 50, message, posX, posY, 255, 255, 255)
+--end
+
+
+
+-- Screens
+drawScreen = function ( screen ) 
+   
+    if screen == "pause" then
+       drawPauseBox("Paused") 
+    end
+    
+    if screen == "gameover" then
+       drawPauseBox("Game over") -- todo: change style
+    end
+    
+end
+
+
+
+drawBoostUI = function ()
+   
+    local width = 200
+    local height = 50
+    
+    local posX = 100
+    local posY = intWindowX - width - 20
+    
+    drawText("small-ui", width, "boosty", posX, posY, 255, 255, 255)
+    
 end
 
 ----------------------------------------------------- LOAD
@@ -70,6 +99,7 @@ end -- End load
 ----------------------------------------------------- UPDATE
 function Interface:update(dt)
     
+    --drawText("small-ui", 50, "booster", posX, posY, 255, 255, 255)
     
 -----------------
 end -- End update
@@ -82,7 +112,7 @@ end -- End update
 
 function Interface:draw()
     
-
+    drawBoostUI()
     
             
 ---------------

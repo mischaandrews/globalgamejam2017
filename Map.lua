@@ -27,17 +27,26 @@ function Map:draw()
     for j = 1, self.numCellsY do
         for i = 1, self.numCellsX do
             
-            local colour = 0; 
+            local colour_r = 0; 
+            local colour_g = 0;
+            local colour_b = 0;
+            
             
             if self.grid[j][i] == "free" then
-                colour = 172
+                colour_r = 40
+                colour_g = 91
+                colour_b = 93
             elseif self.grid[j][i] == "edge" then
-                colour = 64
+                colour_r = 18
+                colour_g = 44
+                colour_b = 45
             elseif self.grid[j][i] == "block" then
-                colour = 140
+                colour_r = 21
+                colour_g = 59
+                colour_b = 61
             end
             
-            love.graphics.setColor(colour, colour, colour, 255)
+            love.graphics.setColor(colour_r, colour_g, colour_b, 255)
             
             love.graphics.rectangle(
                 "fill", self.cellWidth * (i-1), self.cellHeight * (j-1), self.cellWidth, self.cellHeight)
