@@ -36,14 +36,14 @@ function Player:load(world, x, y, characterSprite)
     self.healthPercent = 50
     self.boostPercent = 50
 
-    self.playerPhys = loadPhysics(world, x, y)
+    self.playerPhys = Player.loadPhysics(world, x, y)
 
     self.animations = Animation.loadAnimations(characterSprite, {"idle", "move", "eat"})
     self.currentAnimation = self.animations["idle"]
 
 end
 
-function loadPhysics(world, x, y)
+function Player.loadPhysics(world, x, y)
     local playerPhys = {}
     playerPhys.body = love.physics.newBody(world, x, y, "dynamic") 
     playerPhys.shape = love.physics.newCircleShape(playerRadius)
