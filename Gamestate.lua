@@ -217,12 +217,13 @@ end -- End draw
 
 -- a is the first fixture object in the collision.
 -- b is the second fixture object in the collision.
--- coll is the contact object created.
+-- coll is the contact object created. 
 
 function Gamestate:beginContact(a, b, coll)
-    if (a:getUserData() == "player") then
+    
+    if (a:getUserData()[1] == "player") then    
         self:playerCollide(a, b, coll)
-    elseif (b:getUserData() == "player") then
+    elseif (b:getUserData()[1] == "player") then
         self:playerCollide(b, a, coll)
     end
 end
@@ -237,14 +238,27 @@ function Gamestate:postSolve(a, b, coll, normalimpulse, tangentimpulse)
 end
 
 function Gamestate:playerCollide(player, other, coll)
-
-    if other:getUserData() == "pickup" then
+    if other:getUserData()[1] == "pickup" then
+        
         print "Player collided with pickup"
+        
+        -- Play eating sound
         soundmachine.playEntityAction("dugong", "eat", "single")
-        --self.animationTimer = 0.5
-        --player.currentAnimation = player.animations["eat"]
+        
+        -- Play eating animation
+        player:getUserData()[2].animationTimer = 0.5
+        player:getUserData()[2].currentAnimation = player:getUserData()[2].animations["eat"]
+        
+        -- Increase available boost
         playerBoost = playerBoost + 5
-    elseif other:getUserData() == "edge" then
+        if playerBoost > 100 then
+            playerBoost = 100
+        end
+        
+        -- Delete the lettuce
+        other:getUserData()[2]:destroy()
+        
+    elseif other:getUserData()[1] == "edge" then
         print "Player collided with edge" 
     end
 

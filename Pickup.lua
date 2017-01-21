@@ -7,7 +7,8 @@ Pickup = {
     scaleY,
     animations,
     currentAnimation,
-    physics
+    physics,
+    destroyed
 }
 
 function Pickup:new()
@@ -35,22 +36,24 @@ function Pickup:load(world, x, y, pickupSprite)
     self.animations = Animation.loadAnimations(pickupSprite, {"float"})
     self.currentAnimation = self.animations["float"]
 
-    self.physics = Pickup.loadPhysics(world, x, y)
+    self.physics = {}
+    self.physics.body = love.physics.newBody(world, x, y, "dynamic") 
+    self.physics.shape = love.physics.newCircleShape(pickupRadius)
+    self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape, 1)
+    self.physics.fixture:setUserData({"pickup",self})
+    self.physics.fixture:setRestitution(0.0) --TODO 
+
+    self.destroyed = false
+    
 end
 
-function Pickup.loadPhysics(world, x, y)
-    local phys = {}
-    phys.body = love.physics.newBody(world, x, y, "dynamic") 
-    phys.shape = love.physics.newCircleShape(pickupRadius)
-    phys.fixture = love.physics.newFixture(phys.body, phys.shape, 1)
-    phys.fixture:setUserData("pickup")
-    phys.fixture:setRestitution(0.0) --TODO 
-    return phys
-end
+
 
 function Pickup:update(dt)
-    self:updateMovement()
-    self.currentAnimation:update(dt)
+    if self.destroyed == false then
+        self:updateMovement()
+        self.currentAnimation:update(dt)
+    end
 end
 
 function Pickup:updateMovement()
@@ -69,7 +72,9 @@ end
 function Pickup:draw()
     love.graphics.setColor(255, 255, 255)
     self.currentAnimation:draw(self.x, self.y, self.scaleX, self.scaleY)
-    love.graphics.circle("line", self.x, self.y, pickupRadius)
+    
+    -- Bounding box
+    --love.graphics.circle("line", self.x, self.y, pickupRadius)
 end
 
 function Pickup:pickupSprite()
@@ -78,4 +83,14 @@ function Pickup:pickupSprite()
     else
         return self.pickupSprite
     end
+end
+
+
+function Pickup:destroy()
+-- TODO: please fix this John? thank you :)
+    self.x = -999999
+    self.y = -999999
+    self.physics.body:destroy()
+    self.destroyed = true
+
 end
