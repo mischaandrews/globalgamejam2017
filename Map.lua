@@ -46,7 +46,9 @@ end
 function Map:update(dt)
 end
 
-function Map:draw()
+function Map:draw(camera)
+
+    camera:set()
 
     local halfCellWidth = self.cellWidth / 2
     local halfCellHeight = self.cellHeight / 2
@@ -84,5 +86,7 @@ function Map:draw()
                 "fill", drawAtX, drawAtY, self.cellWidth, self.cellHeight)
         end
     end
+
+    camera:unset()
 
 end

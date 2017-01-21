@@ -186,12 +186,11 @@ end -- End update
 
 function Gamestate:draw()
 
+    --Map handles its own camera setting (because of parallax)
+    self.map:draw(self.camera)
+
     ---- Set camera
     self.camera:set()
-
-    self.background:draw()
-
-    self.map:draw()
 
     ---- Draw characters
     self.player:draw()  
