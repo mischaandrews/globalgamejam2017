@@ -250,6 +250,7 @@ function Gamestate:playerCollide(player, other, coll)
 
     if other:getUserData() == "pickup" then
         print "Player collided with pickup"
+        soundmachine.playEntityAction("dugong", "eat")
     elseif other:getUserData() == "edge" then
         print "Player collided with edge" 
     end
