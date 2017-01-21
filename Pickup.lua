@@ -16,6 +16,8 @@ function Pickup:new()
     return o
 end
 
+local pickupRadius = 20
+
 function Pickup:load(world, x, y, pickupSprite)
 
     if pickupSprite == nil then
@@ -31,10 +33,17 @@ function Pickup:load(world, x, y, pickupSprite)
     self.animations = Animation.loadAnimations(pickupSprite, {"float"})
     self.currentAnimation = self.animations["float"]
 
-    self.physics = {}
-    --remember, the shape (the rectangle we create next) anchors to the body from its center
-    self.physics.body = love.physics.newBody(world, self.x, self.y, "dynamic") 
+    self.physics = Pickup.loadPhysics(world, x, y)
+end
 
+function Pickup.loadPhysics(world, x, y)
+    local phys = {}
+    phys.body = love.physics.newBody(world, x, y, "dynamic") 
+    phys.shape = love.physics.newCircleShape(pickupRadius)
+    phys.fixture = love.physics.newFixture(phys.body, phys.shape, 1)
+    phys.fixture:setUserData("pickup")
+    phys.fixture:setRestitution(0.0) --TODO 
+    return phys
 end
 
 function Pickup:update(dt)

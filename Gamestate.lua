@@ -46,6 +46,23 @@ function Gamestate:load()
 
     ---- Load Physics
     local physics = love.physics.newWorld(0, 0, true)
+
+    function beginContact(a, b, coll)
+        self:beginContact(a, b, coll)
+    end
+
+    function endContact(a, b, coll)
+        self:endContact(a, b, coll)
+    end
+
+    function preSolve(a, b, coll)
+        self:preSolve(a, b, coll)
+    end
+
+    function postSolve(a, b, coll, normalimpulse, tangentimpulse)
+        self:postSolve(a, b, coll, normalimpulse, tangentimpulse)
+    end
+
     physics:setCallbacks(beginContact, endContact, preSolve, postSolve)
     self.physics = physics
 
@@ -213,17 +230,24 @@ end -- End draw
 -- b is the second fixture object in the collision.
 -- coll is the contact object created.
 
-function beginContact(a, b, coll)
-
-    print ("Collide " .. a:getUserData() .. " " .. b:getUserData())
-
+function Gamestate:beginContact(a, b, coll)
+    if (a:getUserData() == "player") then
+        self:playerCollide(a, b, coll)
+    elseif (b:getUserData() == "player") then
+        self:playerCollide(b, a, coll)
+    end
 end
 
-function endContact(a, b, coll)
+function Gamestate:endContact(a, b, coll)
 end
 
-function preSolve(a, b, coll)
+function Gamestate:preSolve(a, b, coll)
 end
 
-function postSolve(a, b, coll, normalimpulse, tangentimpulse)
+function Gamestate:postSolve(a, b, coll, normalimpulse, tangentimpulse)
+end
+
+function Gamestate:playerCollide(player, other, coll)
+
+    print ("Player collided with " .. other:getUserData())
 end

@@ -38,14 +38,14 @@ function Player:load(world, x, y, characterSprite)
     self.boostPercent = 50
     self.animationTimer = 0 -- used by some animations to run for a certain amount of time
 
-    self.playerPhys = loadPhysics(world, x, y)
+    self.playerPhys = Player.loadPhysics(world, x, y)
 
     self.animations = Animation.loadAnimations(characterSprite, {"idle", "move", "eat", "boost"})
     self.currentAnimation = self.animations["idle"]
 
 end
 
-function loadPhysics(world, x, y)
+function Player.loadPhysics(world, x, y)
     local playerPhys = {}
     playerPhys.body = love.physics.newBody(world, x, y, "dynamic") 
     playerPhys.shape = love.physics.newCircleShape(playerRadius)
