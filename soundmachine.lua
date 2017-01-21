@@ -9,122 +9,27 @@ end
 
 
 soundbank = {
-  Placeholder = { -- Object
-    Dial = { -- Action
-      file = {"sound/placeholder/placeholderDial.ogg"},
-      tags = {"placeholder", "dial"},
-      volume =  1
-    },
-    Doctor = { -- Action
-      file = {"sound/placeholder/placeholderDoctor.ogg"},
-      tags = {"placeholder"},
-      volume =  0.2
-    },
-    Random = { -- Action
-      file =  {"sound/placeholder/placeholderEight.ogg", "sound/placeholder/placeholderForest.ogg", "sound/placeholder/placeholderPlease.ogg"},
-      tags =  {"placeholder", "random"},
-      volume =  1
-    }
-  },
   Dugong = {
-    Movement = {
+    EatLettuce = {
       file = {
-        loop1 = "sound/movement-squish-loop1.ogg",
-        loop2 = "sound/movement-squish-loop2.ogg",
-        loop3 = "sound/movement-squish-loop3.ogg",
-        loop4 = "sound/movement-squish-loop4.ogg"
+        loop1 = "assets/sounds/dugong/lettuce1.ogg",
+        loop2 = "assets/sounds/dugong/lettuce2.ogg"
         },
       tags = {},
       volume = 2.5
-    },
-    Collision = {
-      file = {"sound/impact-squish-med1.ogg",
-        "sound/impact-squish-med2.ogg",
-        "sound/impact-squish-med3.ogg",
-        "sound/impact-squish-sml1.ogg",
-        "sound/impact-squish-sml2.ogg",
-        "sound/impact-squish-sml3.ogg"
-      },
-      tags = {"gameplay", "impact", "collision"},
-      volume = 1    
-    },
-    Slam = {
-      file = {"sound/impact-squish-big1.ogg", "sound/impact-squish-big2.ogg", "sound/impact-squish-big3.ogg"},
-      tags = {"gameplay", "impact", "slam"},
-      volume = 0.8
-    },
-    Connect = {
-      file = {"sound/organ-connect1.ogg", "sound/organ-connect2.ogg", "sound/organ-connect3.ogg", "sound/organ-connect4.ogg", "sound/organ-connect5.ogg"},
-      tags = {"gameplay", "connect"},
-      volume = 2
-    },
-    Saved = {
-      file = {"sound/gui-collect.ogg"},
-      tags = {"gameplay", "saved"},
-      volume = 1}
+    }
   },
   Level = {
     Start = {
-      file = {"sound/amb-city-loop1.ogg"},
+      file = {"assets/sounds/level/Underwater_Pool-Mike_Koenig-355864284.ogg"},
       tags = {"loop", "amb"},
       volume =  0.5
-      },
-    Music = {
-      file = {
-        layer1 = {"sound/music-layer1-1.ogg", "sound/music-layer1-2.ogg"},
-        layer2 = {"sound/music-layer2-1.ogg", "sound/music-layer2-2.ogg", "sound/music-layer2-3.ogg", "sound/music-layer2-4.ogg"},
-        layer3 = {"sound/music-layer3-1.ogg", "sound/music-layer3-2.ogg"},
-        layer4 = {"sound/music-layer4-1.ogg", "sound/music-layer4-2.ogg", "sound/music-layer4-3.ogg"},
-        layer6 = {"sound/music-layer6.ogg"},
-        layer7 = {"sound/music-layer7-1.ogg", "sound/music-layer7-2.ogg"},
-        layer8 = {"sound/music-layer8-1.ogg", "sound/music-layer8-2.ogg"}        
-        },
-      tags = {},
-      volume = 1
-    },
-    Win = {
-      file = {"sound/music-win.ogg"},
-      tags = {"end", "win"},
-      volume =  1
-    },
-    Lose = {
-      file = {"sound/music-lose.ogg"},
-      tags = {"end", "lose"},
-      volume =  1
-    }
+      }
   },
   GUI = {
-    Alert = {
-      file = {"sound/gui-alert.ogg"},
-      tags = {"gameplay", "gui", "alert"},
-      volume =  0.8
-    },
-    Click = {
-      file = {"sound/gui-click.ogg"},
-      tags = {"gameplay", "gui", "connect"},
-      volume =  0.6
-    }
+
   }
 }
-
--- WEIRDNESS STARTS
-    --muslayer1 = {love.sound.newSoundData(soundbank["Level"]["Music"].file.layer1[1]),
-      --love.sound.newSoundData(soundbank["Level"]["Music"].file.layer1[2])}
-    --muslayer2 = {love.sound.newSoundData(soundbank["Level"]["Music"].file.layer2[1]),
-      --love.sound.newSoundData(soundbank["Level"]["Music"].file.layer2[2]),
-      --love.sound.newSoundData(soundbank["Level"]["Music"].file.layer2[3]),
-      --love.sound.newSoundData(soundbank["Level"]["Music"].file.layer2[4])}
-    --muslayer3 = {love.sound.newSoundData(soundbank["Level"]["Music"].file.layer3[1]),
-      --love.sound.newSoundData(soundbank["Level"]["Music"].file.layer3[2])}
-    --muslayer4 = {love.sound.newSoundData(soundbank["Level"]["Music"].file.layer4[1]),
-        --love.sound.newSoundData(soundbank["Level"]["Music"].file.layer4[2]),
-        --love.sound.newSoundData(soundbank["Level"]["Music"].file.layer4[3])}
-    --muslayer6 = {love.sound.newSoundData(soundbank["Level"]["Music"].file.layer6[1])}
-    --muslayer7 = {love.sound.newSoundData(soundbank["Level"]["Music"].file.layer7[1]),
-      --love.sound.newSoundData(soundbank["Level"]["Music"].file.layer7[2])}
-    --muslayer8 = {love.sound.newSoundData(soundbank["Level"]["Music"].file.layer8[1]),
-      --love.sound.newSoundData(soundbank["Level"]["Music"].file.layer7[2])}
--- WEIRDNESS ENDS
 
 soundmachine.playEntityAction = function(entityName, action)
 
