@@ -9,7 +9,7 @@ Player = {
     scaleX,
     scaleY,
     animations,
-    currentAnimation,
+    currentAnimations,
     movementSpeed,
     boostPercent
 }
@@ -52,7 +52,9 @@ function Player:load(world, x, y, characterSprite)
     self.physics.fixture:setRestitution(0.8)
 
     self.animations = Animation.loadAnimations(characterSprite, {"idle", "move", "eat", "boost"})
-    self.currentAnimation = self.animations["idle"]
+
+    self.currentAnimations = self.animations["idle"]
+
 
 end
 
@@ -100,14 +102,8 @@ end
 
 function Player:updateAnimation(dt)
     --Update animation
-    self.currentAnimation:update(dt)
+    self.currentAnimations:update(dt)
     
-    if self.currentAnimation == self.animations["eat"] then
-        --self.animationTimer = self.animationTimer - dt
-        --if self.animationTimer <= 0 then
-           --self.currentAnimation = self.animations["idle"] 
-        --end
-    end
 end
 
 function Player:updateMovement()
@@ -159,12 +155,12 @@ function Player:getKeyboardVector()
         movementKeyDown = true
     end
     if keysDown({"space"}) then
-        self.currentAnimation = self.animations["boost"]
+        self.currentAnimations = self.animations["boost"]
         --soundmachine.playEntityAction("dugong", "fart", "single")
     end
     
     if movementKeyDown == true then
-        self.currentAnimation = self.animations["move"]
+        self.currentAnimations = self.animations["move"]
     end
     
     return leftRight, upDown
@@ -180,14 +176,17 @@ function keysDown(keys)
    return false
 end
 
-function Player:resetCurrentAnimation()
-    self.currentAnimation:reset()
+function Player:resetCurrentAnimations(scope)
+    if scope == "all" then
+        self.currentAnimations:reset()
+    end
 end
 
 function Player:draw()
     love.graphics.setColor(255, 255, 255)
-    self.currentAnimation:draw(self.x, self.y, self.scaleX + self.z * 0.2, self.scaleY + self.z * 0.2)
-    
+
+    self.currentAnimations:draw(self.x, self.y, self.scaleX + self.z * 0.2, self.scaleY + self.z * 0.2)
+
     -- Bounding circle
     --love.graphics.circle("line", self.x, self.y, playerRadius)
 end

@@ -6,7 +6,7 @@ Character = {
     scaleX,
     scaleY,
     animations,
-    currentAnimation,
+    currentAnimations,
     physics
 }
 
@@ -30,8 +30,8 @@ function Character:load(world, x, y, characterSprite)
     self.scaleX = 0.45
     self.scaleY = 0.45
 
-    self.animations = Animation.loadAnimations(characterSprite, {"idle", "move"})
-    self.currentAnimation = self.animations["idle"]
+    self.animations = Animation.loadAnimations(characterSprite, {"idle", "grab"})
+    self.currentAnimations = self.animations["idle"]
 
     self.physics = {}
     --remember, the shape (the rectangle we create next) anchors to the body from its center
@@ -41,7 +41,7 @@ end
 
 
 function Character:update(dt)
-    self.currentAnimation:update(dt)
+   self.currentAnimations:update(dt)
 end
 
 function Character:draw()
@@ -51,7 +51,7 @@ function Character:draw()
     -- Bounding box
     --love.graphics.rectangle("line", self.x-3, self.y-3, 106,106)
     
-    self.currentAnimation:draw(self.x, self.y, self.scaleX, self.scaleY)
+    self.currentAnimations:draw(self.x, self.y, self.scaleX, self.scaleY)
     
 end
 

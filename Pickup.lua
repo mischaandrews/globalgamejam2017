@@ -6,7 +6,7 @@ Pickup = {
     scaleX,
     scaleY,
     animations,
-    currentAnimation,
+    currentAnimations,
     physics,
     destroyed
 }
@@ -35,7 +35,7 @@ function Pickup:load(world, x, y, pickupSprite)
     self.scaleY = 0.6
 
     self.animations = Animation.loadAnimations(pickupSprite, {"float"})
-    self.currentAnimation = self.animations["float"]
+    self.currentAnimations = self.animations["float"]
 
     self.physics = {}
     self.physics.body = love.physics.newBody(world, self.x, self.y, "dynamic") 
@@ -53,7 +53,7 @@ end
 function Pickup:update(dt)
     if self.destroyed == false then
         self:updateMovement()
-        self.currentAnimation:update(dt)
+        --self.currentAnimations:update(dt)
     end
 end
 
@@ -72,7 +72,7 @@ end
 
 function Pickup:draw()
     love.graphics.setColor(255, 255, 255)
-    self.currentAnimation:draw(self.x, self.y, self.scaleX, self.scaleY)
+    self.currentAnimations:draw(self.x, self.y, self.scaleX, self.scaleY)
     
     -- Bounding box
     --love.graphics.circle("line", self.x, self.y, pickupRadius)
