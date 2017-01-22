@@ -107,12 +107,7 @@ function Pickup:pickupSprite()
     end
 end
 
-
 function Pickup:destroy()
--- TODO: please fix this John? thank you :)
-    self.x = -999999
-    self.y = -999999
     self:clearPhysics()
     self.destroyed = true
-
 end

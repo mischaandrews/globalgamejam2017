@@ -105,8 +105,24 @@ function Gamestate:load()
 ---------------
 end -- End load
 
+function Gamestate:clearDestroyed()
+    local pickupsToRemove = {}
+    for i=1,#self.pickups do
+        if self.pickups[i].destroyed then
+            table.insert(pickupsToRemove, i)
+        end
+    end
+    local offs = 0
+    for i=1,#pickupsToRemove do
+        table.remove(self.pickups, i - offs)
+        offs = offs + 1
+    end
+end
+
 ----------------------------------------------------- UPDATE
 function Gamestate:update(dt)
+
+    self:clearDestroyed()
 
     ---- Keyboard listeners for UI (not characters)
 
