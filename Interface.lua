@@ -50,6 +50,7 @@ drawPauseBox = function ( message )
     drawText("large-ui", textBoxSize, message, (intWindowX/2) - (textBoxSize), (intWindowY/2) - textBoxSize, 255, 255, 255)
 end
 
+
 --drawLittleMessage = function ( message, posX, posY )
   --  drawText("small-ui", 50, message, posX, posY, 255, 255, 255)
 --end
