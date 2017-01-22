@@ -225,6 +225,7 @@ function Gamestate:postSolve(a, b, coll, normalimpulse, tangentimpulse)
 end
 
 function Gamestate:playerCollide(player, other, coll)
+
     if other:getUserData()[1] == "pickup" then
         
         print "Player collided with pickup"
@@ -247,6 +248,10 @@ function Gamestate:playerCollide(player, other, coll)
         
     elseif other:getUserData()[1] == "edge" then
         print "Player collided with edge" 
+
+    elseif other:getUserData()[1] == "octopus" then
+        print "Player collided with octopus"
     end
+
 
 end
