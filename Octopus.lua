@@ -20,7 +20,7 @@ end
 
 local octopusRadius = 30
 
-function Octopus:load(world, x, y, characterSprite)
+function Octopus:load(world, characterSprite)
 
     if characterSprite == nil then
        print ">>> Error! Octopus:load(characterSprite) was null <<<"
@@ -28,8 +28,8 @@ function Octopus:load(world, x, y, characterSprite)
        os.exit()
     end
 
-    self.x = x
-    self.y = y
+    self.x = 0
+    self.y = 0
     self.scaleX = 0.45
     self.scaleY = 0.45
 
@@ -38,22 +38,50 @@ function Octopus:load(world, x, y, characterSprite)
     self.animations = Animation.loadAnimations(characterSprite, {"idle", "grab"}, self.spriteLayerNames)
     self.currentAnimations = self.animations["idle"]
 
-    self.physics = {}
-    --remember, the shape (the rectangle we create next) anchors to the body from its center
-    self.physics.body = love.physics.newBody(world, self.x, self.y, "dynamic") 
+    self.physics = self:loadPhysics(world, self.x, self.y)
 
 end
 
-function Octopus:spawn(physics, player, map)
-    local npc2_spawnX = 450
-    local npc2_spawnY = 450
-    local npc2 = Octopus:new()
-    npc2:load(physics, npc2_spawnX, npc2_spawnY, "octopus")
-    return npc2
+function Octopus:loadPhysics(world, x, y)
+    local physics = {}
+    physics.body = love.physics.newBody(world, x, y, "dynamic")
+    physics.shape = love.physics.newCircleShape(octopusRadius)
+    physics.fixture = love.physics.newFixture(physics.body, physics.shape, 1)
+    physics.fixture:setUserData({"player",self})
+    physics.fixture:setRestitution(0.8)
+    return physics
+end
+
+function Octopus:spawn(player, map)
+    local x, y = self:getSpawnLocation()
+
+    self.physics.body:setPosition(x, y)
+    
+end
+
+function Octopus:getSpawnLocation()
+   return 450, 450 
 end
 
 function Octopus:update(dt)
-  -- self.currentAnimations:update(dt, self.spriteLayerNames)
+    self:updateMovement()
+    self:updateAnimation(dt)
+end
+
+function Octopus:updateMovement()
+
+    local forceX, forceY = getOceanForce(self)
+
+    --Pass the force to the physics engine
+    self.physics.body:applyForce(forceX, forceY)
+
+    --Get the position back out of the physics engine
+    --From last frame, but whatever
+    self.x, self.y = self.physics.body:getPosition()
+
+end
+
+function Octopus:updateAnimation(dt)
     for i=1, #self.spriteLayerNames do
         self.currentAnimations[self.spriteLayerNames[i]]:update(dt, self.spriteLayerNames)
     end
@@ -64,7 +92,12 @@ function Octopus:draw()
     love.graphics.setColor(255, 255, 255)
 
     for i=1, #self.spriteLayerNames do
-        self.currentAnimations[self.spriteLayerNames[i]]:draw(self.x, self.y, self.scaleX, self.scaleY, self.spriteLayerNames)
+        self.currentAnimations[self.spriteLayerNames[i]]:draw(
+            self.x + 37,
+            self.y + 37,
+            self.scaleX,
+            self.scaleY,
+            self.spriteLayerNames)
     end
 
     -- Bounding circle

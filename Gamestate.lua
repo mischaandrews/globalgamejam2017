@@ -94,7 +94,10 @@ function Gamestate:load()
     self.pickups = map:populateLettuces(physics)
     self.map = map
 
-    self.octopus = Octopus:spawn(physics, player, map)
+    local octopus = Octopus:new()
+    octopus:load(physics, "octopus")
+    octopus:spawn(player, map)
+    self.octopus = octopus
 
     
     
