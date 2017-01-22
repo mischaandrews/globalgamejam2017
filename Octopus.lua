@@ -70,8 +70,8 @@ function Octopus:getSpawnLocation(player, map)
     
 end
 
-function Octopus:update(dt, player)
-    self:updateMovement(player)
+function Octopus:update(dt, player, map)
+    self:updateMovement(player, map)
     self:updateAnimation(dt)
 end
 
@@ -79,10 +79,72 @@ function Octopus:fleePlayer(player)
     
     local vecX, vecY = normalise(self.x - player.x, self.y - player.y)
 
+    return 2000 * vecX, 2000 * vecY
+end
+
+function Octopus:headForOpenWater(map)
+
+    local ocx, ocy = getCellForPoint(self.x, self.y, map.cellWidth, map.cellHeight)
+
+    local candidateCells = getCandidateCells(ocx, ocy) 
+
+    local grid = map:getActiveGrid()
+    local lncx, lncy = getLeastNeighbourCell(grid, candidateCells)
+
+    local vecX = 0
+    local vecY = 0
+
+    if ocx ~= lncx and lncy ~= cy then
+        local x = map.cellWidth * lncx
+        local y = map.cellHeight * lncy
+        vecX, vecY = normalise(x - self.x, y - self.y)
+    end
+
     return 1500 * vecX, 1500 * vecY
 end
 
-function Octopus:updateMovement(player)
+function getLeastNeighbourCell(grid, candidateCells)
+
+    --Start with the center
+    local cx, cy = candidateCells[5][1], candidateCells[5][2]
+
+    local cellIdxWithMinNeighbours = 5
+    local lastNeighbourCount = countNeighbours(grid, cx, cy)
+
+    -- Compare to the rest
+    for ci=1,#candidateCells do
+
+       cx, cy = candidateCells[ci][1], candidateCells[ci][2]
+
+       local nc = countNeighbours(grid, cx, cy)
+       if nc < lastNeighbourCount then
+           lastNeighbourCount = nc
+           cellIdxWithMinNeighbours = ci
+       end
+
+   end
+
+   return candidateCells[cellIdxWithMinNeighbours][1],
+          candidateCells[cellIdxWithMinNeighbours][2]
+
+end
+
+function getCandidateCells(ocx, ocy)
+    return { {ocx-1,ocy-1} --top row
+           , {ocx  ,ocy-1}
+           , {ocx+1,ocy-1}
+
+           , {ocx-1,ocy  } --middle row
+           , {ocx  ,ocy  }
+           , {ocx+1,ocy  }
+
+           , {ocx-1,ocy+1} --bottom row
+           , {ocx  ,ocy+1}
+           , {ocx+1,ocy+1}
+           }
+end
+
+function Octopus:updateMovement(player, map)
 
     local forceX, forceY = getOceanForce(self)
 
@@ -90,6 +152,10 @@ function Octopus:updateMovement(player)
 
     forceX = forceX + repelX
     forceY = forceY + repelY
+
+    local openX, openY = self:headForOpenWater(map)
+    forceX = forceX + openX
+    forceY = forceY + openY
 
     --Pass the force to the physics engine
     self.physics.body:applyForce(forceX, forceY)
