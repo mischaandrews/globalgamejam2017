@@ -65,13 +65,13 @@ function Animation:loadDugongSprite(animationName, spriteLayerNames)
     
     if animationName == "idle" then
         animationModes = {"bounce", "bounce", "bounce", "bounce", "bounce"}
-        animationSpeedMultipliers = {1, 1, 0.2, 0.2, 1}
-        frameNums = {1, 1, 7, 5, 1} 
+        animationSpeedMultipliers = {0.2, 1, 0.2, 0.2, 1}
+        frameNums = {5, 1, 7, 5, 1} 
         
     elseif animationName == "move" then
         animationModes = {"bounce", "bounce", "bounce", "bounce", "bounce"}
-        animationSpeedMultipliers = {1, 1, 1, 1.4, 1}
-        frameNums = {1, 1, 10, 11, 1}
+        animationSpeedMultipliers = {1.4, 1, 1, 1.4, 1}
+        frameNums = {17, 1, 10, 11, 1}
         
     elseif animationName == "eat" then
         animationModes = {"once", "once", "once", "once", "once"}
@@ -79,9 +79,9 @@ function Animation:loadDugongSprite(animationName, spriteLayerNames)
         frameNums = {1, 1, 1, 1, 9}
         
     elseif animationName == "boost" then
-        animationModes = {"bounce", "bounce", "bounce", "bounce", "bounce"}
+        animationModes = {"bounce", "bounce", "bounce", "bounce", "once"}
         animationSpeedMultipliers = {1, 1, 3, 1, 1}
-        frameNums = {1, 1, 10, 1, 1}
+        frameNums = {1, 1, 10, 1, 3}
     else
         print ("Couldn't load animation: " .. animationName)
     end
