@@ -24,3 +24,8 @@ function getOceanDrag(velX, velY)
     local dragCoeff = -8
     return dragCoeff * velX, dragCoeff * velY
 end
+
+function getCellForPoint(x, y, cellWidth, cellHeight)
+    return math.ceil ((x - (cellWidth / 2)) / (cellWidth)),
+           math.ceil ((y - (cellHeight / 2)) / (cellHeight))
+end

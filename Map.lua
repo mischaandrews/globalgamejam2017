@@ -117,18 +117,18 @@ function Map:drawPlayerCell(grid)
     local halfCellWidth = cellWidth / 2
     local halfCellHeight = cellHeight / 2
 
-    local cx, cy = self.player:getCurrentCell(cellWidth, cellHeight)
+    local pcx, pcy = getCellForPoint(self.player.x, self.player.y, cellWidth, cellHeight)
 
-    if grid ~= nil and grid[cy][cx] ~= "free" then
+    if grid ~= nil and grid[pcy][pcx] ~= "free" then
         love.graphics.setColor(200, 64, 64, 224 * self.player.z)
     else
         love.graphics.setColor(200, 200, 64, 224 * self.player.z)
     end
 
-    local drawAtX = cellWidth * (cx-1)    -- Because lua indexes from 1
+    local drawAtX = cellWidth * (pcx-1)    -- Because lua indexes from 1
                   + halfCellWidth         -- Because physics calls x,y the centre
 
-    local drawAtY = cellHeight * (cy-1)   -- Because lua indexes from 1
+    local drawAtY = cellHeight * (pcy-1)   -- Because lua indexes from 1
                   + halfCellHeight        -- Because physics calls x,y the centre
 
     love.graphics.rectangle(

@@ -92,11 +92,6 @@ function Player:switchFacingDirection()
     end
 end
 
-function Player:getCurrentCell(cellWidth, cellHeight)
-    return math.ceil ((self.x - (cellWidth / 2)) / (cellWidth)),
-           math.ceil ((self.y - (cellHeight / 2)) / (cellHeight))
-end
-
 function Player:update(dt, map)
 
     self:updateMovement()
