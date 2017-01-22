@@ -251,6 +251,9 @@ function Gamestate:playerCollide(player, other, coll)
 
     elseif other:getUserData()[1] == "octopus" then
         print "Player collided with octopus"
+
+        other:getUserData()[2]:transitionToNextGrid()
+
     end
 
 

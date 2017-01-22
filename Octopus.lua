@@ -52,6 +52,9 @@ function Octopus:loadPhysics(world, x, y)
     return physics
 end
 
+function Octopus:transitionToNextGrid()
+end
+
 function Octopus:spawn(player, map)
     local x, y = self:getSpawnLocation(player, map)
 
