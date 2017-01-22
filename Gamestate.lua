@@ -8,7 +8,6 @@ require "Camera"
 require "Map"
 require "Interface"
 require "Player"
-require "Tile"
 require "TEsound"
 require "soundmachine"
 
