@@ -55,13 +55,8 @@ function Player:load(world, x, y, characterSprite)
     local initialAnimation = "idle"
     self.currentLayerAnimationNames = {initialAnimation, initialAnimation, initialAnimation, initialAnimation, initialAnimation}
 
-    self.physics = {}
-    --Player:loadPhysics(world, x, y)
-    self.physics.body = love.physics.newBody(world, x, y, "dynamic") 
-    self.physics.shape = love.physics.newCircleShape(playerRadius)
-    self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape, 1)
-    self.physics.fixture:setUserData({"player",self})
-    self.physics.fixture:setRestitution(0.8)
+    self.physics = self:loadPhysics(world, x, y)
+
 
     self.animations = Animation.loadAnimations(characterSprite, self.animationNames, self.spriteLayerNames)
 
@@ -77,6 +72,15 @@ function Player:load(world, x, y, characterSprite)
     
 end
 
+function Player:loadPhysics(world, x, y)
+    local physics = {}
+    physics.body = love.physics.newBody(world, x, y, "dynamic")
+    physics.shape = love.physics.newCircleShape(playerRadius)
+    physics.fixture = love.physics.newFixture(physics.body, physics.shape, 1)
+    physics.fixture:setUserData({"player",self})
+    physics.fixture:setRestitution(0.8)
+    return physics
+end
 
 function Player:switchFacingDirection()
     if self.facingDirection == "right" then
