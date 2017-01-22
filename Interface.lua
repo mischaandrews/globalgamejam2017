@@ -97,7 +97,7 @@ drawBoostUI = function ()
 end
 
 
-
+--[[
 drawHealthUI = function ()
    
     local width = 200
@@ -123,6 +123,7 @@ drawHealthUI = function ()
     --love.graphics.draw(imgHealthBar, posX, posY)
     
 end
+]]--
 
 ----------------------------------------------------- LOAD
 function Interface:load()
@@ -154,7 +155,6 @@ end -- End update
 function Interface:draw()
     
     drawBoostUI()
-    --drawHealthUI()
             
 ---------------
 end -- End draw

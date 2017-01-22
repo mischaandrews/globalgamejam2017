@@ -12,7 +12,6 @@ Player = {
     currentAnimations,
     numLayers,
     movementSpeed,
-    boostPercent,
     spriteLayerNames,
     animationNames,
     currentLayerAnimationNames
@@ -43,7 +42,6 @@ function Player:load(world, x, y, characterSprite)
     self.scaleX = 0.4
     self.scaleY = 0.4
     self.movementSpeed = 6
-    self.boostPercent = 50
     self.facingDirection = "left" -- left or right
     self.spriteLayerNames = {"backfin", "body", "rearfin", "frontfin", "face"}
     self.animationNames = {"idle", "move", "eat", "boost"}
@@ -169,14 +167,13 @@ function Player:getKeyboardVector()
         movementKeyDown = true
     end
     if keysDown({"space"}) then
-        --self.currentAnimations["rearfin"] = self.animations["boost"]
         self:changeAnimationLayer("rearfin", "boost")
-        --soundmachine.playEntityAction("dugong", "fart", "single")
+        soundmachine.playEntityAction("dugong", "fart", "single")
+        playerBoost = playerBoost - 2
     end
     
     if movementKeyDown == true then
         self:changeAnimationLayer("rearfin", "move")
-        --self.currentAnimations["rearfin"] = self.animations["move"]
     end
     
     return leftRight, upDown
@@ -192,9 +189,31 @@ function keysDown(keys)
    return false
 end
 
-function Player:resetCurrentAnimations(scope)
+function Player:resetCurrentAnimations()
+    
+    
+    --local bVal = self.spriteLayerNames["face"]
+    local anim = self.animations["eat"]
+    
+    -- TODO: fix this Mish!
+                
+    if anim == nil then
+        os.exit()
+    end
+    
+    local scope = ""
     if scope == "all" then
-        self.animations:reset()
+        
+        for i=1, #self.animationNames do
+            for j=1, #self.spriteLayerNames do
+                local iVal = self.animationNames[i]
+                local jVal = self.spriteLayerNames[j]
+                local anim = self.animations[iVal][jVal]
+                anim:reset()
+            end
+        end
+        
+        --self.animations:reset()
     end
 end
 
@@ -209,10 +228,8 @@ function Player:changeAnimationLayer(layerName, animationName)
     
     self.currentAnimations[layerName] = self.animations[animationName][layerName]
     self.currentLayerAnimationNames[layerNumber] = animationName
-    --self.animations[animationName][layerName]:reset()
+    self:resetCurrentAnimations("all")
     
-    --player:getUserData()[2].currentAnimations = player:getUserData()[2].animations["eat"] 
-    --player:getUserData()[2]:resetCurrentAnimations("all")
 end
 
 
@@ -220,10 +237,6 @@ end
 
 function Player:updateAnimation(dt)
     --Update animation
-    --self.currentAnimations:update(dt)
-    --for i=1, #self.spriteLayerNames do 
-      --self.animations[self.currentAnimationName]:update(dt, self.spriteLayerNames)
-    --end
     for i=1, #self.spriteLayerNames do
         self.animations[self.currentLayerAnimationNames[i]][self.spriteLayerNames[i]]:update(dt, self.spriteLayerNames)
     end

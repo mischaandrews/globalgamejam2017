@@ -5,8 +5,7 @@ Animation = {
     height,
     animationSpeed,
     numLayers,
-    spriteLayers,
-    spriteLayerNames
+    spriteLayers
 }
 
 function Animation:new()
@@ -23,7 +22,7 @@ function Animation.loadAnimations(spriteName, animationNames, spriteLayerNames)
         animations[animationNames[i]] = {}
         for j=1,#spriteLayerNames do
             animations[animationNames[i]][spriteLayerNames[j]] = Animation:new()
-            animations[animationNames[i]][spriteLayerNames[j]]:load(spriteName,     animationNames[i], spriteLayerNames[j])
+            animations[animationNames[i]][spriteLayerNames[j]]:load(spriteName,     animationNames[i], spriteLayerNames)
         end
     end
     
@@ -32,13 +31,11 @@ end
 
 function Animation:load(spriteName, animationName, spriteLayerNames)
 
-
     if spriteName == nil then
        print ">>> Error! Animation:load(spriteName) was null <<<"
        love.event.quit()
        os.exit()
     end
-    
     
     
     self.spriteLayers = {}
@@ -84,20 +81,9 @@ function Animation:loadDugongSprite(animationName, spriteLayerNames)
         print ("Couldn't load animation: " .. animationName)
     end
     
-    --for i=1, #spriteLayerNames do 
-        --TODO: fix loop
-        -- self.spriteLayers[spriteLayerNames[i]] = createAnimationLayer("dugong", animationName, self.width, self.height, self.animationSpeed * (1/animationSpeedModifier), i, animationModes[i], frameNums[i], math.random(self.numSpriteVariations))
-        self.spriteLayers["backfin"] = createAnimationLayer("dugong", animationName, self.width, self.height, self.animationSpeed * (1/animationSpeedModifier), 1, animationModes[1], frameNums[1], math.random(self.numSpriteVariations))
-        
-        self.spriteLayers["body"] = createAnimationLayer("dugong", animationName, self.width, self.height, self.animationSpeed * (1/animationSpeedModifier), 2, animationModes[2], frameNums[2], math.random(self.numSpriteVariations))
-
-        self.spriteLayers["rearfin"] = createAnimationLayer("dugong", animationName, self.width, self.height, self.animationSpeed * (1/animationSpeedModifier), 3, animationModes[3], frameNums[3], math.random(self.numSpriteVariations))
-
-        self.spriteLayers["frontfin"] = createAnimationLayer("dugong", animationName, self.width, self.height, self.animationSpeed * (1/animationSpeedModifier), 4, animationModes[4], frameNums[4], math.random(self.numSpriteVariations))
-
-        self.spriteLayers["face"] = createAnimationLayer("dugong", animationName, self.width, self.height, self.animationSpeed * (1/animationSpeedModifier), 5, animationModes[5], frameNums[5], math.random(self.numSpriteVariations))
-    --end
-    
+    for i=1, #spriteLayerNames do 
+         self.spriteLayers[spriteLayerNames[i]] = createAnimationLayer("dugong", animationName, self.width, self.height, self.animationSpeed * (1/animationSpeedModifier), i, animationModes[i], frameNums[i], math.random(self.numSpriteVariations))
+    end
     
     return self.spriteLayers
     
@@ -123,24 +109,10 @@ function Animation:loadOctopusSprite(animationName, spriteLayerNames)
         print ("Couldn't load animation: " .. animationName)
     end
     
-    -- TODO: fix loop?
-    --for i=1, #spriteLayerNames do 
-        --self.spriteLayers[spriteLayerNames[i]] = createAnimationLayer("octopus", animationName, self.width, self.height, self.animationSpeed, i, animationModes[i], frameNums[i], math.random(self.numSpriteVariations))
-    --end
-    
-    self.spriteLayerNames = {"body", "bottomlegs", "rightarm", "leftarm", "face"}
-    
-    
-    self.spriteLayers["body"] = createAnimationLayer("octopus", animationName, self.width, self.height, self.animationSpeed, 1, animationModes[1], frameNums[1], math.random(self.numSpriteVariations))
-    
-    self.spriteLayers["bottomlegs"] = createAnimationLayer("octopus", animationName, self.width, self.height, self.animationSpeed, 2, animationModes[2], frameNums[2], math.random(self.numSpriteVariations))
-    
-    self.spriteLayers["rightarm"] = createAnimationLayer("octopus", animationName, self.width, self.height, self.animationSpeed, 3, animationModes[3], frameNums[3], math.random(self.numSpriteVariations))
-    
-    self.spriteLayers["leftarm"] = createAnimationLayer("octopus", animationName, self.width, self.height, self.animationSpeed, 4, animationModes[4], frameNums[4], math.random(self.numSpriteVariations))
-    
-    self.spriteLayers["face"] = createAnimationLayer("octopus", animationName, self.width, self.height, self.animationSpeed, 5, animationModes[5], frameNums[5], math.random(self.numSpriteVariations))
-    
+    for i=1, #spriteLayerNames do 
+        self.spriteLayers[spriteLayerNames[i]] = createAnimationLayer("octopus", animationName, self.width, self.height, self.animationSpeed, i, animationModes[i], frameNums[i], math.random(self.numSpriteVariations))
+    end
+        
     return self.spriteLayers
     
 end
@@ -166,21 +138,23 @@ function Animation:loadLettuceSprite(animationName, spriteLayerNames)
         print ("Couldn't load animation: " .. animationName)
     end
     
- --TODO: fix loop?
-    self.spriteLayers["body"] = createAnimationLayer("lettuce", animationName, self.width, self.height, self.animationSpeed, 1, animationModes[1], frameNums[1], math.random(self.numSpriteVariations))
+    
+    for i=1, #spriteLayerNames do 
+        self.spriteLayers[spriteLayerNames[i]] = createAnimationLayer("lettuce", animationName, self.width, self.height, self.animationSpeed, i, animationModes[i], frameNums[i], math.random(self.numSpriteVariations))
+    end
     
 
     
 end
 
 
+
 --function Animation:reset()
-   
     --for i=1, #self.spriteLayerNames do
         --self.spriteLayers[self.spriteLayerNames[i]]:reset()
-    --end
-    
+    --end    
 --end
+
 
 
 function Animation:setAnimationLayer(layerName, animationName)

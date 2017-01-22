@@ -238,8 +238,8 @@ function Gamestate:playerCollide(player, other, coll)
         -- Play eating animation
         --player:getUserData()[2].currentAnimations = player:getUserData()[2].animations["eat"]
         --player:getUserData()[2]:setAnimationLayer("face", "eat")
-        --player:getUserData()[2]:resetCurrentAnimations("all")
-        player:getUserData()[2]:changeAnimationLayer("face", "eat")
+        player:getUserData()[2]:resetCurrentAnimations()
+        --player:getUserData()[2]:changeAnimationLayer("face", "eat")
         
         
         -- Increase available boost
