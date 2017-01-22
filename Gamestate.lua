@@ -118,6 +118,7 @@ end
 
 function Gamestate:checkAndTriggerTransition()
     if self.octopus.transitionState == "done" then
+        self.map:regenActiveGrid(self.physics)
         self.octopus:spawn(self.physics, self.player, self.map)
     end
 end
@@ -252,7 +253,7 @@ function Gamestate:playerCollide(player, other, coll)
 
     if other:getUserData()[1] == "pickup" then
         
-        print "Player collided with pickup"
+        --print "Player collided with pickup"
         
         -- Play eating sound
         soundmachine.playEntityAction("dugong", "eat", "single")
@@ -271,10 +272,10 @@ function Gamestate:playerCollide(player, other, coll)
         other:getUserData()[2]:destroy()
         
     elseif other:getUserData()[1] == "edge" then
-        print "Player collided with edge" 
+        --print "Player collided with edge" 
 
     elseif other:getUserData()[1] == "octopus" then
-        print "Player collided with octopus"
+        --print "Player collided with octopus"
 
         other:getUserData()[2]:transitionToNextGrid(self.map)
 

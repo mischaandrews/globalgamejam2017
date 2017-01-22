@@ -172,7 +172,11 @@ function Player:updateMovement()
     self.x, self.y = self.physics.body:getPosition()
 end
 
-
+function Player:setPos(x,y)
+    self.physics.body:setPosition(x,y)
+    self.x = x
+    self.y = y
+end
 
 function Player:getKeyboardVector()
     local leftRight = 0
