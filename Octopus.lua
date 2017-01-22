@@ -20,7 +20,7 @@ end
 
 local octopusRadius = 30
 
-function Octopus:load(world, x, y, characterSprite)
+function Octopus:load(world, characterSprite)
 
     if characterSprite == nil then
        print ">>> Error! Octopus:load(characterSprite) was null <<<"
@@ -28,8 +28,8 @@ function Octopus:load(world, x, y, characterSprite)
        os.exit()
     end
 
-    self.x = x
-    self.y = y
+    self.x = 0
+    self.y = 0
     self.scaleX = 0.45
     self.scaleY = 0.45
 
@@ -38,7 +38,7 @@ function Octopus:load(world, x, y, characterSprite)
     self.animations = Animation.loadAnimations(characterSprite, {"idle", "grab"}, self.spriteLayerNames)
     self.currentAnimations = self.animations["idle"]
 
-    self.physics = self:loadPhysics(world, x, y)
+    self.physics = self:loadPhysics(world, self.x, self.y)
 
 end
 
@@ -52,12 +52,15 @@ function Octopus:loadPhysics(world, x, y)
     return physics
 end
 
-function Octopus:spawn(world, player, map)
-    local npc2_spawnX = 450
-    local npc2_spawnY = 450
-    local npc2 = Octopus:new()
-    npc2:load(world, npc2_spawnX, npc2_spawnY, "octopus")
-    return npc2
+function Octopus:spawn(player, map)
+    local x, y = self:getSpawnLocation()
+
+    self.physics.body:setPosition(x, y)
+    
+end
+
+function Octopus:getSpawnLocation()
+   return 450, 450 
 end
 
 function Octopus:update(dt)
