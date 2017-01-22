@@ -20,9 +20,9 @@ Player = {
     
     -- Animation timers. hacky
     eatingTimerCurrent,
-    eatingTimerTotal
-    --boostAnimTimerCurrent,
-    --boostAnimTimerTotal
+    eatingTimerTotal,
+    boostTimerCurrent,
+    boostTimerTotal
 }
 
 function Player:new()
@@ -57,8 +57,8 @@ function Player:load(world, x, y, characterSprite)
     self.boostKeyWasJustDown = false
     self.eatingTimerTotal = 20 -- how long the dugong eats
     self.eatingTimerCurrent = 0
-    --boostAnimTimerTotal = 20 -- how long his tail spins after farting
-    --boostAnimTimerCurrent = 0
+    self.boostTimerTotal = 20 -- length of boost
+    self.boostTimerCurrent = 0
     
     local initialAnimation = "idle"
     self.currentLayerAnimationNames = {initialAnimation, initialAnimation, initialAnimation, initialAnimation, initialAnimation}
@@ -106,6 +106,30 @@ function Player:update(dt, map)
     self:updateAnimation(dt)
 
     self:updateTransitions(dt, map)
+    
+    
+    
+    -- Check whether to stop eating
+        if self.currentLayerAnimationNames[i] == "eat" then
+           if self.eatingTimerCurrent > 0 then
+                 self.eatingTimerCurrent = self.eatingTimerCurrent - 1 -- todo: include dt
+                 if self.eatingTimerCurrent == 0 then
+                    self:changeAnimationLayer("face", "idle")
+                 end
+           end
+        end
+        
+        -- Check whether to stop boosting
+        if self.currentLayerAnimationNames[i] == "boost" then
+           if self.boostTimerCurrent > 0 then
+                 self.boostTimerCurrent = self.boostTimerCurrent - 1 -- todo: include dt
+                 if self.boostTimerCurrent == 0 then
+                    self:changeAnimationLayer("face", "idle")
+                 end
+           end
+        end
+    
+    
 
 end
 
@@ -134,8 +158,8 @@ function Player:updateMovement()
     local keyBoardForce = 1700
     local leftRight, upDown, boosted = self:getKeyboardVector()
     local boostMultiplier = 1
-    if boosted then
-        boostMultiplier = 8
+    if boosted and self.boostTimerCurrent > 0 then
+        boostMultiplier = 80
     end
     forceX = forceX + leftRight * keyBoardForce * boostMultiplier
     forceY = forceY + upDown * keyBoardForce * boostMultiplier
@@ -183,13 +207,6 @@ function Player:getKeyboardVector()
     end
     if keysDown({"space"}) then
         boostKeyDown = true
-        if playerBoost > 0 then
-            boosted = true
-            playerBoost = playerBoost - 2
-            if playerBoost < 0 then
-               playerBoost = 0 
-            end
-        end
     end    
     
     -- Just started holding a movement key
@@ -209,12 +226,21 @@ function Player:getKeyboardVector()
     
     -- Just started holding the boost key
     if boostKeyDown == true and self.boostKeyWasJustDown == false then
+        self.boostTimerCurrent = self.boostTimerTotal  
+        
         self.boostKeyWasJustDown = true
-        soundmachine.playEntityAction("dugong", "fart", "single")
-        self:changeAnimationLayer("rearfin", "boost")
-        self:changeAnimationLayer("backfin", "boost")
-        self:changeAnimationLayer("frontfin", "boost")
-        self:changeAnimationLayer("face", "boost")
+        playerBoost = playerBoost - 10
+        if playerBoost < 0 then
+           playerBoost = 0 
+        else
+            boosted = true 
+            soundmachine.playEntityAction("dugong", "fart", "single")
+            self:changeAnimationLayer("rearfin", "boost")
+            self:changeAnimationLayer("backfin", "boost")
+            self:changeAnimationLayer("frontfin", "boost")
+            self:changeAnimationLayer("face", "boost")
+        end
+        
     
     -- Just finished holding the boost key, movement key is down
     elseif boostKeyDown == false and self.boostKeyWasJustDown == true and movementKeyDown == true then
@@ -246,6 +272,8 @@ function keysDown(keys)
    return false
 end
 
+
+
 function Player:resetCurrentAnimations(scope)
     
     for i=1, #self.currentLayerAnimationNames do
@@ -272,8 +300,6 @@ function Player:changeAnimationLayer(layerName, animationName)
     if animationName == "eat" then
         self.eatingTimerCurrent = self.eatingTimerTotal
         -- the rest happens in update
-    elseif animationName == "boost" then
-        --self.boostAnimTimerCurrent = self.boostAnimTimerTotal    
     end
     
 end
@@ -291,15 +317,8 @@ function Player:updateAnimation(dt)
             self.animations[self.currentLayerAnimationNames[i]][self.spriteLayerNames[j]]:update(dt, {self.spriteLayerNames[j]})
         end
         
-        -- Check whether to stop eating
-        if self.currentLayerAnimationNames[i] == "eat" then
-           if self.eatingTimerCurrent > 0 then
-                 self.eatingTimerCurrent = self.eatingTimerCurrent - 1 -- todo: include dt
-                 if self.eatingTimerCurrent == 0 then
-                    self:changeAnimationLayer("face", "idle")
-                 end
-           end
-        end
+        
+        
     end
 
     
