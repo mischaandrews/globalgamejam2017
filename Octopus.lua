@@ -8,7 +8,8 @@ Octopus = {
     animations,
     currentAnimations,
     physics,
-    spriteLayerNames
+    spriteLayerNames,
+    transitionState = "none"        -- "none" -> "transit" -> ?
 }
 
 function Octopus:new()
@@ -52,7 +53,14 @@ function Octopus:loadPhysics(world, x, y)
     return physics
 end
 
-function Octopus:transitionToNextGrid()
+function Octopus:transitionToNextGrid(map)
+
+    --local nextGrid = map:getNextGrid()
+
+    --fake it?
+
+    print "DFGDF"
+
 end
 
 function Octopus:spawn(player, map)
