@@ -70,14 +70,23 @@ function Octopus:getSpawnLocation(player, map)
     
 end
 
-function Octopus:update(dt)
-    self:updateMovement()
+function Octopus:update(dt, player)
+    self:updateMovement(player)
     self:updateAnimation(dt)
 end
 
-function Octopus:updateMovement()
+function Octopus:fleePlayer(player)
+    return 100, 0
+end
+
+function Octopus:updateMovement(player)
 
     local forceX, forceY = getOceanForce(self)
+
+    local repelX, repelY = self:fleePlayer(player)
+
+    forceX = forceX + repelX
+    forceY = forceY + repelY
 
     --Pass the force to the physics engine
     self.physics.body:applyForce(forceX, forceY)
