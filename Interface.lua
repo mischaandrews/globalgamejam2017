@@ -1,10 +1,3 @@
--- TODO:
--- in-game GUI
--- title screen
--- pause screen
--- game over screen
-
-
 
 
 
@@ -16,7 +9,10 @@ require "Typography"
 
 
 Interface = {
-    
+    stage,
+    paused,
+    titleSprite,
+    titleSpriteWidth
 }
 
 function Interface:new()
@@ -37,17 +33,17 @@ drawBox = function ()
 end
 
 -- Generic function for drawing text
-drawText = function ( fontStyle, textBoxSize, message, posX, posY, colourR, colourG, colourB ) 
+function Interface:drawText ( fontStyle, textBoxSize, message, posX, posY, colourR, colourG, colourB ) 
     love.graphics.setColor(colourR, colourG, colourB)
     love.graphics.setFont(fonts[fontStyle])
     love.graphics.printf(message, posX, posY, textBoxSize, 'center') 
 end
 
 -- Specific functions for drawing styled boxes/text
-drawPauseBox = function ( message )
+function Interface:drawPauseBox ( message )
     -- TODO: draw box
     local textBoxSize = 300
-    drawText("large-ui", textBoxSize, message, (intWindowX/2) - (textBoxSize), (intWindowY/2) - textBoxSize, 255, 255, 255)
+    self:drawText("large-ui", textBoxSize, message, (intWindowX/2) - (textBoxSize), (intWindowY/2) - textBoxSize, 255, 255, 255)
 end
 
 
@@ -58,21 +54,28 @@ end
 
 
 -- Screens
-drawScreen = function ( screen ) 
+function Interface:drawScreen ( screen ) 
    
-    if screen == "pause" then
-       drawPauseBox("Paused") 
+    if screen == "paused" then
+       self:drawPauseBox("Paused") 
     end
     
     if screen == "gameover" then
-       drawPauseBox("Game over") -- todo: change style
+       self:drawPauseBox("Game over") -- todo: change style
+    end
+    
+    if screen == "title" then
+        love.graphics.setColor(11, 33, 37)
+        love.graphics.rectangle("fill", 0, 0, intWindowX, intWindowY)
+        love.graphics.setColor(255, 255, 255)
+        love.graphics.draw(self.titleSprite, 100, 100)
     end
     
 end
 
 
 
-drawBoostUI = function ()
+function Interface:drawBoostUI ()
    
     local width = 200
     local height = 20
@@ -129,7 +132,11 @@ end
 ----------------------------------------------------- LOAD
 function Interface:load()
     
+    self.stage = ""
+    self.paused = ""
     
+    self.titleSprite = love.graphics.newImage("assets/ui/title-screen.png")
+    self.titleSpriteWidth = 1024
     
 ---------------
 end -- End load
@@ -153,9 +160,17 @@ end -- End update
 
 ----------------------------------------------------- DRAW
 
-function Interface:draw()
+function Interface:draw(stage, paused)
     
-    drawBoostUI()
+    if stage == "title" then
+        self:drawScreen("title")
+    end
+    if stage == "playing" then
+        self:drawBoostUI()
+    end
+    if paused == true and stage == "playing" then
+        self:drawScreen("paused")
+    end
             
 ---------------
 end -- End draw

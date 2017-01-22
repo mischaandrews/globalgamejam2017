@@ -26,7 +26,8 @@ Gamestate = {
     npcs,
     pickups,
     playerHealth,
-    playerBoost
+    playerBoost,
+    interface
 }
 
 function Gamestate:new()
@@ -39,9 +40,14 @@ end
 ----------------------------------------------------- LOAD
 function Gamestate:load()
     
-    self.stage = "playing"
-
-    self.paused = false
+    local quickstart = true -- switch between testing and demo to show/notshow title screen
+    if quickstart then
+        self.stage = "playing" 
+        self.paused = false
+    else
+        self.stage = "title" 
+        self.paused = true
+    end
 
     self.camera = Camera:new()
 
@@ -90,8 +96,12 @@ function Gamestate:load()
 
     self.octopus = Octopus:spawn(physics, player, map)
 
-    ---- Start music
-    soundmachine.playEntityAction("level", "underwater", "loop")
+    
+    
+    
+    ---- Interface
+    self.interface = Interface:new()
+    self.interface:load()
 
 ---------------
 end -- End load
@@ -103,11 +113,18 @@ function Gamestate:update(dt)
 
     function love.keypressed(key)
         ---- Check for pause
-        if key == "escape" then
+        if self.stage == "title" and key == "space" then
+            ---- START THE GAME (from title screen)
+            self.stage = "playing"
+            self.paused = false
+            ---- Start music
+            soundmachine.playEntityAction("level", "underwater", "loop")
+        elseif key == "escape" then
             self.paused = not self.paused
             soundmachine.toggle()
         end
     end
+
 
     self.map:update(dt)
 
@@ -115,7 +132,7 @@ function Gamestate:update(dt)
 
     ------------ Animations ------------
     
-    if not self.paused then
+    if not self.paused and self.stage == "playing" then
 
         self.physics:update(dt)
 
@@ -133,6 +150,8 @@ function Gamestate:update(dt)
         self.camera:setPosition(self.player.x-(intWindowX/2), self.player.y - (intWindowY/2))
 
     end
+    
+    self.interface:update(dt)
 
 -----------------
 end -- End update
@@ -162,7 +181,7 @@ function Gamestate:draw()
     if self.stage == "playing" then
         
         if self.paused == true then
-           drawScreen("pause") 
+           
         end
         
     elseif self.stage == "title" then
@@ -171,9 +190,13 @@ function Gamestate:draw()
         drawScreen("gameover")
     end
 
+    
+    
+    
     ---- Unset camera
     self.camera:unset()
 
+    self.interface:draw(self.stage, self.paused)
 ---------------
 end -- End draw
 
