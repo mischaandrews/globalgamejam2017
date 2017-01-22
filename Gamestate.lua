@@ -1,7 +1,7 @@
 ----------------------------------------------------- LIBARIES
 require "AnAL"
 require "Background"
-require "Character"
+require "Octopus"
 require "Generation"
 require "Pickup"
 require "Camera"
@@ -101,17 +101,17 @@ function loadNpcs(physics)
 
     local npc1_spawnX = 350
     local npc1_spawnY = 250
-    local npc1 = Character:new()
+    local npc1 = Octopus:new()
     npc1:load(physics, npc1_spawnX, npc1_spawnY, "octopus")
 
     local npc2_spawnX = 400
     local npc2_spawnY = 400
-    local npc2 = Character:new()
+    local npc2 = Octopus:new()
     npc2:load(physics, npc2_spawnX, npc2_spawnY, "octopus")
 
     local npc3_spawnX = 700
     local npc3_spawnY = 400
-    local npc3 = Character:new()
+    local npc3 = Octopus:new()
     npc3:load(physics, npc3_spawnX, npc3_spawnY, "octopus")
 
     return {npc1, npc2, npc3}

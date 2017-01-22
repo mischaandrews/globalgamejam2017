@@ -1,6 +1,6 @@
 require "Animation"
 
-Character = {
+Octopus = {
     x,
     y,
     scaleX,
@@ -11,17 +11,17 @@ Character = {
     spriteLayerNames
 }
 
-function Character:new()
+function Octopus:new()
     local o = {}
     setmetatable(o, self)
     self.__index = self
     return o
 end
 
-function Character:load(world, x, y, characterSprite)
+function Octopus:load(world, x, y, characterSprite)
 
     if characterSprite == nil then
-       print ">>> Error! Character:load(characterSprite) was null <<<"
+       print ">>> Error! Octopus:load(characterSprite) was null <<<"
        love.event.quit()
        os.exit()
     end
@@ -43,14 +43,14 @@ function Character:load(world, x, y, characterSprite)
 end
 
 
-function Character:update(dt)
+function Octopus:update(dt)
   -- self.currentAnimations:update(dt, self.spriteLayerNames)
     for i=1, #self.spriteLayerNames do
         self.currentAnimations[self.spriteLayerNames[i]]:update(dt, self.spriteLayerNames)
     end
 end
 
-function Character:draw()
+function Octopus:draw()
 
     love.graphics.setColor(255, 255, 255)
 
@@ -65,11 +65,4 @@ function Character:draw()
     
 end
 
-function Character:characterSprite()
-    if self.characterSprite == nil then
-        return "unknown"
-    else
-        return self.characterSprite
-    end
-end
 
