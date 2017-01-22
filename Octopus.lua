@@ -3,13 +3,12 @@ require "Animation"
 Octopus = {
     x,
     y,
-    scaleX,
-    scaleY,
     animations,
     currentAnimations,
     physics,
     spriteLayerNames,
-    transitionState = "none"        -- "none" -> "transit" -> ?
+    transitionState = "none",        -- "none" -> "transit" -> "done"
+    transitScale = 1.0
 }
 
 function Octopus:new()
@@ -31,11 +30,9 @@ function Octopus:load(world, characterSprite)
 
     self.x = 0
     self.y = 0
-    self.scaleX = 0.45
-    self.scaleY = 0.45
 
     self.spriteLayerNames = {"body", "bottomlegs", "rightarm", "leftarm", "face"}
-    
+
     self.animations = Animation.loadAnimations(characterSprite, {"idle", "grab"}, self.spriteLayerNames)
     self.currentAnimations = self.animations["idle"]
 
@@ -55,6 +52,10 @@ end
 
 function Octopus:transitionToNextGrid(map)
 
+    if self.transitionState == "none" then
+       self.transitionState = "transit" 
+    end
+
     --local nextGrid = map:getNextGrid()
 
     --fake it?
@@ -71,10 +72,8 @@ function Octopus:spawn(player, map)
 end
 
 function Octopus:getSpawnLocation(player, map)
-    
+
     local activeGrid = map:getActiveGrid()
-    
-    
     local pcx, pcy = getCellForPoint(player.x, player.y, map.cellWidth, map.cellHeight)
 
     return (pcx + 1) * map.cellWidth,
@@ -83,8 +82,23 @@ function Octopus:getSpawnLocation(player, map)
 end
 
 function Octopus:update(dt, player, map)
-    self:updateMovement(player, map)
-    self:updateAnimation(dt)
+
+    if self.transitionState ~= "done" then
+        self:updateMovement(player, map)
+        self:updateTransition(dt)
+        self:updateAnimation(dt)
+    end
+end
+
+function Octopus:updateTransition(dt)
+    if self.transitionState == "transit" then
+        self.transitScale = self.transitScale - dt
+        if self.transitScale <= 0 then
+            self.transitScale = 0
+            self.transitionState = "done"
+            self.physics.body:destroy()
+        end
+    end
 end
 
 function Octopus:fleePlayer(player)
@@ -184,6 +198,9 @@ function Octopus:updateAnimation(dt)
     end
 end
 
+local graphicalScaleX = 0.45
+local graphicalScaleY = 0.45
+
 function Octopus:draw()
 
     love.graphics.setColor(255, 255, 255)
@@ -193,8 +210,8 @@ function Octopus:draw()
             self.x + 37,
             self.y + 37,
             0,
-            self.scaleX,
-            self.scaleY,
+            graphicalScaleX * self.transitScale,
+            graphicalScaleY * self.transitScale,
             self.spriteLayerNames)
     end
 
