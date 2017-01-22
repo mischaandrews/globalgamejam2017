@@ -7,8 +7,8 @@ Octopus = {
     currentAnimations,
     physics,
     spriteLayerNames,
-    transitionState = "none",        -- "none" -> "transit" -> "done"
-    transitScale = 1.0
+    transitionState,        -- "none" -> "transit" -> "done"
+    transitScale
 }
 
 function Octopus:new()
@@ -20,7 +20,7 @@ end
 
 local octopusRadius = 30
 
-function Octopus:load(world, characterSprite)
+function Octopus:load(characterSprite)
 
     if characterSprite == nil then
        print ">>> Error! Octopus:load(characterSprite) was null <<<"
@@ -36,8 +36,6 @@ function Octopus:load(world, characterSprite)
     self.animations = Animation.loadAnimations(characterSprite, {"idle"}, self.spriteLayerNames)
     self.currentAnimations = self.animations["idle"]
 
-    self.physics = self:loadPhysics(world, self.x, self.y)
-
 end
 
 function Octopus:loadPhysics(world, x, y)
@@ -51,22 +49,16 @@ function Octopus:loadPhysics(world, x, y)
 end
 
 function Octopus:transitionToNextGrid(map)
-
     if self.transitionState == "none" then
        self.transitionState = "transit" 
     end
-
-    --local nextGrid = map:getNextGrid()
-
-    --fake it?
-
-    print "DFGDF"
-
 end
 
-function Octopus:spawn(player, map)
+function Octopus:spawn(world, player, map)
+    self.transitionState = "none"
+    self.transitScale = 1.0
     local x, y = self:getSpawnLocation(player, map)
-
+    self.physics = self:loadPhysics(world, self.x, self.y)
     self.physics.body:setPosition(x, y)
     
 end
