@@ -352,5 +352,5 @@ function Player:draw(map)
     end
 
     -- Bounding circle
-    love.graphics.circle("line", self.x, self.y, playerRadius)
+    --love.graphics.circle("line", self.x, self.y, playerRadius)
 end

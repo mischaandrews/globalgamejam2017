@@ -40,7 +40,7 @@ end
 ----------------------------------------------------- LOAD
 function Gamestate:load()
     
-    local quickstart = true -- switch between testing and demo to show/notshow title screen
+    local quickstart = false -- switch between testing and demo to show/notshow title screen
     if quickstart then
         self.stage = "playing" 
         self.paused = false

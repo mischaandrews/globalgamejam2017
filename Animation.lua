@@ -97,21 +97,17 @@ end
 
 function Animation:loadOctopusSprite(animationName, spriteLayerNames)
 
-    self.width = 384
-    self.height = 384
-    self.animationSpeed = 0.2
-    self.numLayers = 5
+    self.width = 226
+    self.height = 226
+    self.animationSpeed = 0.1
+    self.numLayers = 2
     self.spriteLayers = {}
     self.numSpriteVariations = 1
     
     if animationName == "idle" then
-        animationModes = {"bounce", "bounce", "bounce", "bounce", "bounce"}
-        animationSpeedMultipliers = {1, 1, 1, 1, 1}
-        frameNums = {1, 1, 1, 1, 1}   
-    elseif animationName == "grab" then
-        animationModes = {"bounce", "bounce", "bounce", "bounce", "bounce"}
-        animationSpeedMultipliers = {1, 1, 1, 1, 1}
-        frameNums = {1, 1, 1, 1, 1}
+        animationModes = {"bounce", "bounce"}
+        animationSpeedMultipliers = {6, 1}
+        frameNums = {8, 1}   
     else
         print ("Couldn't load animation: " .. animationName)
     end
