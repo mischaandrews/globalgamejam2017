@@ -1,7 +1,7 @@
 ----------------------------------------------------- LIBARIES
 require "AnAL"
 require "Background"
-require "Character"
+require "Octopus"
 require "Generation"
 require "Pickup"
 require "Camera"
@@ -88,35 +88,13 @@ function Gamestate:load()
     self.pickups = map:populateLettuces(physics)
     self.map = map
 
-    self.npcs = loadNpcs(physics)
-
+    self.octopus = Octopus:spawn(physics, player, map)
 
     ---- Start music
     soundmachine.playEntityAction("level", "underwater", "loop")
 
 ---------------
 end -- End load
-
-function loadNpcs(physics)
-
-    local npc1_spawnX = 350
-    local npc1_spawnY = 250
-    local npc1 = Character:new()
-    npc1:load(physics, npc1_spawnX, npc1_spawnY, "octopus")
-
-    local npc2_spawnX = 400
-    local npc2_spawnY = 400
-    local npc2 = Character:new()
-    npc2:load(physics, npc2_spawnX, npc2_spawnY, "octopus")
-
-    local npc3_spawnX = 700
-    local npc3_spawnY = 400
-    local npc3 = Character:new()
-    npc3:load(physics, npc3_spawnX, npc3_spawnY, "octopus")
-
-    return {npc1, npc2, npc3}
-
-end
 
 ----------------------------------------------------- UPDATE
 function Gamestate:update(dt)
@@ -145,9 +123,7 @@ function Gamestate:update(dt)
         self.player:update(dt, self.map)
 
         -- Update characters
-        for i=1,#self.npcs do
-            self.npcs[i]:update(dt)
-        end
+        self.octopus:update(dt)
 
         for i=1,#self.pickups do
             self.pickups[i]:update(dt)
@@ -175,9 +151,7 @@ function Gamestate:draw()
     ---- Draw characters
     self.player:draw(self.map)  
 
-    for i=1,#self.npcs do
-        self.npcs[i]:draw(dt)
-    end
+    self.octopus:draw(dt)
     
     for i=1,#self.pickups do
         self.pickups[i]:draw(dt)
