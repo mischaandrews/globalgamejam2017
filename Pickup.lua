@@ -65,7 +65,6 @@ end
 function Pickup:update(dt)
     if self.destroyed == false then
         self:updateMovement()
-        --self.currentAnimations:update(dt)
     end
 end
 

@@ -94,8 +94,8 @@ function Gamestate:load()
     self.map = map
 
     local octopus = Octopus:new()
-    octopus:load(physics, "octopus")
-    octopus:spawn(player, map)
+    octopus:load("octopus")
+    octopus:spawn(physics, player, map)
     self.octopus = octopus
 
     ---- Interface
@@ -119,10 +119,22 @@ function Gamestate:clearDestroyed()
     end
 end
 
+function Gamestate:checkAndTriggerTransition()
+
+    if self.octopus.transitionState == "done" then
+
+        self.octopus:spawn(self.physics, self.player, self.map)
+
+    end
+
+end
+
 ----------------------------------------------------- UPDATE
 function Gamestate:update(dt)
 
     self:clearDestroyed()
+
+    self:checkAndTriggerTransition()
 
     ---- Keyboard listeners for UI (not characters)
 
