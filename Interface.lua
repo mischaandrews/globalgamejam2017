@@ -12,7 +12,9 @@ Interface = {
     stage,
     paused,
     titleSprite,
-    titleSpriteWidth
+    titleSpriteWidth,
+    pauseSprite,
+    pauseSpriteWidth
 }
 
 function Interface:new()
@@ -57,7 +59,9 @@ end
 function Interface:drawScreen ( screen ) 
    
     if screen == "paused" then
-       self:drawPauseBox("Paused") 
+       
+        love.graphics.setColor(255, 255, 255)
+        love.graphics.draw(self.pauseSprite, 100, 100)
     end
     
     if screen == "gameover" then
@@ -137,6 +141,9 @@ function Interface:load()
     
     self.titleSprite = love.graphics.newImage("assets/ui/title-screen.png")
     self.titleSpriteWidth = 1024
+    
+    self.pauseSprite = love.graphics.newImage("assets/ui/paused.png")
+    self.pauseSpriteWidth = 1024
     
 ---------------
 end -- End load
