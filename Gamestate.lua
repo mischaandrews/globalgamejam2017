@@ -187,9 +187,6 @@ function Gamestate:draw()
     ---- Set camera
     self.camera:set(1)
 
-    ---- Draw characters
-    self.player:draw(self.map)  
-
     self.octopus:draw(dt)
     
     for i=1,#self.pickups do
@@ -202,6 +199,9 @@ function Gamestate:draw()
     self.map:drawTop(self.camera, intWindowX, intWindowY)
 
     self.camera:set(1)
+
+    ---- Draw characters
+    self.player:draw(self.map)
 
     ---- Draw interface
     
