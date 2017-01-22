@@ -64,11 +64,10 @@ function Octopus:getSpawnLocation(player, map)
     local activeGrid = map:getActiveGrid()
     
     
-    --local pcx, pcy = getCellForPoint(self.player.x, self.player.y, cellWidth, cellHeight)
+    local pcx, pcy = getCellForPoint(player.x, player.y, map.cellWidth, map.cellHeight)
 
+    return (pcx + 1) * map.cellWidth, pcy * map.cellHeight
     
-    
-    return 450, 450 
 end
 
 function Octopus:update(dt)
