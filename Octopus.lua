@@ -51,17 +51,9 @@ function Octopus:loadPhysics(world, x, y)
 end
 
 function Octopus:transitionToNextGrid(map)
-
     if self.transitionState == "none" then
        self.transitionState = "transit" 
     end
-
-    --local nextGrid = map:getNextGrid()
-
-    --fake it?
-
-    print "DFGDF"
-
 end
 
 function Octopus:spawn(player, map)
