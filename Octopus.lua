@@ -42,6 +42,13 @@ function Octopus:load(world, x, y, characterSprite)
 
 end
 
+function Octopus:spawn(physics, player, map)
+    local npc2_spawnX = 400
+    local npc2_spawnY = 400
+    local npc2 = Octopus:new()
+    npc2:load(physics, npc2_spawnX, npc2_spawnY, "octopus")
+    return npc2
+end
 
 function Octopus:update(dt)
   -- self.currentAnimations:update(dt, self.spriteLayerNames)
