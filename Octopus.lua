@@ -53,13 +53,13 @@ function Octopus:loadPhysics(world, x, y)
 end
 
 function Octopus:spawn(player, map)
-    local x, y = self:getSpawnLocation()
+    local x, y = self:getSpawnLocation(player, map:getActiveGrid())
 
     self.physics.body:setPosition(x, y)
     
 end
 
-function Octopus:getSpawnLocation()
+function Octopus:getSpawnLocation(player, map)
    return 450, 450 
 end
 
