@@ -43,18 +43,20 @@ function Pickup:load(world, x, y, pickupSprite)
     self.animations = Animation.loadAnimations(pickupSprite, {"float"}, self.spriteLayerNames)
     self.currentAnimations = self.animations["float"]
 
-    self.physics = {}
-    self.physics.body = love.physics.newBody(world, self.x, self.y, "dynamic") 
-    self.physics.shape = love.physics.newCircleShape(pickupRadius)
-    self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape, 1)
-    self.physics.fixture:setUserData({"pickup",self})
-    self.physics.fixture:setRestitution(0.0) --TODO 
+    self.physics = self:loadPhysics(world, self.x, self.y)
 
     self.destroyed = false
-    
+
 end
 
-
+function Pickup:loadPhysics(world, x, y)
+    local physics = {}
+    physics.body = love.physics.newBody(world, x, y, "dynamic") 
+    physics.shape = love.physics.newCircleShape(pickupRadius)
+    physics.fixture = love.physics.newFixture(physics.body, physics.shape, 1)
+    physics.fixture:setUserData({"pickup",self})
+    return physics
+end
 
 function Pickup:update(dt)
     if self.destroyed == false then
