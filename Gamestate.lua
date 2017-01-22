@@ -117,6 +117,7 @@ end
 
 function Gamestate:checkAndTriggerTransition()
     if self.octopus.transitionState == "done" then
+        self.map:regenActiveGrid(self.physics)
         self.octopus:spawn(self.physics, self.player, self.map)
     end
 end

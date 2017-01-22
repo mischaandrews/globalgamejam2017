@@ -11,7 +11,9 @@ Map = {
     cellWidth = 100,
     cellHeight = 100,
     transitionState = "none",  -- "none" -> "fartPrep" -> "farting" -> "none"
-    transitionAmount = "0"  -- [0.0, 1.0)
+    transitionAmount = "0",  -- [0.0, 1.0)
+
+    activeBlocks = {}
 }
 
 function Map:new()
@@ -41,6 +43,29 @@ function Map:loadGridsAndScalesAndOpacs()
            {      255,       128,       128,         92}
 end
 
+function Map:regenActiveGrid(world)
+
+    --clear old physics
+    for i=1,#self.activeBlocks do
+        self.activeBlocks[i]:destroy()
+    end 
+    self.activeBlocks = {}
+
+    self.grids[4] = buildGrid(self.numCellsX, self.numCellsY)
+
+    --move player somewhere safe
+    for j=math.floor(self.numCellsY/3), self.numCellsY do
+        for i=math.floor(self.numCellsX/3), self.numCellsX do
+            if countNeighbours(self.grids[4], i, j) < 4 then
+                self.player:setPos(self.cellWidth * i, self.cellHeight * j)
+                goto diddlydone
+            end
+        end
+    end
+    ::diddlydone::
+    self:genPhysics(world)
+end
+
 function Map:populateLettuces(physics)
     return populateLettuces(physics, self:getActiveGrid(), self.cellWidth, self.cellHeight)
 end
@@ -58,18 +83,19 @@ function Map:genPhysics(world)
     for j = 1, self.numCellsY do
         for i = 1, self.numCellsX do
             if self:getActiveGrid()[j][i] == "edge" then
-                genBlock(world, self.cellWidth * i, self.cellHeight * j, self.cellWidth, self.cellHeight)
+                self:genBlock(world, self.cellWidth * i, self.cellHeight * j, self.cellWidth, self.cellHeight)
             end
         end
     end
     return mapPhys
 end
 
-function genBlock(world, x, y, width, height)
+function Map:genBlock(world, x, y, width, height)
     local body = love.physics.newBody(world, x, y, "static")
     local shape = love.physics.newRectangleShape(width, height)
     local fixture = love.physics.newFixture(body, shape, 1)
     fixture:setUserData("edge")
+    table.insert(self.activeBlocks, body)
 end
 
 function Map:update(dt)
