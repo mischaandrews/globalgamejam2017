@@ -5,6 +5,7 @@ Pickup = {
     y,
     scaleX,
     scaleY,
+    rot,
     animations,
     currentAnimations,
     physics,
@@ -28,6 +29,8 @@ function Pickup:load(world, x, y, pickupSprite)
        love.event.quit()
        os.exit()
     end
+
+    self.rot = math.random()
 
     local jitter = 50
     self.x = x + math.random(-jitter, jitter)
@@ -77,9 +80,15 @@ function Pickup:draw()
     love.graphics.setColor(255, 255, 255)
     --self.currentAnimations:draw(self.x, self.y, self.scaleX, self.scaleY, self.spriteLayerNames)
     for i=1, #self.spriteLayerNames do
-        self.currentAnimations[self.spriteLayerNames[i]]:draw(self.x, self.y, self.scaleX, self.scaleY, self.spriteLayerNames)
+        self.currentAnimations[self.spriteLayerNames[i]]:draw(
+            self.x,
+            self.y,
+            self.rot,
+            self.scaleX,
+            self.scaleY,
+            self.spriteLayerNames)
     end
-    
+
     -- Bounding box
     --love.graphics.circle("line", self.x, self.y, pickupRadius)
 end
