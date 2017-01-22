@@ -97,7 +97,7 @@ function Animation:loadOctopusSprite(animationName, spriteLayerNames)
     self.animationSpeed = 0.2
     self.numLayers = 5
     self.spriteLayers = {}
-    self.numSpriteVariations = 2
+    self.numSpriteVariations = 1
     
     if animationName == "idle" then
         animationModes = {"bounce", "bounce", "bounce", "bounce", "bounce"}
