@@ -148,9 +148,7 @@ function Animation:loadLettuceSprite(animationName, spriteLayerNames)
 end
 
 
--- todo: mish fix
 function Animation:reset(layerScope)
-    
     for i=1,#layerScope do
         self.spriteLayers[layerScope[i]]:reset()
     end

@@ -184,11 +184,12 @@ function keysDown(keys)
    return false
 end
 
-function Player:resetCurrentAnimations()
+function Player:resetCurrentAnimations(scope)
     
+    --todo: check scope here
     for i=1, #self.currentLayerAnimationNames do
         for j=1, #self.spriteLayerNames do
-            self.animations[self.currentLayerAnimationNames[i]][self.spriteLayerNames[j]]:reset(self.spriteLayerNames[j])
+            self.animations[self.currentLayerAnimationNames[i]][self.spriteLayerNames[j]]:reset({self.spriteLayerNames[j]})
         end
     end
     
@@ -205,6 +206,7 @@ function Player:changeAnimationLayer(layerName, animationName)
     
     self.currentAnimations[layerName] = self.animations[animationName][layerName]
     self.currentLayerAnimationNames[layerNumber] = animationName
+    self:resetCurrentAnimations({"face"})
     
 end
 
@@ -235,14 +237,17 @@ function Player:draw(map)
         extraScaleX = - self.z * 0.1
     end
     
-    for i=1, #self.spriteLayerNames do
-        self.animations[self.currentLayerAnimationNames[i]][self.spriteLayerNames[i]]:draw(
-            self.x,
-            self.y,
-            self.scaleX + extraScaleX,
-            self.scaleY + extraScaleY,
-            self.spriteLayerNames)
-
+    for i=1, #self.currentLayerAnimationNames do
+        --self.currentAnimations["backfin"] = self.animations[initialAnimation]["backfin"]
+    
+        for i=1, #self.spriteLayerNames do
+            self.currentAnimations[self.spriteLayerNames[i]]:draw(
+                self.x,
+                self.y,
+                self.scaleX + extraScaleX,
+                self.scaleY + extraScaleY,
+                {self.spriteLayerNames[i]})
+        end
     end
 
     -- Bounding circle
