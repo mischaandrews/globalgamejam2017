@@ -185,8 +185,6 @@ function Player:getKeyboardVector()
         boostKeyDown = true
         if playerBoost > 0 then
             boosted = true
-            self:changeAnimationLayer("rearfin", "boost")
-            soundmachine.playEntityAction("dugong", "fart", "single")
             playerBoost = playerBoost - 2
             if playerBoost < 0 then
                playerBoost = 0 
@@ -198,32 +196,41 @@ function Player:getKeyboardVector()
     if movementKeyDown == true and self.movementKeyWasJustDown == false then
         self.movementKeyWasJustDown = true
         self:changeAnimationLayer("rearfin", "move")
+        self:changeAnimationLayer("backfin", "move")
         self:changeAnimationLayer("frontfin", "move")
     
     -- Just finished holding a movement key
     elseif movementKeyDown == false and self.movementKeyWasJustDown == true then
         self.movementKeyWasJustDown = false 
         self:changeAnimationLayer("rearfin", "idle") -- does this work with spacebar?
+        self:changeAnimationLayer("backfin", "idle")
         self:changeAnimationLayer("frontfin", "idle")
     end
     
     -- Just started holding the boost key
     if boostKeyDown == true and self.boostKeyWasJustDown == false then
         self.boostKeyWasJustDown = true
+        soundmachine.playEntityAction("dugong", "fart", "single")
         self:changeAnimationLayer("rearfin", "boost")
+        self:changeAnimationLayer("backfin", "boost")
         self:changeAnimationLayer("frontfin", "boost")
+        self:changeAnimationLayer("face", "boost")
     
     -- Just finished holding the boost key, movement key is down
     elseif boostKeyDown == false and self.boostKeyWasJustDown == true and movementKeyDown == true then
         self.boostKeyWasJustDown = false 
         self:changeAnimationLayer("rearfin", "move")
+        self:changeAnimationLayer("backfin", "move")
         self:changeAnimationLayer("frontfin", "move")
+        self:changeAnimationLayer("face", "move")
     
     -- Just finished holding the boost key, movement key is not down
     elseif boostKeyDown == false and self.boostKeyWasJustDown == true and movementKeyDown == false then
         self.boostKeyWasJustDown = false 
         self:changeAnimationLayer("rearfin", "idle")
+        self:changeAnimationLayer("backfin", "idle")
         self:changeAnimationLayer("frontfin", "idle")
+        self:changeAnimationLayer("face", "idle")
     end
     
     return leftRight, upDown, boosted
