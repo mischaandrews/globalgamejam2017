@@ -3,8 +3,6 @@
 require "Gamestate"
 require "Typography"
 
-math.randomseed( os.time() )
-
 local gamestate = Gamestate:new()
 local interface = Interface:new()
 local typography = Typography:new()
