@@ -199,8 +199,8 @@ function Octopus:draw()
 
     for i=1, #self.spriteLayerNames do
         self.currentAnimations[self.spriteLayerNames[i]]:draw(
-            self.x + 37,
-            self.y + 37,
+            self.x,
+            self.y,
             0,
             graphicalScaleX * self.transitScale,
             graphicalScaleY * self.transitScale,
