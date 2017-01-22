@@ -15,7 +15,8 @@ Player = {
     spriteLayerNames,
     animationNames,
     currentLayerAnimationNames,
-    keyIsDown,
+    movementKeyWasJustDown,
+    boostKeyWasJustDown,
     
     -- Animation timers. hacky
     eatingTimerCurrent,
@@ -52,7 +53,8 @@ function Player:load(world, x, y, characterSprite)
     self.facingDirection = "left" -- left or right
     self.spriteLayerNames = {"backfin", "body", "rearfin", "frontfin", "face"}
     self.animationNames = {"idle", "move", "eat", "boost"}
-    self.keyIsDown = false
+    self.movementKeyWasJustDown = false
+    self.boostKeyWasJustDown = false
     self.eatingTimerTotal = 20 -- how long the dugong eats
     self.eatingTimerCurrent = 0
     --boostAnimTimerTotal = 20 -- how long his tail spins after farting
@@ -192,20 +194,37 @@ function Player:getKeyboardVector()
         end
     end    
     
-    if movementKeyDown == true and self.keyIsDown == false then
-        self.keyIsDown = true -- So that we only change it once
+    -- Just started holding a movement key
+    if movementKeyDown == true and self.movementKeyWasJustDown == false then
+        self.movementKeyWasJustDown = true
         self:changeAnimationLayer("rearfin", "move")
         self:changeAnimationLayer("frontfin", "move")
-    elseif movementKeyDown == false and self.keyIsDown == true then
-        self.keyIsDown = false 
+    
+    -- Just finished holding a movement key
+    elseif movementKeyDown == false and self.movementKeyWasJustDown == true then
+        self.movementKeyWasJustDown = false 
         self:changeAnimationLayer("rearfin", "idle") -- does this work with spacebar?
         self:changeAnimationLayer("frontfin", "idle")
     end
     
-    if boostKeyDown == true and boosted == false then
-       self:changeAnimationLayer("rearfin", "move")
-    end
+    -- Just started holding the boost key
+    if boostKeyDown == true and self.boostKeyWasJustDown == false then
+        self.boostKeyWasJustDown = true
+        self:changeAnimationLayer("rearfin", "boost")
+        self:changeAnimationLayer("frontfin", "boost")
     
+    -- Just finished holding the boost key, movement key is down
+    elseif boostKeyDown == false and self.boostKeyWasJustDown == true and movementKeyDown == true then
+        self.boostKeyWasJustDown = false 
+        self:changeAnimationLayer("rearfin", "move")
+        self:changeAnimationLayer("frontfin", "move")
+    
+    -- Just finished holding the boost key, movement key is not down
+    elseif boostKeyDown == false and self.boostKeyWasJustDown == true and movementKeyDown == false then
+        self.boostKeyWasJustDown = false 
+        self:changeAnimationLayer("rearfin", "idle")
+        self:changeAnimationLayer("frontfin", "idle")
+    end
     
     return leftRight, upDown, boosted
 end
