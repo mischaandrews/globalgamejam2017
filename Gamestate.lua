@@ -82,8 +82,8 @@ function Gamestate:load()
     love.window.setMode( intWindowX, intWindowY )
 
     ---- Create characters
-    local player_spawnX = 400
-    local player_spawnY = 950
+    local player_spawnX = 1100
+    local player_spawnY = 1300
     local player = Player:new()
     player:load(physics, player_spawnX, player_spawnY, "dugong")
     self.player = player
