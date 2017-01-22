@@ -14,7 +14,10 @@ Player = {
     movementSpeed,
     spriteLayerNames,
     animationNames,
-    currentLayerAnimationNames
+    currentLayerAnimationNames,
+    keyIsDown,
+    eatingTimerCurrent,
+    eatingTimerTotal
 }
 
 function Player:new()
@@ -45,6 +48,9 @@ function Player:load(world, x, y, characterSprite)
     self.facingDirection = "left" -- left or right
     self.spriteLayerNames = {"backfin", "body", "rearfin", "frontfin", "face"}
     self.animationNames = {"idle", "move", "eat", "boost"}
+    self.keyIsDown = false
+    self.eatingTimerTotal = 20 -- how long the dugong eats
+    self.eatingTimerCurrent = 0
     
     local initialAnimation = "idle"
     self.currentLayerAnimationNames = {initialAnimation, initialAnimation, initialAnimation, initialAnimation, initialAnimation}
@@ -167,9 +173,14 @@ function Player:getKeyboardVector()
         playerBoost = playerBoost - 2
     end
     
-    if movementKeyDown == true then
+    if movementKeyDown == true and self.keyIsDown == false then
+        self.keyIsDown = true -- So that we only change it once
         self:changeAnimationLayer("rearfin", "move")
+    elseif movementKeyDown == false and self.keyIsDown == true then
+        self.keyIsDown = false 
+        self:changeAnimationLayer("rearfin", "idle") -- does this work with spacebar?
     end
+    
     
     return leftRight, upDown
 end
@@ -186,7 +197,6 @@ end
 
 function Player:resetCurrentAnimations(scope)
     
-    --todo: check scope here
     for i=1, #self.currentLayerAnimationNames do
         for j=1, #self.spriteLayerNames do
             self.animations[self.currentLayerAnimationNames[i]][self.spriteLayerNames[j]]:reset({self.spriteLayerNames[j]})
@@ -206,7 +216,12 @@ function Player:changeAnimationLayer(layerName, animationName)
     
     self.currentAnimations[layerName] = self.animations[animationName][layerName]
     self.currentLayerAnimationNames[layerNumber] = animationName
-    self:resetCurrentAnimations({"face"})
+    self:resetCurrentAnimations(self.spriteLayerNames)
+    
+    if animationName == "eat" then
+        self.eatingTimerCurrent = self.eatingTimerTotal
+        -- the rest happens in update
+    end
     
 end
 
@@ -222,6 +237,16 @@ function Player:updateAnimation(dt)
     for i=1, #self.currentLayerAnimationNames do
         for j=1, #self.spriteLayerNames do
             self.animations[self.currentLayerAnimationNames[i]][self.spriteLayerNames[j]]:update(dt, {self.spriteLayerNames[j]})
+        end
+        
+        -- Check whether to stop eating
+        if self.currentLayerAnimationNames[i] == "eat" then
+           if self.eatingTimerCurrent > 0 then
+                 self.eatingTimerCurrent = self.eatingTimerCurrent - 1 -- todo: include dt
+                 if self.eatingTimerCurrent == 0 then
+                    self:changeAnimationLayer("face", "idle")
+                 end
+           end
         end
     end
 end
