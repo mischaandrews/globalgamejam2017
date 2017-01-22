@@ -62,27 +62,32 @@ function Animation:loadDugongSprite(animationName, spriteLayerNames)
     
     local animationModes = {}
     local frameNums = {}
-    local animationSpeedModifier = 1
     
     if animationName == "idle" then
         animationModes = {"bounce", "bounce", "bounce", "bounce", "bounce"}
-        frameNums = {1, 1, 1, 1, 1} 
+        animationSpeedMultipliers = {1, 1, 0.2, 0.2, 1}
+        frameNums = {1, 1, 7, 5, 1} 
+        
     elseif animationName == "move" then
         animationModes = {"bounce", "bounce", "bounce", "bounce", "bounce"}
+        animationSpeedMultipliers = {1, 1, 1, 1.4, 1}
         frameNums = {1, 1, 10, 11, 1}
+        
     elseif animationName == "eat" then
         animationModes = {"once", "once", "once", "once", "once"}
+        animationSpeedMultipliers = {1, 1, 1, 1, 1}
         frameNums = {1, 1, 1, 1, 9}
+        
     elseif animationName == "boost" then
         animationModes = {"bounce", "bounce", "loop", "bounce", "bounce"}
+        animationSpeedMultipliers = {1, 1, 1, 1, 1}
         frameNums = {1, 1, 18, 1, 1}
-        animationSpeedModifier = 5
     else
         print ("Couldn't load animation: " .. animationName)
     end
     
     for i=1, #spriteLayerNames do 
-         self.spriteLayers[spriteLayerNames[i]] = createAnimationLayer("dugong", animationName, self.width, self.height, self.animationSpeed * (1/animationSpeedModifier), i, animationModes[i], frameNums[i], math.random(self.numSpriteVariations))
+         self.spriteLayers[spriteLayerNames[i]] = createAnimationLayer("dugong", animationName, self.width, self.height, self.animationSpeed * (1/animationSpeedMultipliers[i]), i, animationModes[i], frameNums[i], math.random(self.numSpriteVariations))
     end
     
     return self.spriteLayers
@@ -97,13 +102,15 @@ function Animation:loadOctopusSprite(animationName, spriteLayerNames)
     self.animationSpeed = 0.2
     self.numLayers = 5
     self.spriteLayers = {}
-    self.numSpriteVariations = 2
+    self.numSpriteVariations = 1
     
     if animationName == "idle" then
         animationModes = {"bounce", "bounce", "bounce", "bounce", "bounce"}
+        animationSpeedMultipliers = {1, 1, 1, 1, 1}
         frameNums = {1, 1, 1, 1, 1}   
     elseif animationName == "grab" then
         animationModes = {"bounce", "bounce", "bounce", "bounce", "bounce"}
+        animationSpeedMultipliers = {1, 1, 1, 1, 1}
         frameNums = {1, 1, 1, 1, 1}
     else
         print ("Couldn't load animation: " .. animationName)
@@ -133,6 +140,7 @@ function Animation:loadLettuceSprite(animationName, spriteLayerNames)
     
     if animationName == "float" then
         animationModes = {"bounce"}
+        animationSpeedMultipliers = {1}
         frameNums = {1}   
     else
         print ("Couldn't load animation: " .. animationName)
@@ -178,7 +186,7 @@ function createAnimationLayer(assetName, animationName, width, height, animation
 
     local sprite = love.graphics.newImage("assets/sprites/" .. assetName .. "/" .. assetName .. spriteVariation .. "/" .. animationName .. "/" .. layerNum .. ".png")   
     local layer = newAnimation(sprite, width, height, animationSpeed, frameNums)
-    layer.setMode(animationMode)
+    layer:setMode(animationMode)
 
     return layer
 

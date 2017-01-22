@@ -240,7 +240,7 @@ function Gamestate:playerCollide(player, other, coll)
         playerObject:changeAnimationLayer("face", "eat")
         
         -- Increase available boost
-        playerBoost = playerBoost + 5
+        playerBoost = playerBoost + 10
         if playerBoost > 100 then
             playerBoost = 100
         end

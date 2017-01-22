@@ -16,8 +16,12 @@ Player = {
     animationNames,
     currentLayerAnimationNames,
     keyIsDown,
+    
+    -- Animation timers. hacky
     eatingTimerCurrent,
     eatingTimerTotal
+    --boostAnimTimerCurrent,
+    --boostAnimTimerTotal
 }
 
 function Player:new()
@@ -51,6 +55,8 @@ function Player:load(world, x, y, characterSprite)
     self.keyIsDown = false
     self.eatingTimerTotal = 20 -- how long the dugong eats
     self.eatingTimerCurrent = 0
+    --boostAnimTimerTotal = 20 -- how long his tail spins after farting
+    --boostAnimTimerCurrent = 0
     
     local initialAnimation = "idle"
     self.currentLayerAnimationNames = {initialAnimation, initialAnimation, initialAnimation, initialAnimation, initialAnimation}
@@ -147,6 +153,7 @@ function Player:getKeyboardVector()
     local leftRight = 0
     local upDown = 0
     local movementKeyDown = false
+    local boostKeyDown = false
     local boosted = false
 
     if keysDown({"left","a"}) then
@@ -172,15 +179,18 @@ function Player:getKeyboardVector()
         upDown = upDown + 1
         movementKeyDown = true
     end
-    if keysDown({"space"}) and playerBoost > 0 then
-        boosted = true
-        self:changeAnimationLayer("rearfin", "boost")
-        soundmachine.playEntityAction("dugong", "fart", "single")
-        playerBoost = playerBoost - 2
-        if playerBoost < 0 then
-           playerBoost = 0 
+    if keysDown({"space"}) then
+        boostKeyDown = true
+        if playerBoost > 0 then
+            boosted = true
+            self:changeAnimationLayer("rearfin", "boost")
+            soundmachine.playEntityAction("dugong", "fart", "single")
+            playerBoost = playerBoost - 2
+            if playerBoost < 0 then
+               playerBoost = 0 
+            end
         end
-    end
+    end    
     
     if movementKeyDown == true and self.keyIsDown == false then
         self.keyIsDown = true -- So that we only change it once
@@ -190,6 +200,10 @@ function Player:getKeyboardVector()
         self.keyIsDown = false 
         self:changeAnimationLayer("rearfin", "idle") -- does this work with spacebar?
         self:changeAnimationLayer("frontfin", "idle")
+    end
+    
+    if boostKeyDown == true and boosted == false then
+       self:changeAnimationLayer("rearfin", "move")
     end
     
     
@@ -232,6 +246,8 @@ function Player:changeAnimationLayer(layerName, animationName)
     if animationName == "eat" then
         self.eatingTimerCurrent = self.eatingTimerTotal
         -- the rest happens in update
+    elseif animationName == "boost" then
+        --self.boostAnimTimerCurrent = self.boostAnimTimerTotal    
     end
     
 end
@@ -242,7 +258,6 @@ end
 function Player:updateAnimation(dt)
     --Update animation
     -- self.currentAnimations["backfin"] = self.animations[initialAnimation]["backfin"]
-    
     --self.animations["idle"]["backfin"]:update(dt, {"backfin"})
     
     for i=1, #self.currentLayerAnimationNames do
@@ -260,6 +275,10 @@ function Player:updateAnimation(dt)
            end
         end
     end
+
+    
+        
+    
 end
 
 function Player:draw(map)
