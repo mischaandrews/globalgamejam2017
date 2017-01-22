@@ -325,6 +325,7 @@ function Player:draw(map)
             self.currentAnimations[self.spriteLayerNames[i]]:draw(
                 self.x,
                 self.y,
+                0,
                 self.scaleX + extraScaleX,
                 self.scaleY + extraScaleY,
                 {self.spriteLayerNames[i]})
