@@ -68,8 +68,32 @@ function Octopus:getSpawnLocation(player, map)
     local activeGrid = map:getActiveGrid()
     local pcx, pcy = getCellForPoint(player.x, player.y, map.cellWidth, map.cellHeight)
 
-    return (pcx + 1) * map.cellWidth,
-           (pcy + 1) * map.cellHeight
+    --get cells near player we could spawn at
+    local candidateCells = getCandidateCells(pcx, pcy)
+
+    --remove the middle one (where hte player is)
+    table.remove(candidateCells, 5)
+
+    --remove any non-free
+    ::keepremoving::
+
+    for i=1,#candidateCells do
+
+        local cell = candidateCells[i]
+        local cx = cell[1]
+        local cy = cell[2]
+
+        if activeGrid[cy][cx] ~= "free" then
+            table.remove(candidateCells, i)
+            goto keepremoving
+        end
+
+    end
+
+    local c = math.random(1, #candidateCells)
+
+    return candidateCells[c][1] * map.cellWidth,
+           candidateCells[c][2] * map.cellHeight
 
 end
 
