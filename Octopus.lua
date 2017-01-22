@@ -31,9 +31,9 @@ function Octopus:load(characterSprite)
     self.x = 0
     self.y = 0
 
-    self.spriteLayerNames = {"body", "bottomlegs", "rightarm", "leftarm", "face"}
+    self.spriteLayerNames = {"body", "face"}
 
-    self.animations = Animation.loadAnimations(characterSprite, {"idle", "grab"}, self.spriteLayerNames)
+    self.animations = Animation.loadAnimations(characterSprite, {"idle"}, self.spriteLayerNames)
     self.currentAnimations = self.animations["idle"]
 
 end
@@ -208,7 +208,7 @@ function Octopus:draw()
     end
 
     -- Bounding circle
-    love.graphics.circle("line", self.x, self.y, octopusRadius)
+    --love.graphics.circle("line", self.x, self.y, octopusRadius)
 
 end
 
