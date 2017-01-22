@@ -109,15 +109,7 @@ function Player:update(dt, map)
     
     
     
-    -- Check whether to stop eating
-        if self.currentLayerAnimationNames[i] == "eat" then
-           if self.eatingTimerCurrent > 0 then
-                 self.eatingTimerCurrent = self.eatingTimerCurrent - 1 -- todo: include dt
-                 if self.eatingTimerCurrent == 0 then
-                    self:changeAnimationLayer("face", "idle")
-                 end
-           end
-        end
+    
         
         -- Check whether to stop boosting
         if self.currentLayerAnimationNames[i] == "boost" then
@@ -159,7 +151,7 @@ function Player:updateMovement()
     local leftRight, upDown, boosted = self:getKeyboardVector()
     local boostMultiplier = 1
     if boosted and self.boostTimerCurrent > 0 then
-        boostMultiplier = 80
+        boostMultiplier = 50
     end
     forceX = forceX + leftRight * keyBoardForce * boostMultiplier
     forceY = forceY + upDown * keyBoardForce * boostMultiplier
@@ -317,9 +309,21 @@ function Player:updateAnimation(dt)
             self.animations[self.currentLayerAnimationNames[i]][self.spriteLayerNames[j]]:update(dt, {self.spriteLayerNames[j]})
         end
         
+        -- Check whether to stop eating
+        if self.currentLayerAnimationNames[i] == "eat" then
+           if self.eatingTimerCurrent > 0 then
+                 self.eatingTimerCurrent = self.eatingTimerCurrent - 1 -- todo: include dt
+                 if self.eatingTimerCurrent == 0 then
+                    self:changeAnimationLayer("face", "idle")
+                 end
+           end
+        end
         
         
     end
+    
+    
+    
 
     
         

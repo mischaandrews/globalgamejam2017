@@ -99,7 +99,7 @@ function Animation:loadOctopusSprite(animationName, spriteLayerNames)
 
     self.width = 226
     self.height = 226
-    self.animationSpeed = 0.1
+    self.animationSpeed = 0.05
     self.numLayers = 2
     self.spriteLayers = {}
     self.numSpriteVariations = 1
