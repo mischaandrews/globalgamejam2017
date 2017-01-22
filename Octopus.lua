@@ -92,7 +92,12 @@ function Octopus:draw()
     love.graphics.setColor(255, 255, 255)
 
     for i=1, #self.spriteLayerNames do
-        self.currentAnimations[self.spriteLayerNames[i]]:draw(self.x, self.y, self.scaleX, self.scaleY, self.spriteLayerNames)
+        self.currentAnimations[self.spriteLayerNames[i]]:draw(
+            self.x + 37,
+            self.y + 37,
+            self.scaleX,
+            self.scaleY,
+            self.spriteLayerNames)
     end
 
     -- Bounding circle
