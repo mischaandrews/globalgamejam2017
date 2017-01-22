@@ -162,7 +162,7 @@ end -- End update
 function Gamestate:draw()
 
     --Map handles its own camera setting (because of parallax)
-    self.map:draw(self.camera, intWindowX, intWindowY)
+    self.map:drawRest(self.camera, intWindowX, intWindowY)
 
     ---- Set camera
     self.camera:set(1)
@@ -176,6 +176,13 @@ function Gamestate:draw()
         self.pickups[i]:draw(dt)
     end
     
+    self.camera:unset()
+
+    --Map handles its own camera setting (because of parallax)
+    self.map:drawTop(self.camera, intWindowX, intWindowY)
+
+    self.camera:set(1)
+
     ---- Draw interface
     
     if self.stage == "playing" then
@@ -190,10 +197,7 @@ function Gamestate:draw()
         drawScreen("gameover")
     end
 
-    
-    
-    
-    ---- Unset camera
+
     self.camera:unset()
 
     self.interface:draw(self.stage, self.paused)
@@ -252,7 +256,7 @@ function Gamestate:playerCollide(player, other, coll)
     elseif other:getUserData()[1] == "octopus" then
         print "Player collided with octopus"
 
-        other:getUserData()[2]:transitionToNextGrid()
+        other:getUserData()[2]:transitionToNextGrid(self.map)
 
     end
 

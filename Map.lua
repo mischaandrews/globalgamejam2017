@@ -49,6 +49,10 @@ function Map:getActiveGrid()
    return self.grids[4]
 end
 
+function Map:getNextGrid()
+    return self.grids[3]
+end
+
 function Map:genPhysics(world)
     local mapPhys = {}
     for j = 1, self.numCellsY do
@@ -71,12 +75,20 @@ end
 function Map:update(dt)
 end
 
-function Map:draw(camera, winWidth, winHeight)
-
+function Map:drawTop(camera, winWidth, winHeight)
     local fartScale = self.player.z
+    for layerNum=4,4 do
+        local scaleAdjustment = 50 + 10 * layerNum
+        local scale = self.gridScales[layerNum] - fartScale / scaleAdjustment
+        camera:set(scale)
+        self:drawGrid(self.grids[layerNum], camera, winWidth, winHeight, self.gridOpacities[layerNum], scale)
+        camera:unset()
+    end
+end
 
-    for layerNum=1,4 do
-
+function Map:drawRest(camera, winWidth, winHeight)
+    local fartScale = self.player.z
+    for layerNum=1,3 do
         local scaleAdjustment = 50 + 10 * layerNum
         local scale = self.gridScales[layerNum] - fartScale / scaleAdjustment
 
@@ -86,11 +98,8 @@ function Map:draw(camera, winWidth, winHeight)
         if layerNum == 3 then
             self:drawPlayerCell(self.grids[layerNum])
         end
-
         camera:unset()
     end
-
-
 end
 
 function Map:getDrawRange(camera, winWidth, winHeight, scale)
