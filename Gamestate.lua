@@ -106,27 +106,19 @@ function Gamestate:load()
 end -- End load
 
 function Gamestate:clearDestroyed()
-    local pickupsToRemove = {}
+    ::tryagain::
     for i=1,#self.pickups do
         if self.pickups[i].destroyed then
-            table.insert(pickupsToRemove, i)
+            table.remove(self.pickups, i)
+            goto tryagain
         end
-    end
-    local offs = 0
-    for i=1,#pickupsToRemove do
-        table.remove(self.pickups, i - offs)
-        offs = offs + 1
     end
 end
 
 function Gamestate:checkAndTriggerTransition()
-
     if self.octopus.transitionState == "done" then
-
         self.octopus:spawn(self.physics, self.player, self.map)
-
     end
-
 end
 
 ----------------------------------------------------- UPDATE

@@ -82,20 +82,24 @@ function Pickup:updateMovement()
 end
 
 function Pickup:draw()
-    love.graphics.setColor(255, 255, 255)
-    --self.currentAnimations:draw(self.x, self.y, self.scaleX, self.scaleY, self.spriteLayerNames)
-    for i=1, #self.spriteLayerNames do
-        self.currentAnimations[self.spriteLayerNames[i]]:draw(
-            self.x,
-            self.y,
-            self.rot,
-            self.scaleX,
-            self.scaleY,
-            self.spriteLayerNames)
-    end
 
-    -- Bounding box
-    --love.graphics.circle("line", self.x, self.y, pickupRadius)
+    if not self.destroyed then
+
+        love.graphics.setColor(255, 255, 255)
+        --self.currentAnimations:draw(self.x, self.y, self.scaleX, self.scaleY, self.spriteLayerNames)
+        for i=1, #self.spriteLayerNames do
+            self.currentAnimations[self.spriteLayerNames[i]]:draw(
+                self.x,
+                self.y,
+                self.rot,
+                self.scaleX,
+                self.scaleY,
+                self.spriteLayerNames)
+        end
+
+        -- Bounding box
+        --love.graphics.circle("line", self.x, self.y, pickupRadius)
+    end
 end
 
 function Pickup:pickupSprite()
