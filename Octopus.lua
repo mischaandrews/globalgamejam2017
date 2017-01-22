@@ -47,7 +47,7 @@ function Octopus:loadPhysics(world, x, y)
     physics.body = love.physics.newBody(world, x, y, "dynamic")
     physics.shape = love.physics.newCircleShape(octopusRadius)
     physics.fixture = love.physics.newFixture(physics.body, physics.shape, 1)
-    physics.fixture:setUserData({"player",self})
+    physics.fixture:setUserData({"octopus",self})
     physics.fixture:setRestitution(0.8)
     return physics
 end
@@ -76,7 +76,10 @@ function Octopus:update(dt, player)
 end
 
 function Octopus:fleePlayer(player)
-    return 100, 0
+    
+    local vecX, vecY = normalise(self.x - player.x, self.y - player.y)
+
+    return 1500 * vecX, 1500 * vecY
 end
 
 function Octopus:updateMovement(player)

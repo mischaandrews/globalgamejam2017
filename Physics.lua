@@ -29,3 +29,9 @@ function getCellForPoint(x, y, cellWidth, cellHeight)
     return math.ceil ((x - (cellWidth / 2)) / (cellWidth)),
            math.ceil ((y - (cellHeight / 2)) / (cellHeight))
 end
+
+function normalise(x,y)
+   local mag = math.sqrt (x * x + y * y)
+   return x / mag,
+          y / mag
+end

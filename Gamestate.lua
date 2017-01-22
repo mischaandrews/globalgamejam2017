@@ -143,7 +143,7 @@ function Gamestate:update(dt)
         self.player:update(dt, self.map)
 
         -- Update characters
-        self.octopus:update(dt, player)
+        self.octopus:update(dt, self.player)
 
         for i=1,#self.pickups do
             self.pickups[i]:update(dt)
