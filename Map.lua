@@ -1,18 +1,15 @@
 require "Generation"
 
-local numCellsX = 128
-local numCellsY = 128
-
-local cellWidth = 100
-local cellHeight = 100
-
 Map = {
     player,
     grids,
     gridScales,
     gridOpacities,
     mapPhys,
-
+    numCellsX = 128,
+    numCellsY = 128,
+    cellWidth = 100,
+    cellHeight = 100,
     transitionState = "none",  -- "none" -> "fartPrep" -> "farting" -> "none"
     transitionAmount = "0"  -- [0.0, 1.0)
 }
@@ -27,17 +24,17 @@ end
 function Map:load(world, player)
 
     math.randomseed(12345)
-    self.grids, self.gridScales, self.gridOpacities = Map.loadGridsAndScalesAndOpacs()
+    self.grids, self.gridScales, self.gridOpacities = self:loadGridsAndScalesAndOpacs()
     self.player = player
     self:genPhysics(world)
 
 end
 
-function Map.loadGridsAndScalesAndOpacs()
-    local activeGrid = buildGrid(numCellsX, numCellsY)
-    local backGrid1 = buildGrid(numCellsX, numCellsY)
-    local backGrid2 = buildGrid(numCellsX, numCellsY)
-    local backGrid3 = buildGrid(numCellsX, numCellsY)
+function Map:loadGridsAndScalesAndOpacs()
+    local activeGrid = buildGrid(self.numCellsX, self.numCellsY)
+    local backGrid1 = buildGrid(self.numCellsX, self.numCellsY)
+    local backGrid2 = buildGrid(self.numCellsX, self.numCellsY)
+    local backGrid3 = buildGrid(self.numCellsX, self.numCellsY)
 
     return {backGrid3, backGrid2, backGrid1, activeGrid},
            {     0.12,      0.25,      0.50,          1},
@@ -45,7 +42,7 @@ function Map.loadGridsAndScalesAndOpacs()
 end
 
 function Map:populateLettuces(physics)
-    return populateLettuces(physics, self:getActiveGrid(), cellWidth, cellHeight)
+    return populateLettuces(physics, self:getActiveGrid(), self.cellWidth, self.cellHeight)
 end
 
 function Map:getActiveGrid()
@@ -54,10 +51,10 @@ end
 
 function Map:genPhysics(world)
     local mapPhys = {}
-    for j = 1, numCellsY do
-        for i = 1, numCellsX do
+    for j = 1, self.numCellsY do
+        for i = 1, self.numCellsX do
             if self:getActiveGrid()[j][i] == "edge" then
-                genBlock(world, cellWidth * i, cellHeight * j, cellWidth, cellHeight)
+                genBlock(world, self.cellWidth * i, self.cellHeight * j, self.cellWidth, self.cellHeight)
             end
         end
     end
@@ -98,26 +95,26 @@ end
 
 function Map:getDrawRange(camera, winWidth, winHeight, scale)
 
-    local blocksToLeft = math.ceil ((camera.x - cellWidth / 2) / cellWidth)
-    local blocksPerScreenW = math.ceil (winWidth / (cellWidth * scale))
+    local blocksToLeft = math.ceil ((camera.x - self.cellWidth / 2) / self.cellWidth)
+    local blocksPerScreenW = math.ceil (winWidth / (self.cellWidth * scale))
     local blocksToRight = blocksToLeft + blocksPerScreenW
 
-    local blocksToTop = math.ceil ((camera.y - cellHeight / 2) / cellHeight)
-    local blocksPerScreenH = math.ceil (winHeight / (cellHeight * scale))
+    local blocksToTop = math.ceil ((camera.y - self.cellHeight / 2) / self.cellHeight)
+    local blocksPerScreenH = math.ceil (winHeight / (self.cellHeight * scale))
     local blocksToBottom = blocksToTop + blocksPerScreenH
 
     return math.max (blocksToLeft, 1),
-           math.min (blocksToRight, numCellsX),
+           math.min (blocksToRight, self.numCellsX),
            math.max (blocksToTop, 1),
-           math.min (blocksToBottom, numCellsY)
+           math.min (blocksToBottom, self.numCellsY)
 end
 
 function Map:drawPlayerCell(grid)
 
-    local halfCellWidth = cellWidth / 2
-    local halfCellHeight = cellHeight / 2
+    local halfCellWidth = self.cellWidth / 2
+    local halfCellHeight = self.cellHeight / 2
 
-    local pcx, pcy = getCellForPoint(self.player.x, self.player.y, cellWidth, cellHeight)
+    local pcx, pcy = getCellForPoint(self.player.x, self.player.y, self.cellWidth, self.cellHeight)
 
     if grid ~= nil and grid[pcy][pcx] ~= "free" then
         love.graphics.setColor(200, 64, 64, 224 * self.player.z)
@@ -125,15 +122,15 @@ function Map:drawPlayerCell(grid)
         love.graphics.setColor(200, 200, 64, 224 * self.player.z)
     end
 
-    local drawAtX = cellWidth * (pcx-1)    -- Because lua indexes from 1
+    local drawAtX = self.cellWidth * (pcx-1)    -- Because lua indexes from 1
                   + halfCellWidth         -- Because physics calls x,y the centre
 
-    local drawAtY = cellHeight * (pcy-1)   -- Because lua indexes from 1
+    local drawAtY = self.cellHeight * (pcy-1)   -- Because lua indexes from 1
                   + halfCellHeight        -- Because physics calls x,y the centre
 
     love.graphics.rectangle(
                 "fill", drawAtX, drawAtY,
-                cellWidth, cellHeight)
+                self.cellWidth, self.cellHeight)
 
 end
 
@@ -144,8 +141,8 @@ function Map:drawGrid(grid, camera, winWidth, winHeight, alpha, scale)
 
     local blocksDrawn = 0
 
-    local halfCellWidth = cellWidth / 2
-    local halfCellHeight = cellHeight / 2
+    local halfCellWidth = self.cellWidth / 2
+    local halfCellHeight = self.cellHeight / 2
 
     for j = blocksToTop, blocksToBottom do
         for i = blocksToLeft, blocksToRight do
@@ -173,17 +170,17 @@ function Map:drawGrid(grid, camera, winWidth, winHeight, alpha, scale)
 
             love.graphics.setColor(colour_r, colour_g, colour_b, colour_a)
 
-            local drawAtX = cellWidth * (i-1)    -- Because lua indexes from 1
+            local drawAtX = self.cellWidth * (i-1)    -- Because lua indexes from 1
                           + halfCellWidth             -- Because physics calls x,y the centre
 
-            local drawAtY = cellHeight * (j-1)   -- Because lua indexes from 1
+            local drawAtY = self.cellHeight * (j-1)   -- Because lua indexes from 1
                           + halfCellHeight            -- Because physics calls x,y the centre
 
             blocksDrawn = blocksDrawn + 1
 
             love.graphics.rectangle(
                 "fill", drawAtX, drawAtY,
-                cellWidth, cellHeight)
+                self.cellWidth, self.cellHeight)
         end
     end
 

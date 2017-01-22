@@ -84,7 +84,7 @@ function Gamestate:load()
 
     ---- Create characters
     local player_spawnX = 400
-    local player_spawnY = 750
+    local player_spawnY = 950
     local player = Player:new()
     player:load(physics, player_spawnX, player_spawnY, "dugong")
     self.player = player
@@ -143,7 +143,7 @@ function Gamestate:update(dt)
         self.player:update(dt, self.map)
 
         -- Update characters
-        self.octopus:update(dt)
+        self.octopus:update(dt, self.player)
 
         for i=1,#self.pickups do
             self.pickups[i]:update(dt)

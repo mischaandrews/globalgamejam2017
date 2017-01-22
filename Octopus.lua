@@ -47,30 +47,49 @@ function Octopus:loadPhysics(world, x, y)
     physics.body = love.physics.newBody(world, x, y, "dynamic")
     physics.shape = love.physics.newCircleShape(octopusRadius)
     physics.fixture = love.physics.newFixture(physics.body, physics.shape, 1)
-    physics.fixture:setUserData({"player",self})
+    physics.fixture:setUserData({"octopus",self})
     physics.fixture:setRestitution(0.8)
     return physics
 end
 
 function Octopus:spawn(player, map)
-    local x, y = self:getSpawnLocation(player, map:getActiveGrid())
+    local x, y = self:getSpawnLocation(player, map)
 
     self.physics.body:setPosition(x, y)
     
 end
 
 function Octopus:getSpawnLocation(player, map)
-   return 450, 450 
+    
+    local activeGrid = map:getActiveGrid()
+    
+    
+    local pcx, pcy = getCellForPoint(player.x, player.y, map.cellWidth, map.cellHeight)
+
+    return (pcx + 1) * map.cellWidth, pcy * map.cellHeight
+    
 end
 
-function Octopus:update(dt)
-    self:updateMovement()
+function Octopus:update(dt, player)
+    self:updateMovement(player)
     self:updateAnimation(dt)
 end
 
-function Octopus:updateMovement()
+function Octopus:fleePlayer(player)
+    
+    local vecX, vecY = normalise(self.x - player.x, self.y - player.y)
+
+    return 1500 * vecX, 1500 * vecY
+end
+
+function Octopus:updateMovement(player)
 
     local forceX, forceY = getOceanForce(self)
+
+    local repelX, repelY = self:fleePlayer(player)
+
+    forceX = forceX + repelX
+    forceY = forceY + repelY
 
     --Pass the force to the physics engine
     self.physics.body:applyForce(forceX, forceY)
