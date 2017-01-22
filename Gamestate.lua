@@ -99,9 +99,6 @@ function Gamestate:load()
     octopus:spawn(player, map)
     self.octopus = octopus
 
-    
-    
-    
     ---- Interface
     self.interface = Interface:new()
     self.interface:load()

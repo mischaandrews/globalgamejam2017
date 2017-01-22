@@ -66,8 +66,9 @@ function Octopus:getSpawnLocation(player, map)
     
     local pcx, pcy = getCellForPoint(player.x, player.y, map.cellWidth, map.cellHeight)
 
-    return (pcx + 1) * map.cellWidth, pcy * map.cellHeight
-    
+    return (pcx + 1) * map.cellWidth,
+           (pcy + 1) * map.cellHeight
+
 end
 
 function Octopus:update(dt, player, map)
@@ -100,7 +101,7 @@ function Octopus:headForOpenWater(map)
         vecX, vecY = normalise(x - self.x, y - self.y)
     end
 
-    return 1500 * vecX, 1500 * vecY
+    return 900 * vecX, 900 * vecY
 end
 
 function getLeastNeighbourCell(grid, candidateCells)
