@@ -124,9 +124,14 @@ function Player:updateMovement()
 
     --Add player keyboard force
     local keyBoardForce = 1700
-    local leftRight, upDown = self:getKeyboardVector()
-    forceX = forceX + leftRight * keyBoardForce
-    forceY = forceY + upDown * keyBoardForce 
+    local leftRight, upDown, boosted = self:getKeyboardVector()
+    local boostMultiplier = 1
+    if boosted then
+        boostMultiplier = 8
+    end
+    forceX = forceX + leftRight * keyBoardForce * boostMultiplier
+    forceY = forceY + upDown * keyBoardForce * boostMultiplier
+    
 
     --Pass the force to the physics engine
     self.physics.body:applyForce(forceX, forceY)
@@ -142,6 +147,7 @@ function Player:getKeyboardVector()
     local leftRight = 0
     local upDown = 0
     local movementKeyDown = false
+    local boosted = false
 
     if keysDown({"left","a"}) then
         leftRight = leftRight - 1
@@ -166,10 +172,14 @@ function Player:getKeyboardVector()
         upDown = upDown + 1
         movementKeyDown = true
     end
-    if keysDown({"space"}) then
+    if keysDown({"space"}) and playerBoost > 0 then
+        boosted = true
         self:changeAnimationLayer("rearfin", "boost")
         soundmachine.playEntityAction("dugong", "fart", "single")
         playerBoost = playerBoost - 2
+        if playerBoost < 0 then
+           playerBoost = 0 
+        end
     end
     
     if movementKeyDown == true and self.keyIsDown == false then
@@ -183,7 +193,7 @@ function Player:getKeyboardVector()
     end
     
     
-    return leftRight, upDown
+    return leftRight, upDown, boosted
 end
 
 
