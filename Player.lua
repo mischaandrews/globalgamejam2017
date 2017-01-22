@@ -22,7 +22,11 @@ Player = {
     eatingTimerCurrent,
     eatingTimerTotal,
     boostTimerCurrent,
-    boostTimerTotal
+    boostTimerTotal,
+    
+    moveRotation,
+    idleRotation,
+    rotation
 }
 
 function Player:new()
@@ -59,6 +63,9 @@ function Player:load(world, x, y, characterSprite)
     self.eatingTimerCurrent = 0
     self.boostTimerTotal = 20 -- length of boost
     self.boostTimerCurrent = 0
+    self.moveRotation = 0.09
+    self.idleRotation = 0
+    self.rotation = 0
     
     local initialAnimation = "idle"
     self.currentLayerAnimationNames = {initialAnimation, initialAnimation, initialAnimation, initialAnimation, initialAnimation}
@@ -207,6 +214,7 @@ function Player:getKeyboardVector()
         self:changeAnimationLayer("rearfin", "move")
         self:changeAnimationLayer("backfin", "move")
         self:changeAnimationLayer("frontfin", "move")
+        self.rotation = self.moveRotation
     
     -- Just finished holding a movement key
     elseif movementKeyDown == false and self.movementKeyWasJustDown == true then
@@ -214,6 +222,7 @@ function Player:getKeyboardVector()
         self:changeAnimationLayer("rearfin", "idle") -- does this work with spacebar?
         self:changeAnimationLayer("backfin", "idle")
         self:changeAnimationLayer("frontfin", "idle")
+        self.rotation = self.idleRotation
     end
     
     -- Just started holding the boost key
@@ -241,6 +250,7 @@ function Player:getKeyboardVector()
         self:changeAnimationLayer("backfin", "move")
         self:changeAnimationLayer("frontfin", "move")
         self:changeAnimationLayer("face", "move")
+        self.rotation = self.moveRotation
     
     -- Just finished holding the boost key, movement key is not down
     elseif boostKeyDown == false and self.boostKeyWasJustDown == true and movementKeyDown == false then
@@ -249,6 +259,7 @@ function Player:getKeyboardVector()
         self:changeAnimationLayer("backfin", "idle")
         self:changeAnimationLayer("frontfin", "idle")
         self:changeAnimationLayer("face", "idle")
+        self.rotation = self.idleRotation
     end
     
     return leftRight, upDown, boosted
@@ -344,11 +355,16 @@ function Player:draw(map)
     for i=1, #self.currentLayerAnimationNames do
         --self.currentAnimations["backfin"] = self.animations[initialAnimation]["backfin"]
     
+        local rot = self.rotation
+        if self.facingDirection == "left" then
+           rot = -rot 
+        end
+        
         for i=1, #self.spriteLayerNames do
             self.currentAnimations[self.spriteLayerNames[i]]:draw(
                 self.x,
                 self.y,
-                0,
+                rot,
                 self.scaleX + extraScaleX,
                 self.scaleY + extraScaleY,
                 {self.spriteLayerNames[i]})

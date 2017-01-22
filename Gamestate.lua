@@ -80,6 +80,7 @@ function Gamestate:load()
     intWindowX = 1200
     intWindowY = 700
     love.window.setMode( intWindowX, intWindowY )
+    love.window.setTitle( "Lettuce Friends" )
 
     ---- Create characters
     local player_spawnX = 1100
