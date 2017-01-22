@@ -39,7 +39,7 @@ function Pickup:load(world, x, y, pickupSprite)
     self.scaleY = 0.6
 
     self.spriteLayerNames = {"body"}
-    
+
     self.animations = Animation.loadAnimations(pickupSprite, {"float"}, self.spriteLayerNames)
     self.currentAnimations = self.animations["float"]
 
@@ -56,6 +56,10 @@ function Pickup:loadPhysics(world, x, y)
     physics.fixture = love.physics.newFixture(physics.body, physics.shape, 1)
     physics.fixture:setUserData({"pickup",self})
     return physics
+end
+
+function Pickup:clearPhysics()
+    self.physics.body:destroy()
 end
 
 function Pickup:update(dt)
@@ -108,7 +112,7 @@ function Pickup:destroy()
 -- TODO: please fix this John? thank you :)
     self.x = -999999
     self.y = -999999
-    self.physics.body:destroy()
+    self:clearPhysics()
     self.destroyed = true
 
 end
