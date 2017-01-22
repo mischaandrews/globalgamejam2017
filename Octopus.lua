@@ -18,6 +18,8 @@ function Octopus:new()
     return o
 end
 
+local octopusRadius = 30
+
 function Octopus:load(world, x, y, characterSprite)
 
     if characterSprite == nil then
@@ -43,8 +45,8 @@ function Octopus:load(world, x, y, characterSprite)
 end
 
 function Octopus:spawn(physics, player, map)
-    local npc2_spawnX = 400
-    local npc2_spawnY = 400
+    local npc2_spawnX = 450
+    local npc2_spawnY = 450
     local npc2 = Octopus:new()
     npc2:load(physics, npc2_spawnX, npc2_spawnY, "octopus")
     return npc2
@@ -61,15 +63,13 @@ function Octopus:draw()
 
     love.graphics.setColor(255, 255, 255)
 
-    -- Bounding box
-    --love.graphics.rectangle("line", self.x-3, self.y-3, 106,106)
-    
-    
     for i=1, #self.spriteLayerNames do
         self.currentAnimations[self.spriteLayerNames[i]]:draw(self.x, self.y, self.scaleX, self.scaleY, self.spriteLayerNames)
     end
-    --self.currentAnimations:draw(self.x, self.y, self.scaleX, self.scaleY, self.spriteLayerNames)
-    
+
+    -- Bounding circle
+    love.graphics.circle("line", self.x, self.y, octopusRadius)
+
 end
 
 
