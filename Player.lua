@@ -176,9 +176,11 @@ function Player:getKeyboardVector()
     if movementKeyDown == true and self.keyIsDown == false then
         self.keyIsDown = true -- So that we only change it once
         self:changeAnimationLayer("rearfin", "move")
+        self:changeAnimationLayer("frontfin", "move")
     elseif movementKeyDown == false and self.keyIsDown == true then
         self.keyIsDown = false 
         self:changeAnimationLayer("rearfin", "idle") -- does this work with spacebar?
+        self:changeAnimationLayer("frontfin", "idle")
     end
     
     

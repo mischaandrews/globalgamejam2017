@@ -66,10 +66,10 @@ function Animation:loadDugongSprite(animationName, spriteLayerNames)
     
     if animationName == "idle" then
         animationModes = {"bounce", "bounce", "bounce", "bounce", "bounce"}
-        frameNums = {1, 1, 6, 1, 1}   
+        frameNums = {1, 1, 1, 1, 1} 
     elseif animationName == "move" then
         animationModes = {"bounce", "bounce", "bounce", "bounce", "bounce"}
-        frameNums = {1, 1, 10, 1, 1}
+        frameNums = {1, 1, 10, 11, 1}
     elseif animationName == "eat" then
         animationModes = {"once", "once", "once", "once", "once"}
         frameNums = {1, 1, 1, 1, 9}
