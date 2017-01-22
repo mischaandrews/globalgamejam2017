@@ -38,7 +38,7 @@ function Map:loadGridsAndScalesAndOpacs()
 
     return {backGrid3, backGrid2, backGrid1, activeGrid},
            {     0.12,      0.25,      0.50,          1},
-           {      255,       128,       128,        64}
+           {      255,       128,       128,         92}
 end
 
 function Map:populateLettuces(physics)
