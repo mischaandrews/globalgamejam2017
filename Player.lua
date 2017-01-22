@@ -112,11 +112,6 @@ function Player:updateTransitions(dt, map)
     end
 end
 
-function Player:updateAnimation(dt)
-    --Update animation
-    self.currentAnimations:update(dt)
-    
-end
 
 function Player:updateMovement()
 
@@ -191,30 +186,12 @@ end
 
 function Player:resetCurrentAnimations()
     
-    
-    --local bVal = self.spriteLayerNames["face"]
-    local anim = self.animations["eat"]
-    
-    -- TODO: fix this Mish!
-                
-    if anim == nil then
-        os.exit()
-    end
-    
-    local scope = ""
-    if scope == "all" then
-        
-        for i=1, #self.animationNames do
-            for j=1, #self.spriteLayerNames do
-                local iVal = self.animationNames[i]
-                local jVal = self.spriteLayerNames[j]
-                local anim = self.animations[iVal][jVal]
-                anim:reset()
-            end
+    for i=1, #self.currentLayerAnimationNames do
+        for j=1, #self.spriteLayerNames do
+            self.animations[self.currentLayerAnimationNames[i]][self.spriteLayerNames[j]]:reset(self.spriteLayerNames[j])
         end
-        
-        --self.animations:reset()
     end
+    
 end
 
 
@@ -228,7 +205,6 @@ function Player:changeAnimationLayer(layerName, animationName)
     
     self.currentAnimations[layerName] = self.animations[animationName][layerName]
     self.currentLayerAnimationNames[layerNumber] = animationName
-    self:resetCurrentAnimations("all")
     
 end
 
@@ -237,8 +213,14 @@ end
 
 function Player:updateAnimation(dt)
     --Update animation
-    for i=1, #self.spriteLayerNames do
-        self.animations[self.currentLayerAnimationNames[i]][self.spriteLayerNames[i]]:update(dt, self.spriteLayerNames)
+    -- self.currentAnimations["backfin"] = self.animations[initialAnimation]["backfin"]
+    
+    --self.animations["idle"]["backfin"]:update(dt, {"backfin"})
+    
+    for i=1, #self.currentLayerAnimationNames do
+        for j=1, #self.spriteLayerNames do
+            self.animations[self.currentLayerAnimationNames[i]][self.spriteLayerNames[j]]:update(dt, {self.spriteLayerNames[j]})
+        end
     end
 end
 
